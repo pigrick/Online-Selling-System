@@ -57,11 +57,11 @@
 		<artifactId>spring-security-test</artifactId>
 		<scope>test</scope>
 	</dependency>
-	<!-- Hibernat Dependcy -->
+	<!-- Hibernate Dependcy -->
 	<dependency>
 		<groupId>org.hibernate</groupId>
 		<artifactId>hibernate-core</artifactId>
-		<version>${hibernat.version}</version>
+		<version>${hibernate.version}</version>
 	</dependency>
 	</dependencies>
 

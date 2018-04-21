@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 public class OrderDetail {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @ManyToOne
     private Order order;

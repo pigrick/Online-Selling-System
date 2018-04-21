@@ -1,13 +1,11 @@
 package edu.mum.cs490.project.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Address {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String phoneNumber;
     private String street;
@@ -15,6 +13,8 @@ public class Address {
     private String state;
     private String zipcode;
     private String status;
+    @ManyToOne
+    private User user;
 
     public Address(){}
 
@@ -72,5 +72,13 @@ public class Address {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

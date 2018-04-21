@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 public class Product {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @ManyToOne
     private Vendor vendor;

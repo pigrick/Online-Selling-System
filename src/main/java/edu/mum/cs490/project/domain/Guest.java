@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 public class Guest {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String firstName;
     private String lastName;

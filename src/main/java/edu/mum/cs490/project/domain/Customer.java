@@ -1,7 +1,11 @@
 package edu.mum.cs490.project.domain;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -40,4 +44,10 @@ public class Customer extends User {
     public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_CUSTOMER");
+    }
+
 }

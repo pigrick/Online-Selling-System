@@ -1,6 +1,10 @@
 package edu.mum.cs490.project.domain;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+
 import javax.persistence.Entity;
+import java.util.Collection;
 
 @Entity
 public class Administrator extends User {
@@ -25,5 +29,10 @@ public class Administrator extends User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN,ROLE_VENDOR,ROLE_CUSTOMER");
     }
 }

@@ -7,11 +7,11 @@ import javax.persistence.Entity;
 import java.util.Collection;
 
 @Entity
-public class Administrator extends User {
+public class Admin extends User {
     private String firstName;
     private String lastName;
 
-    public Administrator(){
+    public Admin(){
         super();
     }
 

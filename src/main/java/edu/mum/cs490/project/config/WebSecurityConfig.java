@@ -13,6 +13,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.ForwardAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -39,14 +43,34 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .httpStrictTransportSecurity()
                     .and()
                 .and()*/
-                .authorizeRequests()
-                .antMatchers("/login").anonymous()
-                .antMatchers("/admin").authenticated()
-                .and()
                 .formLogin()
                     .loginPage("/login")
                     .usernameParameter("username")
-                    .passwordParameter("password");
+                    .passwordParameter("password")
+                    .successForwardUrl("/")
+                    .successHandler(authenticationSuccessHandler())
+                    .failureHandler(authenticationFailureHandler())
+                .and()
+                .logout()
+                    .logoutUrl("logout")
+                    .logoutSuccessUrl("/")
+                .and()
+                .authorizeRequests()
+                    .antMatchers("/admin/**").hasRole("ADMIN")
+                    .antMatchers("/vendor/**").hasRole("VENDOR")
+                    .antMatchers("/profile/**").hasRole("CUSTOMER");
+
+
+    }
+
+    @Bean
+    AuthenticationSuccessHandler authenticationSuccessHandler(){
+        return new SavedRequestAwareAuthenticationSuccessHandler();
+    }
+
+    @Bean
+    AuthenticationFailureHandler authenticationFailureHandler(){
+        return new ForwardAuthenticationFailureHandler("/login");
     }
 
     @Override

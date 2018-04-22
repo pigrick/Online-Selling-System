@@ -1,5 +1,4 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,9 +6,7 @@
     <title></title>
 </head>
 <body>
-<h1>Hello World!</h1>
-<form action="/logout" method="post">
-    <button type="submit">Logout</button>
-</form>
+<h1>Vendor Hello World!</h1>
+
 </body>
 </html>

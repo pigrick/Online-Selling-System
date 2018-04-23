@@ -7,9 +7,14 @@
     <title></title>
 </head>
 <body>
-<h1>Hello World!</h1>
-<form action="/logout" method="post">
+<%--<h1>Hello World!</h1>--%>
+
+<%@include file="/WEB-INF/jsp/template/header.jsp"%>
+<%@include file="/WEB-INF/jsp/template/footer.jsp"%>
+<%@include file="/WEB-INF/jsp/template/accountSider.jsp"%>
+
+<%--<form action="/logout" method="post">
     <button type="submit">Logout</button>
-</form>
+</form>--%>
 </body>
 </html>

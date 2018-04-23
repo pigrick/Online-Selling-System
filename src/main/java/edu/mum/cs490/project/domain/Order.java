@@ -14,11 +14,14 @@ public class Order {
     private Customer customer;
     @OneToOne
     private CardDetail card;
+    @Temporal(TemporalType.DATE)
     private Date orderDate;
+    @Temporal(TemporalType.DATE)
     private Date shippingDate;
     @OneToOne
     private Address address;
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
     @OneToMany(mappedBy = "order")
     private List<OrderDetail> orderDetails;
 
@@ -72,11 +75,11 @@ public class Order {
         this.address = address;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

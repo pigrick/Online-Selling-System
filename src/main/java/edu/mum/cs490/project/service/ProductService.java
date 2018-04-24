@@ -31,4 +31,19 @@ public interface ProductService {
     @Transactional
     void changeStatus(Integer id, Status status);
 
+    @Transactional
+    List<Product> findByProductName(String productName);
+
+    @Transactional
+    List<Product> findByVendor(String vendor);
+
+    @Transactional
+    @PreAuthorize("#user.id == principal.id or hasRole('ROLE_ADMIN') or hasRole('ROLE_VENDOR')")
+    void saveOrUpdateProduct(Product product);
+
+    @Transactional
+    void deleteProduct(Product product);
+
+    @Transactional
+    List<Product> findByCategory(String category);
 }

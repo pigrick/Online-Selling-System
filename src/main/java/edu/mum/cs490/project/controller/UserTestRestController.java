@@ -19,7 +19,7 @@ import java.util.List;
  * Created by Erdenebayar on 4/23/2018
  */
 @RestController
-public class AdminController {
+public class UserTestRestController {
 
     private final AdminService adminService;
     private final VendorService vendorService;
@@ -27,7 +27,7 @@ public class AdminController {
     private final UserService<User> userService;
 
     @Autowired
-    public AdminController(AdminService adminService, VendorService vendorService, CustomerService customerService, UserService<User> userService) {
+    public UserTestRestController(AdminService adminService, VendorService vendorService, CustomerService customerService, UserService<User> userService) {
         this.adminService = adminService;
         this.vendorService = vendorService;
         this.customerService = customerService;

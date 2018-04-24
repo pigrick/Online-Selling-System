@@ -25,7 +25,7 @@ public class UserServiceImpl<T extends User> implements UserService<T> {
 
     @Override
     public T getById(Integer id) {
-        return userRepository.getById(id);
+        return userRepository.getOne(id);
     }
 
     @Override
@@ -45,9 +45,7 @@ public class UserServiceImpl<T extends User> implements UserService<T> {
 
     @Override
     public void delete(Integer id) {
-        T user = getById(id);
-        user.setStatus(Status.DELETED);
-        userRepository.save(user);
+        changeStatus(id, Status.DELETED);
     }
 
     @Override

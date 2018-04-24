@@ -4,7 +4,7 @@ import edu.mum.cs490.project.domain.Status;
 import edu.mum.cs490.project.domain.User;
 import edu.mum.cs490.project.repository.UserRepository;
 import edu.mum.cs490.project.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -13,46 +13,46 @@ import java.util.List;
 /**
  * Created by Erdenebayar on 4/20/2018
  */
+@Primary
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl<T extends User> implements UserService<T> {
 
-    private final UserRepository userRepository;
+    private final UserRepository<T> userRepository;
 
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository<T> userRepository) {
         this.userRepository = userRepository;
     }
 
     @Override
-    public User getById(Integer id) {
+    public T getById(Integer id) {
         return userRepository.getById(id);
     }
 
     @Override
-    public List<User> getAll() {
+    public List<T> getAll() {
         return userRepository.findAll();
     }
 
     @Override
-    public User loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.getByUsername(username);
-    }
-
-    @Override
-    public User saveOrUpdate(User user) {
+    public T saveOrUpdate(T user) {
         return userRepository.save(user);
     }
 
     @Override
+    public T loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.getByUsername(username);
+    }
+
+    @Override
     public void delete(Integer id) {
-        User user = getById(id);
+        T user = getById(id);
         user.setStatus(Status.DELETED);
         userRepository.save(user);
     }
 
     @Override
     public void changeStatus(Integer id, Status status) {
-        User user = getById(id);
+        T user = getById(id);
         user.setStatus(status);
         userRepository.save(user);
     }

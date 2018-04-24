@@ -2,7 +2,6 @@ package edu.mum.cs490.project.service.impl;
 
 import edu.mum.cs490.project.domain.Product;
 import edu.mum.cs490.project.domain.Status;
-import edu.mum.cs490.project.domain.User;
 import edu.mum.cs490.project.repository.ProductRepository;
 import edu.mum.cs490.project.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +12,15 @@ import java.util.List;
 /**
  * Created by Pagmaa on 4/23/2018
  */
-
-
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
+    @Autowired
+    public ProductServiceImpl(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     @Override
     public Product getById(Integer id) {
@@ -29,7 +29,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getAllProduct() {
-        return productRepository.getAllProduct();
+        return productRepository.findAll();
     }
 
     @Override

@@ -9,13 +9,8 @@ import java.util.List;
 /**
  * Created by Pagmaa on 4/23/2018
  */
-
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
    Product getById(Integer id);
-
-   List<Product> getAllProduct();
-
-
 }

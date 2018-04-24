@@ -9,16 +9,16 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Transactional(readOnly = true)
-public interface UserService extends UserDetailsService{
+public interface UserService<T extends User> extends UserDetailsService{
 
-    User getById(Integer id);
+    T getById(Integer id);
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    List<User> getAll();
+    List<T> getAll();
 
     @Transactional
     @PreAuthorize("#user.id == principal.id or hasRole('ROLE_ADMIN')")
-    User saveOrUpdate(User user);
+    T  saveOrUpdate(T user);
 
     @Transactional
     void delete(Integer id);

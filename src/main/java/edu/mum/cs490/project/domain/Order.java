@@ -1,5 +1,7 @@
 package edu.mum.cs490.project.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -10,15 +12,19 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @JsonIgnore
     @ManyToOne
     private Customer customer;
     @OneToOne
     private CardDetail card;
+    @Temporal(TemporalType.DATE)
     private Date orderDate;
+    @Temporal(TemporalType.DATE)
     private Date shippingDate;
     @OneToOne
     private Address address;
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
     @OneToMany(mappedBy = "order")
     private List<OrderDetail> orderDetails;
 
@@ -72,11 +78,11 @@ public class Order {
         this.address = address;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

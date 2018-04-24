@@ -1144,11 +1144,11 @@
 			return this.data(key + '_smartmenus', val);
 		}
 		return this.data(key + '_smartmenus');
-	}
+	};
 
 	$.fn.removeDataSM = function(key) {
 		return this.removeData(key + '_smartmenus');
-	}
+	};
 
 	$.fn.smartmenus = function(options) {
 		if (typeof options == 'string') {
@@ -1166,7 +1166,7 @@
 		return this.each(function() {
 			new $.SmartMenus(this, opts);
 		});
-	}
+	};
 
 	// default settings
 	$.fn.smartmenus.defaults = {

@@ -15,16 +15,12 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer> {
 
-   Product getById(Integer id);
+//   @Query("select p from Product where p.productName like %:productName% ")
+   List<Product> findByName( String productName);
 
-   List<Product> getAllProduct();
+//    @Query("select p from Product p where p.vendor like %:vendor% ")
+    List<Product> findByVendorCompanyName(String vendor);
 
-   @Query("select p from Product where p.productName like%:productName% ")
-   List<Product> findByProductName(@Param("productName") String productName);
-
-    @Query("select p from Product where p.vendor like %:vendor% ")
-    List<Product> findByVendor(@Param("vendor") String vendor);
-
-    @Query("select p from Product p where p.category.name like (:category)%")
-    List<Product> findByCategory(String category);
+//    @Query("select p from Product p where p.category.name like (:category)%")
+    List<Product> findByCategoryName(String category);
 }

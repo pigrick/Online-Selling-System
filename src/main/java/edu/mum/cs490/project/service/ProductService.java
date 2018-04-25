@@ -32,10 +32,10 @@ public interface ProductService {
     void changeStatus(Integer id, Status status);
 
     @Transactional
-    List<Product> findByProductName(String productName);
+    List<Product> findByName(String productName);
 
     @Transactional
-    List<Product> findByVendor(String vendor);
+    List<Product> findByVendorCompanyName(String vendor);
 
     @Transactional
     @PreAuthorize("#user.id == principal.id or hasRole('ROLE_ADMIN') or hasRole('ROLE_VENDOR')")
@@ -45,5 +45,5 @@ public interface ProductService {
     void deleteProduct(Product product);
 
     @Transactional
-    List<Product> findByCategory(String category);
+    List<Product> findByCategoryName(String category);
 }

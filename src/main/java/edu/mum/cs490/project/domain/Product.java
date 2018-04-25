@@ -7,17 +7,17 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    private String name;
+    @ManyToOne
+    private Category category;
     @ManyToOne
     private Vendor vendor;
-    private String productName;
     private int quantity;
     private double price;
     private String description;
+    @Enumerated(EnumType.STRING)
     private Status status;
 
-    @ManyToOne
-    @JoinColumn(name = "categoryId")
-    private Category productCategory;
 
     public Product(){}
 
@@ -37,12 +37,12 @@ public class Product {
         this.vendor = vendor;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getName() {
+        return name;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getQuantity() {
@@ -77,5 +77,11 @@ public class Product {
         this.status = status;
     }
 
+    public Category getCategory() {
+        return category;
+    }
 
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 }

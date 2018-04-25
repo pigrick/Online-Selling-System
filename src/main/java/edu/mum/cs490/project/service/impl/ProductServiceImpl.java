@@ -24,7 +24,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getById(Integer id) {
-        return productRepository.getById(id);
+        return productRepository.getOne(id);
     }
 
     @Override
@@ -52,13 +52,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findByProductName(String productName) {
-        return this.productRepository.findByProductName(productName);
+    public List<Product> findByName(String productName) {
+        return this.productRepository.findByName(productName);
     }
 
     @Override
-    public List<Product> findByVendor(String vendor) {
-        return this.productRepository.findByVendor(vendor);
+    public List<Product> findByVendorCompanyName(String vendor) {
+        return this.productRepository.findByVendorCompanyName(vendor);
     }
     @Override
     public void saveOrUpdateProduct(Product product) {
@@ -71,8 +71,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findByCategory(String category) {
-        return this.productRepository.findByCategory(category);
+    public List<Product> findByCategoryName(String category) {
+        return this.productRepository.findByCategoryName(category);
     }
 
 

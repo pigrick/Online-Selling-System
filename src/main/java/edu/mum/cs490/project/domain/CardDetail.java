@@ -12,6 +12,7 @@ public class CardDetail {
     private String cardType;
     private String cardHolderName;
     private String cardNumber;
+    private String last4Digit;
     private String cardExpirationDate;
     private String ccv;
     private String zipcode;
@@ -90,5 +91,13 @@ public class CardDetail {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getLast4Digit() {
+        return last4Digit;
+    }
+
+    public void setLast4Digit(String last4Digit) {
+        this.last4Digit = last4Digit;
     }
 }

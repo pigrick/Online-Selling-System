@@ -1,4 +1,4 @@
-package edu.mum.cs490.project.model;
+package edu.mum.cs490.project.model.form;
 
 import edu.mum.cs490.project.domain.Admin;
 
@@ -7,12 +7,15 @@ import java.io.Serializable;
 /**
  * Created by Erdenebayar on 4/21/2018
  */
-public class AdminForm extends UserForm implements Serializable {
+public class AdminSignUpForm extends UserSignUpForm implements Serializable {
 
     private String firstName;
     private String lastName;
 
-    public AdminForm(Admin admin) {
+    public AdminSignUpForm() {
+    }
+
+    public AdminSignUpForm(Admin admin) {
         super(admin);
         this.firstName = admin.getFirstName();
         this.lastName = admin.getLastName();

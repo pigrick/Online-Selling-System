@@ -1,4 +1,4 @@
-package edu.mum.cs490.project.model;
+package edu.mum.cs490.project.model.form;
 
 import edu.mum.cs490.project.domain.User;
 
@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * Created by Erdenebayar on 4/21/2018
  */
-public class UserForm implements Serializable{
+public class UserSignUpForm implements Serializable{
 
     private Integer id;
     @NotBlank
@@ -18,10 +18,10 @@ public class UserForm implements Serializable{
     private String email;
     private String password;
 
-    public UserForm() {
+    public UserSignUpForm() {
     }
 
-    public UserForm(User user) {
+    public UserSignUpForm(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
         this.email = user.getEmail();

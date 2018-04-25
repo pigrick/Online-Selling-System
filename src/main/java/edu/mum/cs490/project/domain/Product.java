@@ -15,6 +15,10 @@ public class Product {
     private String description;
     private Status status;
 
+    @ManyToOne
+    @JoinColumn(name = "categoryId")
+    private Category productCategory;
+
     public Product(){}
 
     public Integer getId() {
@@ -72,4 +76,6 @@ public class Product {
     public void setStatus(Status status) {
         this.status = status;
     }
+
+
 }

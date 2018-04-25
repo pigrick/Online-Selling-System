@@ -6,8 +6,8 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-@Entity(name="Order")
-@Table(name="Orders")
+@Entity
+@Table(name="`order`")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

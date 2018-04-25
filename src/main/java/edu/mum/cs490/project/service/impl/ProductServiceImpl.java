@@ -50,4 +50,30 @@ public class ProductServiceImpl implements ProductService {
         product.setStatus(status);
         productRepository.save(product);
     }
+
+    @Override
+    public List<Product> findByProductName(String productName) {
+        return this.productRepository.findByProductName(productName);
+    }
+
+    @Override
+    public List<Product> findByVendor(String vendor) {
+        return this.productRepository.findByVendor(vendor);
+    }
+    @Override
+    public void saveOrUpdateProduct(Product product) {
+        this.productRepository.save(product);
+    }
+
+    @Override
+    public void deleteProduct(Product product) {
+        this.productRepository.delete(product);
+    }
+
+    @Override
+    public List<Product> findByCategory(String category) {
+        return this.productRepository.findByCategory(category);
+    }
+
+
 }

@@ -6,14 +6,9 @@ import org.springframework.stereotype.Repository;
 
 public interface UserRepository<T extends User> extends JpaRepository<T, Integer> {
 
-    T getById(Integer id);
-
     T getByUsername(String username);
 
   /*  @Modifying
     @Query("UPDATE User AS u SET u.password = :#{#user.password} WHERE u.id = :#{#user.id}")
     void updatePassword(@Param("user") User user);*/
-
-
-
 }

@@ -59,22 +59,20 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- <dependency>
+		<dependency>
 			<groupId>net.sf.jasperreports</groupId>
 			<artifactId>jasperreports</artifactId>
-			<version>6.5.1</version>
-		</dependency> -->
+			<version>6.4.0</version>
+		</dependency>
 
-		<dependency> 
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
-			<version>4.0.4.RELEASE</version>
-		</dependency> 
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
-			<!-- <version>4.1.6.RELEASE</version> -->
 		</dependency>
 
 		<dependency>

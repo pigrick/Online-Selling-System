@@ -14,21 +14,27 @@ import java.util.List;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
+    private final CategoryRepository categoryRepostitory;
+
     @Autowired
-    private CategoryRepository categoryRepostitory;
+    public CategoryServiceImpl(CategoryRepository categoryRepostitory) {
+        this.categoryRepostitory = categoryRepostitory;
+    }
+
+
     @Override
     public List<Category> getAllCategory() {
-        return (List<Category>) categoryRepostitory.findAll();
+        return categoryRepostitory.findAll();
     }
 
     @Override
-    public List<String> getAllMainCategory() {
-        return categoryRepostitory.findAllMainCategoryName();
+    public List<Category> getAllMainCategory() {
+        return categoryRepostitory.findAllByParentCategoryIsNull();
     }
 
     @Override
-    public List<String> getAllSubCategory() {
-        return categoryRepostitory.findAllSubCategoryName();
+    public List<Category> getAllSubCategory(Integer parentId) {
+        return categoryRepostitory.findAllByParentCategoryId(parentId);
     }
 
     @Override
@@ -37,12 +43,16 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void delete(Long categoryId) {
+    public void delete(Integer categoryId) {
 
     }
 
     @Override
-    public Category getCategoryById(Long categoryId) {
-        return null;
+    public Category getCategoryById(Integer categoryId) {
+        return categoryRepostitory.getOne(categoryId);
     }
+
+
+
+
 }

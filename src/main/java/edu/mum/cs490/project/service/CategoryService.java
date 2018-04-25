@@ -13,13 +13,13 @@ public interface CategoryService {
 
     List<Category> getAllCategory();
 
-    List<String> getAllMainCategory();
+    List<Category> getAllMainCategory();
 
-    List<String> getAllSubCategory();
+    List<Category> getAllSubCategory(Integer parentId);
 
     void save(Category category);
 
-    void delete(Long categoryId);
+    void delete(Integer categoryId);
 
-    Category getCategoryById(Long categoryId);
+    Category getCategoryById(Integer categoryId);
 }

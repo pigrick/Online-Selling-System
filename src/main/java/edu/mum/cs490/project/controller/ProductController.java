@@ -39,7 +39,7 @@ public class ProductController {
 
     @GetMapping("/{productName}")
     public String findByProductName(Model theModel, @PathVariable("productName") String productName){
-        List<Product> products = this.productService.findByProductName(productName);
+        List<Product> products = this.productService.findByName(productName);
 
         theModel.addAttribute("products", products);
 
@@ -49,7 +49,7 @@ public class ProductController {
 
     @GetMapping("/{vendor}")
     public String findByVendor(Model theModel, @PathVariable("vendor") String vendor){
-        List<Product> products = this.productService.findByProductName(vendor);
+        List<Product> products = this.productService.findByName(vendor);
 
         theModel.addAttribute("products", products);
 
@@ -75,7 +75,7 @@ public class ProductController {
 
     @GetMapping("/{category}")
     public String findByCategory(Model theModel, @PathVariable("category") String category){
-        List<Product> products = this.productService.findByCategory(category);
+        List<Product> products = this.productService.findByCategoryName(category);
 
         theModel.addAttribute("products", products);
 

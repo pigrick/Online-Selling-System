@@ -6,7 +6,7 @@ import edu.mum.cs490.project.service.ReportService;
 
 public class ReportServiceImpl implements ReportService{
 
-//	private OrderService orderSerice;
+	//private OrderDetailServiceImpl orderDetailServiceImpl;
 	
 	@Override
 	public List<Object> getReportResultList() {

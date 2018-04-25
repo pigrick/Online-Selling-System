@@ -53,12 +53,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> findByName(String productName) {
-        return this.productRepository.findByName(productName);
+        return this.productRepository.findByNameIsContaining(productName);
     }
 
     @Override
-    public List<Product> findByVendorCompanyName(String vendor) {
-        return this.productRepository.findByVendorCompanyName(vendor);
+    public List<Product> findByVendor(Integer vendorId) {
+        return this.productRepository.findByVendor_Id(vendorId);
     }
     @Override
     public void saveOrUpdateProduct(Product product) {
@@ -71,8 +71,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> findByCategoryName(String category) {
-        return this.productRepository.findByCategoryName(category);
+    public List<Product> findByCategory(Integer categoryId) {
+        return this.productRepository.findByCategory_Id(categoryId);
     }
 
 

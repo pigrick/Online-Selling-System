@@ -35,7 +35,7 @@ public interface ProductService {
     List<Product> findByName(String productName);
 
     @Transactional
-    List<Product> findByVendorCompanyName(String vendor);
+    List<Product> findByVendor(Integer vendor);
 
     @Transactional
     @PreAuthorize("#user.id == principal.id or hasRole('ROLE_ADMIN') or hasRole('ROLE_VENDOR')")
@@ -45,5 +45,5 @@ public interface ProductService {
     void deleteProduct(Product product);
 
     @Transactional
-    List<Product> findByCategoryName(String category);
+    List<Product> findByCategory(Integer category);
 }

@@ -27,9 +27,9 @@ public class ProductController {
     }
 
     @GetMapping("/{productId}")
-    public String getById(Model theModel, @PathVariable("productId") String productId){
+    public String getById(Model theModel, @PathVariable("productId") Integer productId){
 
-        Product theProduct=this.productService.getById(Integer.parseInt(productId));
+        Product theProduct=this.productService.getById(productId);
 
         theModel.addAttribute("product", theProduct);
 
@@ -74,8 +74,8 @@ public class ProductController {
     }
 
     @GetMapping("/{category}")
-    public String findByCategory(Model theModel, @PathVariable("category") String category){
-        List<Product> products = this.productService.findByCategoryName(category);
+    public String findByCategory(Model theModel, @PathVariable("category") Integer category){
+        List<Product> products = this.productService.findByCategory(category);
 
         theModel.addAttribute("products", products);
 

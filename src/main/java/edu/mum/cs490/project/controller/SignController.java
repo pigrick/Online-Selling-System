@@ -57,11 +57,17 @@ public class SignController {
             model.put("message", new Message(Message.Type.FAILED, "Please look error"));
             return "signUp";
         }
+
+        if (userService.loadUserByUsername(userForm.getUsername()) != null) {
+            error.rejectValue("username", null, "Username exist !!!");
+            return "signUp";
+        }
+
         Customer customer = new Customer();
         setToUser(customer, userForm);
 
         customer.setFirstName(userForm.getFirstName());
-        customer.setFirstName(userForm.getLastName());
+        customer.setLastName(userForm.getLastName());
 
         userService.saveOrUpdate(customer);
 //        ToDo Send registration Email
@@ -84,6 +90,12 @@ public class SignController {
             model.put("message", new Message(Message.Type.FAILED, "Please look error"));
             return "signUp";
         }
+
+        if (userService.loadUserByUsername(userForm.getUsername()) != null) {
+            error.rejectValue("username", null, "Username exist !!!");
+            return "signUp";
+        }
+
         Vendor vendor = new Vendor();
         setToUser(vendor, userForm);
 

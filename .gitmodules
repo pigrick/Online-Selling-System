@@ -1,3 +1,0 @@
-[submodule "MockTransactionAPI"]
-	path = MockTransactionAPI
-	url = https://github.com/tuvshinbt/MockTransactionAPI.git

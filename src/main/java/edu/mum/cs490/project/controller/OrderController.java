@@ -3,10 +3,12 @@ package edu.mum.cs490.project.controller;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import edu.mum.cs490.project.domain.*;
 import edu.mum.cs490.project.model.ShoppingCart;
-import edu.mum.cs490.project.model.form.CustomerOrderForm;
-import edu.mum.cs490.project.model.form.GuestOrderForm;
+import edu.mum.cs490.project.model.form.CustomerOrderShippingForm;
+import edu.mum.cs490.project.model.form.GuestOrderShippingForm;
+import edu.mum.cs490.project.model.form.PaymentForm;
 import edu.mum.cs490.project.service.OrderService;
 import edu.mum.cs490.project.utils.SignedUser;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,11 +26,12 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Controller
-@RequestMapping("orders")
+@RequestMapping("order")
 public class OrderController {
     private final OrderService orderService;
 
@@ -47,46 +50,67 @@ public class OrderController {
             Integer customerId = ((User)auth.getPrincipal()).getId();
             model.addAttribute("orders", this.orderService.findByCustomer_id(customerId));
         }
-        return "";
+        return "order/orderlist";
     }
 
     @GetMapping("shoppingcart")
-    public String getShoppingCart(Model model, HttpServletResponse response, @CookieValue(value="shoppingcart", defaultValue = "defaultshoppingcart")ShoppingCart shoppingCart){
-        model.addAttribute("cart", shoppingCart);
-        return "";
+    public String getShoppingCart(Model model, HttpServletResponse response, HttpSession session){
+        ShoppingCart sc = new ShoppingCart();
+        List<OrderDetail> od = new ArrayList<>();
+        OrderDetail aa = new OrderDetail();
+        Product p = new Product();
+        p.setName("Mac");
+        aa.setProduct(p);
+        aa.setPrice(30.90);
+        aa.setQuantity(3);
+        od.add(aa);
+        od.add(aa);
+        sc.setOrderDetails(od);
+        model.addAttribute("shoppingcart", sc);
+        session.setAttribute("shoppingcart", sc);
+        return "order/shoppingcart";
     }
 
     @GetMapping("checkout")
-    public String checkoutFromShoppingCart(Model model,
-                                           @ModelAttribute("orderForm")CustomerOrderForm customerOrderForm){
-        return "";
+    public String checkoutFromShoppingCart(Model model, HttpSession session,
+                                           @ModelAttribute("customerOrderShippingForm")CustomerOrderShippingForm customerOrderShippingForm){
+        return "order/checkoutcart";
     }
 
-    @PostMapping("checkout/")
-    public String checkout(@Valid CustomerOrderForm customerOrderForm,BindingResult bindingResult, HttpSession session){
+    @PostMapping("checkout")
+    public String checkout(@Valid CustomerOrderShippingForm customerOrderShippingForm,
+                           @ModelAttribute("paymentForm") PaymentForm paymentForm,
+                           BindingResult bindingResult, HttpSession session){
         if(bindingResult.hasErrors()){
-            return "";
+            return "order/checkoutcart";
         } else {
             User user = SignedUser.getSignedUser();
             Order order = new Order();
             order.setCustomer((Customer)user);
 
             session.setAttribute("checkoutorder", order);
-            return "";
+            return "order/submitorder";
         }
     }
 
-    @PostMapping("checkout/review")
-    public String reviewOrder(Model model,HttpSession session){
-        Order order = (Order)session.getAttribute("checkoutorder");
-        return "";
+    @PostMapping("checkout/submit")
+    public String reviewOrder(Model model, HttpSession session, @Valid PaymentForm paymentForm, BindingResult bindingResult){
+        //Order order = (Order)session.getAttribute("checkoutorder");
+
+        return "redirect:/order/all";
     }
 
 
     @GetMapping("guest/checkout")
     public String guestCheckoutFromShoppingCart(Model model,
-                                                @ModelAttribute("orderForm")GuestOrderForm ordeform){
+                                                @ModelAttribute("guestOrderShippingForm")GuestOrderShippingForm guestOrderShippingForm){
         return "";
+    }
+
+    @GetMapping("la")
+    public String testtt(){
+            return "order/checkoutcart";
+
     }
 
 

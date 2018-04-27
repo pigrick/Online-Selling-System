@@ -55,4 +55,8 @@ public class OrderDetail {
     public void setPrice(double price) {
         this.price = price;
     }
+
+    public double calculateTotalPrice(){
+        return this.quantity * this.price;
+    }
 }

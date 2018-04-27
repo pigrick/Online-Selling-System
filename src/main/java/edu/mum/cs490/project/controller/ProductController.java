@@ -48,8 +48,8 @@ public class ProductController {
     }
 
     @GetMapping("/{vendor}")
-    public String findByVendor(Model theModel, @PathVariable("vendor") String vendor){
-        List<Product> products = this.productService.findByName(vendor);
+    public String findByVendor(Model theModel, @PathVariable("vendor") Integer vendor){
+        List<Product> products = this.productService.findByVendor(vendor);
 
         theModel.addAttribute("products", products);
 

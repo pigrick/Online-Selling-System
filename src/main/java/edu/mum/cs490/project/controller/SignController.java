@@ -47,7 +47,7 @@ public class SignController {
         if (user != null) {
             return "redirect://";
         }
-        model.put("moduleForm", new UserSignUpForm());
+        model.put("moduleForm", new CustomerSignUpSignUpForm());
         return "signUp";
     }
 

@@ -29,27 +29,16 @@
                     <div class="aa-product-catg-head">
                         <div class="aa-product-catg-head-left">
                             <form action="" class="aa-sort-form">
-                                <label for="sort">Sort by</label>
+                                <label>Sort by</label>
                                 <select onchange="sortBy(this)">
                                     <option selected>Default</option>
                                     <option value="<my:replaceParam name='st' value='0' />">Price Ascending</option>
                                     <option value="<my:replaceParam name='st' value='1' />">Price Descending</option>
                                 </select>
                             </form>
-                            <form action="" class="aa-show-form">
-                                <label for="numberShows">Show</label>
-                                <select id="numberShows" onchange="rePagination(${products.size()})">
-                                    <option>3</option>
-                                    <option selected>6</option>
-                                    <option>9</option>
-                                    <option>12</option>
-                                </select>
-                            </form>
+
                         </div>
-                        <div class="aa-product-catg-head-right">
-                            <a id="grid-catg" href="#"><span class="fa fa-th"></span></a>
-                            <a id="list-catg" href="#"><span class="fa fa-list"></span></a>
-                        </div>
+
                     </div>
                     <div class="aa-product-catg-body">
                         <ul class="aa-product-catg">
@@ -59,14 +48,14 @@
                                 <c:set var="counter" value="${counter + 1}" scope="page"/>
                                 <li id="product-li-number-${counter}">
                                     <figure>
-                                        <a class="aa-product-img" href="/pd/p?id=${product.productId}">
-                                            <img style="width: 250px; height: 300px" src="/images/${product.productId}/0.png"></a>
+                                        <a class="aa-product-img" href="/product=${product.id}">
+                                            <img style="width: 250px; height: 300px" src="/images/${product.id}/0.png"></a>
                                         <a class="aa-add-card-btn" style="cursor: hand" ng-click="addToCart('${product.productId}','${_csrf.parameterName}=${_csrf.token}')">
                                             <span class="fa fa-shopping-cart"></span>Add To Cart
                                         </a>
                                         <figcaption>
-                                            <h4 class="aa-product-title"><a href="/pd/p?id=${product.productId}">${product.productName}</a></h4>
-                                            <span class="aa-product-price">$${product.productPrice}</span><span class="aa-product-price"><del>$999</del></span>
+                                            <h4 class="aa-product-title"><a href="/product=${product.id}">${product.productName}</a></h4>
+                                            <span class="aa-product-price">$${product.price}</span><span class="aa-product-price"><del>$999</del></span>
                                             <span class="aa-product-descrip">${product.productSummary}</span>
                                         </figcaption>
                                     </figure>

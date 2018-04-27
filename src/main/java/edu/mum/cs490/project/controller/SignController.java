@@ -47,7 +47,7 @@ public class SignController {
         if (user != null) {
             return "redirect://";
         }
-        model.put("moduleForm", new UserSignUpForm());
+        model.put("moduleForm", new CustomerSignUpSignUpForm());
         return "signUp";
     }
 
@@ -57,11 +57,17 @@ public class SignController {
             model.put("message", new Message(Message.Type.FAILED, "Please look error"));
             return "signUp";
         }
+
+        if (userService.loadUserByUsername(userForm.getUsername()) != null) {
+            error.rejectValue("username", null, "Username exist !!!");
+            return "signUp";
+        }
+
         Customer customer = new Customer();
         setToUser(customer, userForm);
 
         customer.setFirstName(userForm.getFirstName());
-        customer.setFirstName(userForm.getLastName());
+        customer.setLastName(userForm.getLastName());
 
         userService.saveOrUpdate(customer);
 //        ToDo Send registration Email
@@ -74,16 +80,22 @@ public class SignController {
         if (user != null) {
             return "redirect://";
         }
-        model.put("userForm", new UserSignUpForm());
-        return "vendor/signUp";
+        model.put("moduleForm", new UserSignUpForm());
+        return "vendor/signup";
     }
 
     @RequestMapping(value = "vendor/signup", method = RequestMethod.POST)
     public String vendorSignUp(@Valid @ModelAttribute("moduleForm") VendorSignUpForm userForm, BindingResult error, ModelMap model) {
         if (error.hasErrors()) {
             model.put("message", new Message(Message.Type.FAILED, "Please look error"));
-            return "signUp";
+            return "vendor/signup";
         }
+
+        if (userService.loadUserByUsername(userForm.getUsername()) != null) {
+            error.rejectValue("username", null, "Username exist !!!");
+            return "vendor/signUp";
+        }
+
         Vendor vendor = new Vendor();
         setToUser(vendor, userForm);
 

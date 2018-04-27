@@ -15,7 +15,7 @@ public class ProjectApplicationTests {
 
 	@Test
 	public void contextLoads() {
-		System.out.println(passwordEncoder.encode("hello"));
+		System.out.println(passwordEncoder.encode("12345"));
 		System.out.println(passwordEncoder.matches("hello", "$2a$10$3kO/m80GNx5YGjmG2gFKEO3hi4aYZKaP1TIB.R5qKewq8Bn8R435i"));
 	}
 

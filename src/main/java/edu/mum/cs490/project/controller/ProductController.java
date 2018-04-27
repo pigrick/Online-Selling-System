@@ -22,7 +22,7 @@ public class ProductController {
     @GetMapping("all")
     public String getAllProduct(Model theModel){
         theModel.addAttribute("products" , this.productService.getAllProduct());
-        return null;
+        return "products";
          //return "list-all-products" ;
     }
 
@@ -61,6 +61,7 @@ public class ProductController {
     public String saveOrUpdateProduct(@PathVariable("product") Product product){
 
         this.productService.saveOrUpdateProduct(product);
+
         return "";
         //return "list-all-products";
     }

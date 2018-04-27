@@ -1,5 +1,8 @@
 package edu.mum.cs490.project.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.persistence.*;
 
 @Entity
@@ -15,8 +18,14 @@ public class Product {
     private int quantity;
     private double price;
     private String description;
+
+    @Transient
+    private MultipartFile productImage;
+
     @Enumerated(EnumType.STRING)
     private Status status;
+
+
 
 
     public Product(){}
@@ -83,5 +92,13 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public MultipartFile getProductImage() {
+        return productImage;
+    }
+
+    public void setProductImage(MultipartFile productImage) {
+        this.productImage = productImage;
     }
 }

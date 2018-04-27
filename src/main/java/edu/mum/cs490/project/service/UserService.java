@@ -13,16 +13,20 @@ public interface UserService<T extends User> extends UserDetailsService{
 
     T getById(Integer id);
 
+    Boolean existByIdNotAndUsername(Integer id, String username);
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     List<T> getAll();
 
     @Transactional
-    @PreAuthorize("#user.id == principal.id or hasRole('ROLE_ADMIN')")
+    @PreAuthorize("#user.id == NULL or #user.id == principal.id or hasRole('ROLE_ADMIN')")
     T  saveOrUpdate(T user);
 
     @Transactional
+    @PreAuthorize("#user.id == NULL or #user.id == principal.id or hasRole('ROLE_ADMIN')")
     void delete(Integer id);
 
     @Transactional
+    @PreAuthorize("#user.id == NULL or #user.id == principal.id or hasRole('ROLE_ADMIN')")
     void changeStatus(Integer id, Status status);
 }

@@ -80,20 +80,20 @@ public class SignController {
         if (user != null) {
             return "redirect://";
         }
-        model.put("userForm", new UserSignUpForm());
-        return "vendor/signUp";
+        model.put("moduleForm", new UserSignUpForm());
+        return "vendor/signup";
     }
 
     @RequestMapping(value = "vendor/signup", method = RequestMethod.POST)
     public String vendorSignUp(@Valid @ModelAttribute("moduleForm") VendorSignUpForm userForm, BindingResult error, ModelMap model) {
         if (error.hasErrors()) {
             model.put("message", new Message(Message.Type.FAILED, "Please look error"));
-            return "signUp";
+            return "vendor/signup";
         }
 
         if (userService.loadUserByUsername(userForm.getUsername()) != null) {
             error.rejectValue("username", null, "Username exist !!!");
-            return "signUp";
+            return "vendor/signUp";
         }
 
         Vendor vendor = new Vendor();

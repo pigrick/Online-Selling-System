@@ -99,7 +99,7 @@ public class AESImpl implements AES {
         AESImpl aes = new AESImpl();
         aes.secretKeyWord = "b23das12s";
         try {
-            String json = "{\"txnId\":\"00011\",\"srcCardNo\":\"0123456789012345\",\"expirationDate\":\"04/2018\",\"nameOnCard\":\"TEST\",\"zipCode\":\"52557\",\"amount\":1.1,\"ccv\":\"CCV\"}";
+            String json = "{\"txnId\":\"00011\",\"srcCardNo\":\"0123456789012345\",\"expirationDate\":\"04/2018\",\"nameOnCard\":\"TEST\",\"zipCode\":\"52557\",\"amount\":1.1,\"cvv\":\"CVV\"}";
             System.out.println(json + "\n");
             String encJson = aes.encrypt(json);
             System.out.println(encJson);

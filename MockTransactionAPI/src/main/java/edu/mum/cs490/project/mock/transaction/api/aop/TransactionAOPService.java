@@ -64,14 +64,14 @@ public class TransactionAOPService {
     @Qualifier("AES")
     private AES aes;
 
-    @Around("execution(* edu.mum.cs490.project.mock.transaction.api.dao.AccountDAO.findByCardNoAndNameAndZipCodeAndCCVAndExpirationDate(..))&& args(cardNo, name, zipCode, CCV, expirationDate)")
-    public Object aopAccountDAOfindByCardNoAndNameAndZipCodeAndCCVAndExpirationDate(ProceedingJoinPoint pjp, String cardNo, String name, String zipCode, String CCV, String expirationDate) throws Throwable {
+    @Around("execution(* edu.mum.cs490.project.mock.transaction.api.dao.AccountDAO.findByCardNoAndNameAndZipCodeAndCVVAndExpirationDate(..))&& args(cardNo, name, zipCode, CVV, expirationDate)")
+    public Object aopAccountDAOfindByCardNoAndNameAndZipCodeAndCVVAndExpirationDate(ProceedingJoinPoint pjp, String cardNo, String name, String zipCode, String CVV, String expirationDate) throws Throwable {
         cardNo = aes.encrypt(cardNo);
         name = aes.encrypt(name);
         zipCode = aes.encrypt(zipCode);
-        CCV = aes.encrypt(CCV);
+        CVV = aes.encrypt(CVV);
         expirationDate = aes.encrypt(expirationDate);
-        Object retVal = pjp.proceed(new Object[]{cardNo, name, zipCode, CCV, expirationDate});
+        Object retVal = pjp.proceed(new Object[]{cardNo, name, zipCode, CVV, expirationDate});
         if (retVal != null) {
             Account account = decryptValueOfAccount((Account) retVal);
             return account;
@@ -108,8 +108,8 @@ public class TransactionAOPService {
         if (account.getZipCode() != null) {
             account.setZipCode(aes.decrypt(account.getZipCode()));
         }
-        if (account.getCCV() != null) {
-            account.setCCV(aes.decrypt(account.getCCV()));
+        if (account.getCVV() != null) {
+            account.setCVV(aes.decrypt(account.getCVV()));
         }
         if (account.getExpirationDate() != null) {
             account.setExpirationDate(aes.decrypt(account.getExpirationDate()));
@@ -127,8 +127,8 @@ public class TransactionAOPService {
         if (account.getZipCode() != null) {
             account.setZipCode(aes.encrypt(account.getZipCode()));
         }
-        if (account.getCCV() != null) {
-            account.setCCV(aes.encrypt(account.getCCV()));
+        if (account.getCVV() != null) {
+            account.setCVV(aes.encrypt(account.getCVV()));
         }
         if (account.getExpirationDate() != null) {
             account.setExpirationDate(aes.encrypt(account.getExpirationDate()));

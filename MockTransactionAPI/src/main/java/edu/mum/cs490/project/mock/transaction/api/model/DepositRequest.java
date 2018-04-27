@@ -5,7 +5,7 @@
  */
 package edu.mum.cs490.project.mock.transaction.api.model;
 
-// {"txnId":"00011","srcCardNo":"0123456789012345","expirationDate":"04/2018","nameOnCard":"TEST","zipCode":"52557","amount":1.1,"ccv":"CCV"}
+// {"txnId":"00011","srcCardNo":"0123456789012345","expirationDate":"04/2018","nameOnCard":"TEST","zipCode":"52557","amount":1.1,"cvv":"CVV"}
 // T924bkQSm4LtVlUvYbA3/aCOD+bR4Wx2OYubUzEIGJwWjEAGpT5sVP0lY1b4tR9lQRRaWx2D0NKiPSnRRWBT+adBeM9ITcJaQ5U/OV/9fjRdawic6lWGY965HCR4qwr3FX47gNFO8yesBND24omfdjgw5EgH23OH2SHVqz7LkkntSFy9ppKNYDzoaltOOMNK
 /**
  *
@@ -16,7 +16,7 @@ public class DepositRequest {
     private String txnId;
     private String expirationDate;
     private String nameOnCard;
-    private String CCV;
+    private String CVV;
     private String zipCode;
     private Double amount;
     private String dstCardNo;
@@ -48,12 +48,12 @@ public class DepositRequest {
         this.nameOnCard = nameOnCard;
     }
 
-    public String getCCV() {
-        return CCV;
+    public String getCVV() {
+        return CVV;
     }
 
-    public void setCCV(String CCV) {
-        this.CCV = CCV;
+    public void setCVV(String CVV) {
+        this.CVV = CVV;
     }
 
     public String getZipCode() {

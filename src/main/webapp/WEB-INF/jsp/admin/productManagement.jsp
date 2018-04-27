@@ -11,7 +11,4 @@
 <h1>Product Inventory</h1>
 
 
-
-
-
 <%@include file="/WEB-INF/jsp/template/footer.jsp"%>

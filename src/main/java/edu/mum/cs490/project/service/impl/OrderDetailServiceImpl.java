@@ -42,7 +42,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 //			item.put("customer", orderDetail.getOrder().getCustomer());
 //			item.put("vendor", orderDetail.getProduct().getVendor());
 //			item.put("price", orderDetail.getPrice());
-			//item.put("product", orderDetail.getProduct().getProductName());
+			item.put("product", orderDetail.getProduct().getName());
 			item.put("quantity", orderDetail.getQuantity());
 			result.add(item);
 		}

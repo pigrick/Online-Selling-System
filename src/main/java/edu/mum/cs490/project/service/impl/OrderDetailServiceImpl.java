@@ -22,12 +22,6 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 	private OrderDetailRepository orderDetailRepository;
 
 	@Override
-	public List<OrderDetail> findByOrder_OrderDate(Date from, Date to) {
-//		return orderDetailRepository.findByOrder_OrderDate(from, to);
-		return null;
-	}
-
-	@Override
 	public List<OrderDetail> findAll() {
 		return orderDetailRepository.findAll();
 	}
@@ -48,5 +42,7 @@ public class OrderDetailServiceImpl implements OrderDetailService {
 		}
 		return result;
 	}
+
+
 
 }

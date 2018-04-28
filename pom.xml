@@ -9,6 +9,7 @@
 	<version>0.0.1-SNAPSHOT</version>
     <modules>
         <module>MockTransactionAPI</module>
+        <module>Online-Selling-System</module>
     </modules>
     <packaging>pom</packaging>
 

@@ -29,7 +29,7 @@ public class ProductController {
     @GetMapping("/{productId}")
     public String getById(Model theModel, @PathVariable("productId") Integer productId){
 
-        Product theProduct=this.productService.getById(productId);
+        Product theProduct=this.productService.getOne(productId);
 
         theModel.addAttribute("product", theProduct);
 

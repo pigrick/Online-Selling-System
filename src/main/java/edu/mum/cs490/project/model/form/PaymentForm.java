@@ -1,41 +1,28 @@
-package edu.mum.cs490.project.domain;
+package edu.mum.cs490.project.model.form;
 
-import javax.persistence.*;
+import org.hibernate.validator.constraints.CreditCardNumber;
 
-@Entity
-public class CardDetail {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    @ManyToOne
-    private User owner;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import java.io.Serializable;
+
+public class PaymentForm implements Serializable {
+    @NotBlank
     private String cardType;
+    @NotBlank
     private String cardHolderName;
+    @CreditCardNumber
     private String cardNumber;
     private String last4Digit;
+    @Pattern(regexp = "^((0[1-9])|(1[0-2]))\\/(\\d{2})$")
     private String cardExpirationDate;
+    @Pattern(regexp = "\\d{3}")
     private String cvv;
-    private String zipcode;
-    private String status;
+    @Pattern(regexp = "\\d{5}")
+    private String cardZipcode;
 
-
-    public CardDetail(){}
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
+    public PaymentForm(){}
 
     public String getCardType() {
         return cardType;
@@ -61,6 +48,14 @@ public class CardDetail {
         this.cardNumber = cardNumber;
     }
 
+    public String getLast4Digit() {
+        return last4Digit;
+    }
+
+    public void setLast4Digit(String last4Digit) {
+        this.last4Digit = last4Digit;
+    }
+
     public String getCardExpirationDate() {
         return cardExpirationDate;
     }
@@ -77,27 +72,11 @@ public class CardDetail {
         this.cvv = cvv;
     }
 
-    public String getZipcode() {
-        return zipcode;
+    public String getCardZipcode() {
+        return cardZipcode;
     }
 
-    public void setZipcode(String zipcode) {
-        this.zipcode = zipcode;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getLast4Digit() {
-        return last4Digit;
-    }
-
-    public void setLast4Digit(String last4Digit) {
-        this.last4Digit = last4Digit;
+    public void setCardZipcode(String cardZipcode) {
+        this.cardZipcode = cardZipcode;
     }
 }

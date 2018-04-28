@@ -8,7 +8,6 @@ import edu.mum.cs490.project.service.AdminService;
 import edu.mum.cs490.project.service.CustomerService;
 import edu.mum.cs490.project.service.UserService;
 import edu.mum.cs490.project.service.VendorService;
-import edu.mum.cs490.project.utils.SignedUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,4 +53,5 @@ public class UserTestRestController {
     public List<User> getUsers() {
         return userService.getAll();
     }
+
 }

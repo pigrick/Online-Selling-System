@@ -2,6 +2,7 @@ package edu.mum.cs490.project.repository;
 
 import edu.mum.cs490.project.domain.Order;
 import edu.mum.cs490.project.domain.OrderDetail;
+import edu.mum.cs490.project.domain.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,6 +14,8 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Integer> {
     List<Order> findByCustomer_id(Integer customerId);
+
+    List<Order> findByStatusAndCustomer_id(Status status, Integer customerId);
 
     @Query("select distinct o from Order o join o.orderDetails od WHERE od.product.vendor.id = :vendorId ")
     List<Order> findByVendor_id(@Param("vendorId") Integer VendorId);

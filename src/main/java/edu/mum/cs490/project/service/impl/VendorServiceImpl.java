@@ -19,4 +19,5 @@ public class VendorServiceImpl extends UserServiceImpl<Vendor> implements Vendor
         super(repository);
         this.repository = repository;
     }
+
 }

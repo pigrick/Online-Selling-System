@@ -5,7 +5,7 @@
  */
 package edu.mum.cs490.project.mock.transaction.api.model;
 
-// {"txnId":"00011","srcCardNo":"0123456789012345","expirationDate":"04/2018","nameOnCard":"TEST","zipCode":"52557","amount":1.1,"dstCardNo":"0123456789012399","ccv":"CCV"}
+// {"txnId":"00011","srcCardNo":"0123456789012345","expirationDate":"04/2018","nameOnCard":"TEST","zipCode":"52557","amount":1.1,"dstCardNo":"0123456789012399","cvv":"CVV"}
 // T924bkQSm4LtVlUvYbA3/VKsfBom6bxEIK8t613bNwHIVzuWYzf04u2GV8VW/29Pj2OWiMCd4nPDyPHsLA+p0EYp8HsvirhTDmSw0NNnK9OROunlgBxqxVPAfr8HxU6b+s6W3x1aqWgMTDy7H+cCZjBUWUoC91B+JbCrHuyj0Bv5B9PVnpeCiYVJj0bxuo9g
 /**
  *
@@ -17,7 +17,7 @@ public class TransactionRequest {
     private String srcCardNo;
     private String expirationDate;
     private String nameOnCard;
-    private String CCV;
+    private String CVV;
     private String zipCode;
     private Double amount;
     private String dstCardNo;
@@ -57,12 +57,12 @@ public class TransactionRequest {
         this.nameOnCard = nameOnCard;
     }
 
-    public String getCCV() {
-        return CCV;
+    public String getCVV() {
+        return CVV;
     }
 
-    public void setCCV(String CCV) {
-        this.CCV = CCV;
+    public void setCVV(String CVV) {
+        this.CVV = CVV;
     }
 
     public String getZipCode() {

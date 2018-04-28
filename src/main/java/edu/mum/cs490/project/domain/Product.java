@@ -20,7 +20,7 @@ public class Product {
     private String description;
 
     @Transient
-    private MultipartFile productImage;
+    private MultipartFile image;
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -95,10 +95,10 @@ public class Product {
     }
 
     public MultipartFile getProductImage() {
-        return productImage;
+        return image;
     }
 
     public void setProductImage(MultipartFile productImage) {
-        this.productImage = productImage;
+        this.image = productImage;
     }
 }

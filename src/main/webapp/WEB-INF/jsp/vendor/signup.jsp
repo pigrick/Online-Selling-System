@@ -19,7 +19,7 @@
                     <div class="col-md-6" style="float: none; margin-left: 35%; width: 30%">
                         <div class="aa-myaccount-login">
 
-                            <h4>Register</h4>
+                            <h4>Vendor Register</h4>
 
 
                             <%--<c:url value="/signup" var="signupProcessingUrl"/>--%>
@@ -27,22 +27,9 @@
                             <form:form modelAttribute="moduleForm" action="${pageContext.request.contextPath}/vendor/signup" method="get">
 
                                 <div class="form-group">
-                                    <label for="username">First Name<span style="color: red">*</span></label>
+                                    <label for="username">User Name<span style="color: red">*</span></label>
                                     <form:errors path="username" cssStyle="color: red" />
                                     <form:input path="username" id="username" class="form-Control" />
-                                </div>
-
-
-                                <div class="form-group">
-                                    <label for="email">Last Name<span style="color: red">*</span></label>
-                                    <form:errors path="email" cssStyle="color: red" />
-                                    <form:input path="email" id="email" class="form-Control" />
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="password">User Name<span style="color: red">*</span></label>
-                                    <form:errors path="password" cssStyle="color: red" />
-                                    <form:input path="password" id="password" class="form-Control" />
                                 </div>
 
 
@@ -50,6 +37,14 @@
                                     <label for="email">Email<span style="color: red">*</span></label>
                                     <form:errors path="email" cssStyle="color: red" />
                                     <form:input type="email" path="email" id="email" class="form-Control" />
+                                </div>
+
+
+
+                                <div class="form-group">
+                                    <label for="password">Password<span style="color: red">*</span></label>
+                                    <form:errors path="password" cssStyle="color: red" />
+                                    <form:input path="password" id="password" type="password" class="form-Control" />
                                 </div>
 
                                 <div class="form-group">

@@ -1,12 +1,7 @@
 package edu.mum.cs490.project.repository;
 
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.data.jpa.repository.*;
-
-import edu.mum.cs490.project.domain.*;
+import edu.mum.cs490.project.domain.OrderDetail;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface OrderDetailRepository extends JpaRepository<OrderDetail, Integer>{
-
 }

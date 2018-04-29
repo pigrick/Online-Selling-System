@@ -1,11 +1,16 @@
 package edu.mum.cs490.project.controller;
 
-import edu.mum.cs490.project.domain.*;
-import edu.mum.cs490.project.service.*;
+import edu.mum.cs490.project.domain.Category;
+import edu.mum.cs490.project.domain.Vendor;
+import edu.mum.cs490.project.model.form.ReportForm;
+import edu.mum.cs490.project.service.CategoryService;
+import edu.mum.cs490.project.service.OrderDetailService;
+import edu.mum.cs490.project.service.VendorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -27,7 +32,7 @@ public class ReportController {
     @Autowired
     private ApplicationContext applicationContext;
 
-    @RequestMapping(value = "/adminReport", method = RequestMethod.GET)
+    @GetMapping(value = "/reportFilter")
     public String adminReportLoading(Model model) {
         List<Vendor> vendorList = vendorService.getAll();
         List<String> vendorListNames = new ArrayList<>();
@@ -35,39 +40,44 @@ public class ReportController {
             String item = v.getCompanyName();
             vendorListNames.add(item);
         }
-        List<Category> categoryList = categoryService.getAllMainCategory();
+        List<Category> categoryList = categoryService.getAllCategory();
         List<String> categoryListNames = new ArrayList<>();
         for (Category c : categoryList) {
             String item = c.getName();
+            System.out.println("Test category " + item);
             categoryListNames.add(item);
         }
         model.addAttribute("vendors", vendorListNames);
         model.addAttribute("categories", categoryListNames);
-        return "report/adminReport";
+        return "report/reportFilter";
     }
 
-    @RequestMapping(value = "/adminExport", method = RequestMethod.POST)
-    public String adminReportExport(Model model, @RequestParam String from, @RequestParam String to, @RequestParam String vendor, @RequestParam String category) {
-        
-        return "report/adminExport";
-    }
-
-    @RequestMapping(value = "/vendorReport", method = RequestMethod.GET)
-    public String vendorReportLoading(Model model) {
-        List<Category> categoryList = categoryService.getAllMainCategory();
-        List<String> categoryListNames = new ArrayList<>();
-        for (Category c : categoryList) {
-            String item = c.getName();
-            categoryListNames.add(item);
+    @PostMapping(value = "/reportFilter")
+    public String adminReportExport(Model model, @ModelAttribute("reportForm") ReportForm reportForm, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "report/errorPage";
         }
-        model.addAttribute("categories", categoryListNames);
-        return "report/vendorReport";
+
+        return "report/reportFilter";
     }
 
-    @RequestMapping(value = "/vendorExport", method = RequestMethod.POST)
-    public String vendorReportExport(Model model, @RequestParam String from, @RequestParam String to, @RequestParam String category) {
-        return "report/vendorExport";
-    }
+//    @GetMapping(value = "/vendorReport")
+//    public String vendorReportLoading(Model model) {
+//        List<Category> categoryList = categoryService.getAllCategory();
+//        List<String> categoryListNames = new ArrayList<>();
+//        for (Category c : categoryList) {
+//            String item = c.getName();
+//            System.out.print("Test category" + item);
+//            categoryListNames.add(item);
+//        }
+//        model.addAttribute("categories", categoryListNames);
+//        return "report/vendorReport";
+//    }
+
+//    @PostMapping(value = "/vendorReport")
+//    public String vendorReportExport(Model model, @RequestParam String from, @RequestParam String to, @RequestParam String category) {
+//        return "report/vendorExport";
+//    }
 
 
 }

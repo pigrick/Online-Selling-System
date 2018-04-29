@@ -194,6 +194,7 @@
                         </li>
 
                         <li><a href="/contact">Contact</a></li>
+                        <li><a href="/report/reportFilter">Report</a></li>
                         <li><a href="#">Pages <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="#">All Products</a></li>

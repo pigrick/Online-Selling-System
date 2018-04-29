@@ -24,7 +24,8 @@
 
                             <%--<c:url value="/signup" var="signupProcessingUrl"/>--%>
                             <%--<form:form action="${signupProcessingUrl}" method="post">--%>
-                            <form:form modelAttribute="moduleForm" action="${pageContext.request.contextPath}/vendor/signup" method="GET">
+
+                            <form:form modelAttribute="moduleForm" action="${pageContext.request.contextPath}/vendor/signup" method="POST">
 
                                 <div class="form-group">
                                     <label for="username">User Name<span style="color: red">*</span></label>
@@ -44,13 +45,19 @@
                                 <div class="form-group">
                                     <label for="password">Password<span style="color: red">*</span></label>
                                     <form:errors path="password" cssStyle="color: red" />
-                                    <form:input path="password" id="password" type="password" class="form-Control" />
+                                    <form:password path="password" class="form-Control" />
                                 </div>
 
                                 <div class="form-group">
+                                    <label for="password">Password<span style="color: red">*</span></label>
+                                    <form:errors path="rePassword" cssStyle="color: red" />
+                                    <form:password path="rePassword" class="form-Control" />
+                                </div>
+
+                                <%--<div class="form-group">
                                     <label for="passwordConfirm">Password again<span style="color: red">*</span></label>
                                     <input type="password" id="passwordConfirm" class="form-Control">
-                                </div>
+                                </div>--%>
 
                                 <script>
                                     $("#passwordConfirm").on("change paste keyup", function() {

@@ -17,7 +17,7 @@ import java.util.List;
 public interface ProductService {
 
     @Transactional
-    Product getById(Integer id);
+    Product getOne(Integer id);
 
     @Transactional
     List<Product> getAllProduct();

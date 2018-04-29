@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@include file="/WEB-INF/jsp/template/header.jsp"%>
 
@@ -13,44 +14,45 @@
 
                             <h4>Login</h4>
 
-                <c:url value="/login" var="loginProcessingUrl"/>
-                <form action="${loginProcessingUrl}" method="post">
+
+                            <c:url value="/login" var="loginProcessingUrl"/>
+                            <form action="${loginProcessingUrl}" method="post">
 
 
-                        <!-- use param.error assuming FormLoginConfigurer#failureUrl contains the query parameter error -->
-                        <c:if test="${param.error != null}">
-                            <div>
-                                <p id="error" style="color: red"> Failed to login.</p>
-                                <c:if test="${SPRING_SECURITY_LAST_EXCEPTION != null}">
-                                    Reason: <c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}" />
+                                <!-- use param.error assuming FormLoginConfigurer#failureUrl contains the query parameter error -->
+                                <c:if test="${param.error != null}">
+                                    <div>
+                                        <p id="error" style="color: red"> Failed to login.</p>
+                                        <c:if test="${SPRING_SECURITY_LAST_EXCEPTION != null}">
+                                            Reason: <c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}" />
+                                        </c:if>
+                                    </div>
                                 </c:if>
-                            </div>
-                        </c:if>
-                        <!-- the configured LogoutConfigurer#logoutSuccessUrl is /login?logout and contains the query param logout -->
-                        <c:if test="${param.logout != null}">
-                            <div>
-                                You have been logged out.
-                            </div>
-                        </c:if>
+                                <!-- the configured LogoutConfigurer#logoutSuccessUrl is /login?logout and contains the query param logout -->
+                                <c:if test="${param.logout != null}">
+                                    <div>
+                                        You have been logged out.
+                                    </div>
+                                </c:if>
 
-                        <div class="form-group">
-                            <label for="username">Username</label>
-                            <input type="text" id="username" name="username" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" id="password" name="password"class="form-control" />
-                        </div>
-                        <!-- if using RememberMeConfigurer make sure remember-me matches RememberMeConfigurer#rememberMeParameter -->
-                        <div class="form-group">
-                            <label class="rememberme" for="remember-me">Remember Me?</label>
-                            <input type="checkbox" id="remember-me" name="remember-me"/>
-                        </div>
-                        <div>
-                            <button type="submit" class="aa-browse-btn">Log in</button>
-                        </div>
+                                <div class="form-group">
+                                    <label for="username">Username</label>
+                                    <input type="text" id="username" name="username" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input type="password" id="password" name="password"class="form-control" />
+                                </div>
+                                <!-- if using RememberMeConfigurer make sure remember-me matches RememberMeConfigurer#rememberMeParameter -->
+                                <div class="form-group">
+                                    <label class="rememberme" for="remember-me">Remember Me?</label>
+                                    <input type="checkbox" id="remember-me" name="remember-me"/>
+                                </div>
+                                <div>
+                                    <button type="submit" class="aa-browse-btn">Log in</button>
+                                </div>
 
-                </form>
+                            </form>
 
                         </div>
                     </div>

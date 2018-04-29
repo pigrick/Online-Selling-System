@@ -23,7 +23,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product getById(Integer id) {
+    public Product getOne(Integer id) {
         return productRepository.getOne(id);
     }
 
@@ -39,14 +39,14 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void delete(Integer id) {
-        Product product = getById(id);
+        Product product = getOne(id);
         product.setStatus(Status.DELETED);
         productRepository.save(product);
     }
 
     @Override
     public void changeStatus(Integer id, Status status) {
-        Product product = getById(id);
+        Product product = getOne(id);
         product.setStatus(status);
         productRepository.save(product);
     }

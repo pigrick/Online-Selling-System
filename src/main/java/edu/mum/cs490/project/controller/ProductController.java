@@ -29,7 +29,7 @@ public class ProductController {
     @GetMapping("/{productId}")
     public String getById(Model theModel, @PathVariable("productId") Integer productId){
 
-        Product theProduct=this.productService.getById(productId);
+        Product theProduct=this.productService.getOne(productId);
 
         theModel.addAttribute("product", theProduct);
 
@@ -48,8 +48,8 @@ public class ProductController {
     }
 
     @GetMapping("/{vendor}")
-    public String findByVendor(Model theModel, @PathVariable("vendor") String vendor){
-        List<Product> products = this.productService.findByName(vendor);
+    public String findByVendor(Model theModel, @PathVariable("vendor") Integer vendor){
+        List<Product> products = this.productService.findByVendor(vendor);
 
         theModel.addAttribute("products", products);
 

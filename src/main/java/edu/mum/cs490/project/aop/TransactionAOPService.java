@@ -33,18 +33,18 @@ public class TransactionAOPService {
      */
     @Around("execution(* edu.mum.cs490.project.utils.HttpSender.doPostTransactionToApi(..))&& args(data)")
     public Object aopEncryptDecryptService(ProceedingJoinPoint pjp, String data) throws Throwable {
-        System.out.println("# AOP BEFORE (5) #  is called on " + pjp.getSignature().toShortString() + " " + data);
+//        System.out.println("# AOP BEFORE (5) #  is called on " + pjp.getSignature().toShortString() + " " + data);
         String encryptedData;
         try {
             encryptedData = aesConverter.encrypt(data);
         } catch (Exception e) {
             encryptedData = e.getMessage();
         }
-        System.out.println("encrypting data - " + (encryptedData != null ? encryptedData : null));
+        System.out.println("encrypted data - " + (encryptedData != null ? encryptedData : null));
         Object retVal = pjp.proceed(new Object[]{encryptedData});
-        System.out.println("# AOP AFTER (5) #  is called on " + pjp.getSignature().toShortString() + " returnValue - " + (retVal != null ? retVal.toString() : null));
+//        System.out.println("# AOP AFTER (5) #  is called on " + pjp.getSignature().toShortString() + " returnValue - " + (retVal != null ? retVal.toString() : null));
         retVal = aesConverter.decrypt(retVal != null ? retVal.toString() : "null");
-        System.out.println("encrypted result - " + retVal);
+        System.out.println("decrypted result - " + retVal);
         return retVal;
     }
 }

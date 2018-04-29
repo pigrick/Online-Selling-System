@@ -5,7 +5,7 @@
  */
 package edu.mum.cs490.project.mock.transaction.api.model;
 
-// {"txnId":"00011","srcCardNo":"0123456789012345","expirationDate":"04/2018","nameOnCard":"TEST","zipCode":"52557","amount":1.1,"cvv":"CVV"}
+// {"txnId":"00011","dstCardNo":"01234567890123456","expirationDate":"04/2018","nameOnCard":"TEST","zipCode":"52557","amount":200,"cvv":"CVV"}
 // T924bkQSm4LtVlUvYbA3/aCOD+bR4Wx2OYubUzEIGJwWjEAGpT5sVP0lY1b4tR9lQRRaWx2D0NKiPSnRRWBT+adBeM9ITcJaQ5U/OV/9fjRdawic6lWGY965HCR4qwr3FX47gNFO8yesBND24omfdjgw5EgH23OH2SHVqz7LkkntSFy9ppKNYDzoaltOOMNK
 /**
  *

@@ -79,7 +79,7 @@ public class SignController {
         if (user != null) {
             return "redirect://";
         }
-        model.put("userForm", new UserForm());
+        model.put("moduleForm", new VendorSignUpForm());
         return "vendor/signup";
     }
 
@@ -92,7 +92,7 @@ public class SignController {
 
         if (userService.loadUserByUsername(userForm.getUsername()) != null) {
             error.rejectValue("username", "username.duplicate");
-            return "vendor/signUp";
+            return "vendor/signup";
         }
 
         Vendor vendor = new Vendor();
@@ -103,7 +103,7 @@ public class SignController {
         userService.saveOrUpdate(vendor);
 //        ToDo Send registration Email
         model.put("message", Message.successfullySaved);
-        return "vendor/signUp";
+        return "vendor/signup";
     }
 
     private void setToUser(User user, UserSignUpForm form) {

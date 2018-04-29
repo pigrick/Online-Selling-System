@@ -91,7 +91,7 @@
                         <div class="aa-product-inner">
                             <!-- start prduct navigation -->
                             <ul class="nav nav-tabs aa-products-tab">
-                                <c:set var="counter" value="0" scope="page" />
+                                <c:set var="counter" value="0" scope="page"/>
                                 <c:forEach items="${mainCategories}" var="category">
                                     <c:set var="counter" value="${counter + 1}" scope="page"/>
                                     <c:if test="${counter eq 1}">
@@ -103,7 +103,7 @@
                                 </c:forEach>
                             </ul>
 
-                        <!-- start single Product Item-->
+                            <!-- start single Product Item-->
                             <div class="tab-pane fade in active">
                                 <ul class="aa-product-catg aa-popular-slider">
                                     <!-- start single product item -->
@@ -132,9 +132,10 @@
                                         <%--</c:if>--%>
                                     </c:forEach>
                                 </ul>
-                        <!-- / start single Product Item -->
-                        </div>
+                                <!-- / start single Product Item -->
+                            </div>
 
+                        </div>
                     </div>
                 </div>
             </div>

@@ -8,8 +8,10 @@ package edu.mum.cs490.project.mock.transaction.api.aop;
 import edu.mum.cs490.project.mock.transaction.api.entity.Account;
 import edu.mum.cs490.project.mock.transaction.api.entity.Transaction;
 import edu.mum.cs490.project.mock.transaction.api.util.AES;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -20,7 +22,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 /**
- *
  * @author tuvshuu
  */
 @Aspect
@@ -52,6 +53,7 @@ public class TransactionAOPService {
             decrytedData = e.getMessage();
         }
         logger.info("decrypting data - " + (decrytedData != null ? decrytedData.substring(0, 10) : decrytedData));
+        logger.info(decrytedData);
         Object retVal = pjp.proceed(new Object[]{decrytedData});
         logger.info("# AOP AFTER (5) #  is called on " + pjp.getSignature().toShortString() + " returnValue - " + (retVal != null ? retVal.toString() : null));
         retVal = apiAES.encrypt(retVal != null ? retVal.toString() : "null");

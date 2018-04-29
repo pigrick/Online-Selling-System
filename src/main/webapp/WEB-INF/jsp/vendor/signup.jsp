@@ -24,7 +24,7 @@
 
                             <%--<c:url value="/signup" var="signupProcessingUrl"/>--%>
                             <%--<form:form action="${signupProcessingUrl}" method="post">--%>
-                            <form:form modelAttribute="moduleForm" action="${pageContext.request.contextPath}/vendor/signup" method="get">
+                            <form:form modelAttribute="moduleForm" action="${pageContext.request.contextPath}/vendor/signup" method="GET">
 
                                 <div class="form-group">
                                     <label for="username">User Name<span style="color: red">*</span></label>

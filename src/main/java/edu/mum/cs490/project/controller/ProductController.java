@@ -3,12 +3,13 @@ package edu.mum.cs490.project.controller;
 import edu.mum.cs490.project.domain.Product;
 import edu.mum.cs490.project.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("product")
 public class ProductController {
 
@@ -33,11 +34,12 @@ public class ProductController {
 
         theModel.addAttribute("product", theProduct);
 
-        return "";
+        return "product";
         //return "get-by-product-id";
     }
 
-    @GetMapping("/{productName}")
+    // /product/name
+    @GetMapping("name/{productName}")
     public String findByProductName(Model theModel, @PathVariable("productName") String productName){
         List<Product> products = this.productService.findByName(productName);
 
@@ -47,7 +49,7 @@ public class ProductController {
         //return "find-by-product-name";
     }
 
-    @GetMapping("/{vendor}")
+    /*@GetMapping("/{vendor}")
     public String findByVendor(Model theModel, @PathVariable("vendor") Integer vendor){
         List<Product> products = this.productService.findByVendor(vendor);
 
@@ -56,7 +58,7 @@ public class ProductController {
         return " ";
         //return "find-by-product-vendor";
     }
-
+*/
     @PostMapping("/save")
     public String saveOrUpdateProduct(@PathVariable("product") Product product){
 
@@ -74,7 +76,7 @@ public class ProductController {
         //return "deleteProduct";
     }
 
-    @GetMapping("/{category}")
+    @GetMapping("category/{category}")
     public String findByCategory(Model theModel, @PathVariable("category") Integer category){
         List<Product> products = this.productService.findByCategory(category);
 

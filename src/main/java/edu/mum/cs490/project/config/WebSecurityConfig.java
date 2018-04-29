@@ -55,7 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .failureHandler(authenticationFailureHandler())
                 .and()
                 .logout()
-                    .logoutUrl("logout")
+                    .logoutUrl("/logout")
                     .logoutSuccessUrl("/")
                 .and()
                 .authorizeRequests()

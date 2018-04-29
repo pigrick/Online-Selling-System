@@ -1,3 +1,5 @@
+<%@include file="/WEB-INF/include.jsp"%>
+
 <!-- footer -->
 <footer id="aa-footer">
     <!-- footer bottom -->

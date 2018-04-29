@@ -1,6 +1,6 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="/WEB-INF/include.jsp"%>
+
 <%@include file="/WEB-INF/jsp/template/header.jsp" %>
 
 <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">

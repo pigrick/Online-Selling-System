@@ -1,3 +1,5 @@
+<%@include file="/WEB-INF/include.jsp"%>
+
 <div class="col-lg-3 col-md-3 col-sm-4 col-md-pull-9">
     <aside class="aa-sidebar">
         <!-- single sidebar -->

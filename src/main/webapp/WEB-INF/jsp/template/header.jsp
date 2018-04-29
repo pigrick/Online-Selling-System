@@ -1,11 +1,10 @@
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-
+<%@include file="/WEB-INF/include.jsp"%>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <title>Online Shop | Home</title>
 
     <!-- Font awesome -->
@@ -79,15 +78,32 @@
                         <!-- / header top left -->
                         <div class="aa-header-top-right">
                             <ul class="aa-head-top-nav-right">
+                                <sec:authorize access="isAuthenticated()">
+                                    <li><a href="#" style="cursor: default">Welcome: ${signedUser.username} </a></li>
+                                    <c:choose>
+                                        <c:when test="${signedUser.userType eq 'vendor'}">
+                                            <li><a href="#">${signedUser.companyName}</a></li>
+                                        </c:when>
+                                        <c:when test="${signedUser.userType eq 'admin'}">
+                                            <li><a href="#">Admin</a></li>
+                                        </c:when>
+                                        <c:when test="${signedUser.userType eq 'customer'}">
 
-                                    <li><a href="#" style="cursor: default">Welcome:  </a></li>
-
-                                        <li><a href="#">Admin</a></li>
-
+                                        </c:when>
+                                    </c:choose>
                                     <li><a href="#" >My Account</a> </li>
-                                    <li><a href="#" >Logout</a></li>
-
-
+                                    <li>
+                                        <form id="logoutForm" action="/logout">
+                                            <a href="#logout" onclick="$('#logoutForm').submit()" >Logout</a>
+                                            <sec:csrfInput/>
+                                        </form>
+                                    </li>
+                                </sec:authorize>
+                                <sec:authorize access="!isAuthenticated()">
+                                    <li>
+                                        <a href="/login"" >Login</a>
+                                    </li>
+                                </sec:authorize>
                             </ul>
                         </div>
                     </div>
@@ -121,26 +137,26 @@
 
                             </a>
 
-                                <div class="aa-cartbox-summary">
-                                    <ul>
-                                        <li>
-                                            <a class="aa-cartbox-img"><img src="/images/{{item.product.productId}}/0.png" alt="img"></a>
-                                            <div class="aa-cartbox-info">
-                                                <h4><a href="#"></a></h4>
-                                                Item.quantity x productPrice
+                            <div class="aa-cartbox-summary">
+                                <ul>
+                                    <li>
+                                        <a class="aa-cartbox-img"><img src="/images/{{item.product.productId}}/0.png" alt="img"></a>
+                                        <div class="aa-cartbox-info">
+                                            <h4><a href="#"></a></h4>
+                                            Item.quantity x productPrice
 
-                                            </div>
-                                            <a class="aa-remove-product" href="#" ng-click="removeFromCart(item.cartItemId,'${_csrf.parameterName}=${_csrf.token}')">
-                                                <span class="fa fa-times"></span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <span class="aa-cartbox-total-title">Total</span>
-                                            <span class="aa-cartbox-total-price"> </span>
-                                        </li>
-                                    </ul>
-                                    <a class="aa-cartbox-checkout aa-primary-btn" href="#">Checkout</a>
-                                </div>
+                                        </div>
+                                        <a class="aa-remove-product" href="#" ng-click="removeFromCart(item.cartItemId,'${_csrf.parameterName}=${_csrf.token}')">
+                                            <span class="fa fa-times"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <span class="aa-cartbox-total-title">Total</span>
+                                        <span class="aa-cartbox-total-price"> </span>
+                                    </li>
+                                </ul>
+                                <a class="aa-cartbox-checkout aa-primary-btn" href="#">Checkout</a>
+                            </div>
 
                         </div>
                         <!-- / cart box -->

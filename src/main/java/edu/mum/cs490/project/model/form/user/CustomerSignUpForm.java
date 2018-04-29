@@ -1,25 +1,19 @@
-package edu.mum.cs490.project.model.form;
+package edu.mum.cs490.project.model.form.user;
 
-import edu.mum.cs490.project.domain.Admin;
+import edu.mum.cs490.project.domain.Customer;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 /**
  * Created by Erdenebayar on 4/21/2018
  */
-public class AdminSignUpForm extends UserSignUpForm implements Serializable {
+public class CustomerSignUpForm extends UserSignUpForm implements Serializable {
 
+    @NotBlank
     private String firstName;
+    @NotBlank
     private String lastName;
-
-    public AdminSignUpForm() {
-    }
-
-    public AdminSignUpForm(Admin admin) {
-        super(admin);
-        this.firstName = admin.getFirstName();
-        this.lastName = admin.getLastName();
-    }
 
     public String getFirstName() {
         return firstName;

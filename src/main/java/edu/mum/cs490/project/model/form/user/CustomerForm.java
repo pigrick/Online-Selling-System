@@ -1,4 +1,4 @@
-package edu.mum.cs490.project.model.form;
+package edu.mum.cs490.project.model.form.user;
 
 import edu.mum.cs490.project.domain.Customer;
 
@@ -8,17 +8,17 @@ import java.io.Serializable;
 /**
  * Created by Erdenebayar on 4/21/2018
  */
-public class CustomerSignUpSignUpForm extends UserSignUpForm implements Serializable {
+public class CustomerForm extends UserForm implements Serializable {
 
     @NotBlank
     private String firstName;
     @NotBlank
     private String lastName;
 
-    public CustomerSignUpSignUpForm() {
+    public CustomerForm() {
     }
 
-    public CustomerSignUpSignUpForm(Customer customer) {
+    public CustomerForm(Customer customer) {
         super(customer);
         this.firstName = customer.getFirstName();
         this.lastName = customer.getLastName();

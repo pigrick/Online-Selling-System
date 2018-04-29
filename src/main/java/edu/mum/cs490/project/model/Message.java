@@ -9,8 +9,8 @@ public class Message {
         SUCCESS, FAILED, INFO
     }
 
-    public Message() {
-    }
+    public static Message successfullySaved = new Message(Type.SUCCESS, "successfully.saved");
+    public static Message errorOccurred = new Message(Type.FAILED, "error.occurred");
 
     public Message(Type type, String message) {
         this.type = type;

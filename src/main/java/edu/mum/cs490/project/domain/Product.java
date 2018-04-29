@@ -11,9 +11,10 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Vendor vendor;
     private int quantity;
     private double price;
@@ -24,8 +25,6 @@ public class Product {
 
     @Enumerated(EnumType.STRING)
     private Status status;
-
-
 
 
     public Product(){}

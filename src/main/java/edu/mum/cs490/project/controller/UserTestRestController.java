@@ -23,7 +23,7 @@ public class UserTestRestController {
     private final AdminService adminService;
     private final VendorService vendorService;
     private final CustomerService customerService;
-    private final UserService<User> userService;
+    private final UserService userService;
 
     @Autowired
     public UserTestRestController(AdminService adminService, VendorService vendorService, CustomerService customerService, UserService<User> userService) {

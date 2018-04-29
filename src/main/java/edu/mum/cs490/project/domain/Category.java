@@ -15,7 +15,7 @@ public class Category implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Category parentCategory;
     @NotBlank(message = "Can not be empty")
     private String name;

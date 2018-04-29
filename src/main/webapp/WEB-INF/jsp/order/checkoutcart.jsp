@@ -3,8 +3,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/jsp/template/header.jsp" %>
-
-<div class="container">
+<link rel="stylesheet" type="text/css" href="/resources/css/order/order.css">
+<div class="container tpy">
+    <h1 align="center">Order</h1>
     <div class="container">
         <table class="table table-hover">
             <thead>
@@ -25,9 +26,17 @@
                     <td><fmt:formatNumber value="${orderdetail.calculateTotalPrice()}" type="currency"/></td>
                 </tr>
             </c:forEach>
-            <tr></tr>
-            <td colspan="3"></td>
-            <td><fmt:formatNumber value="${shoppingcart.calculateTotalPrice()}" type="currency"/></td>
+            <tr>
+                <td colspan="4"></td>
+            </tr>
+            <tr>
+                <td colspan="2"></td>
+                <td>Tax ( 7% )</td>
+                <td id="tax"><fmt:formatNumber value="${shoppingcart.calculateTax()}" type="currency"/></td>
+            </tr>
+            <tr class="border-dark">
+                <td colspan="3"></td>
+                <td id="totalpricewithtax"><fmt:formatNumber value="${shoppingcart.calculateTotalPriceWithTax()}" type="currency"/></td>
             </tr>
             </tbody>
         </table>
@@ -111,7 +120,9 @@
         </div>
 
 
-        <input type="submit" class="btn btn-default" value="Review Order"/>
+        <br />
+
+        <input type="submit" class="btn btn-primary" value="Review Order"/>
     </form:form>
 </div>
 

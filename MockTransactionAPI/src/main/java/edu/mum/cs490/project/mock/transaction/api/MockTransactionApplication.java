@@ -14,9 +14,9 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
  * @author tuvshuu
  */
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
-public class Application {
+public class MockTransactionApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(MockTransactionApplication.class, args);
     }
 }

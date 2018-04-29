@@ -7,13 +7,13 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name="`order`")
-public class   Order {
+@Table(name="`order`", indexes = {@Index(columnList = "customer_id", name = "customer_idx")})
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Customer customer;
     @OneToOne
     private CardDetail card;
@@ -28,7 +28,8 @@ public class   Order {
     @OneToMany(mappedBy = "order")
     private List<OrderDetail> orderDetails;
 
-    public Order(){}
+    public Order() {
+    }
 
     public Integer getId() {
         return id;

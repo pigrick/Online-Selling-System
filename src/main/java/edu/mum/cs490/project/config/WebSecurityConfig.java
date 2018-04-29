@@ -59,10 +59,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .logoutSuccessUrl("/")
                 .and()
                 .authorizeRequests()
-                    .antMatchers("/vendor/signup").anonymous()
+                    .antMatchers("/profile/**").authenticated()
+                    .antMatchers("/**/signup").anonymous()
                     .antMatchers("/admin/**").hasRole("ADMIN")
                     .antMatchers("/vendor/**").hasRole("VENDOR")
-                    .antMatchers("/profile/**").hasRole("CUSTOMER");
+                    .antMatchers("/profile/**").hasRole("CUSTOMER")
+                    .antMatchers("/order/checkout/**").hasRole("CUSTOMER");
 
 
     }

@@ -9,6 +9,9 @@
 <%@include file="/WEB-INF/jsp/template/header.jsp"%>
 
 
+${title}
+
+<h1>Product Management</h1>
 
 
 

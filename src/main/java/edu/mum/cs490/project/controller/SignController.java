@@ -5,9 +5,7 @@ import edu.mum.cs490.project.domain.Status;
 import edu.mum.cs490.project.domain.User;
 import edu.mum.cs490.project.domain.Vendor;
 import edu.mum.cs490.project.model.Message;
-import edu.mum.cs490.project.model.form.CustomerSignUpSignUpForm;
-import edu.mum.cs490.project.model.form.UserSignUpForm;
-import edu.mum.cs490.project.model.form.VendorSignUpForm;
+import edu.mum.cs490.project.model.form.user.*;
 import edu.mum.cs490.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,6 +23,7 @@ import javax.validation.Valid;
  * Created by Erdenebayar on 4/20/2018
  */
 @Controller
+@SuppressWarnings("unchecked")
 public class SignController {
 
     private final UserService userService;
@@ -47,19 +46,19 @@ public class SignController {
         if (user != null) {
             return "redirect://";
         }
-        model.put("moduleForm", new CustomerSignUpSignUpForm());
+        model.put("moduleForm", new CustomerSignUpForm());
         return "signUp";
     }
 
     @RequestMapping(value = "signup", method = RequestMethod.POST)
-    public String signUp(@Valid @ModelAttribute("moduleForm") CustomerSignUpSignUpForm userForm, BindingResult error, ModelMap model) {
+    public String signUp(@Valid @ModelAttribute("moduleForm") CustomerSignUpForm userForm, BindingResult error, ModelMap model) {
         if (error.hasErrors()) {
-            model.put("message", new Message(Message.Type.FAILED, "Please look error"));
+            model.put("message", Message.errorOccurred);
             return "signUp";
         }
 
         if (userService.loadUserByUsername(userForm.getUsername()) != null) {
-            error.rejectValue("username", null, "Username exist !!!");
+            error.rejectValue("username", "username.duplicate");
             return "signUp";
         }
 
@@ -71,7 +70,7 @@ public class SignController {
 
         userService.saveOrUpdate(customer);
 //        ToDo Send registration Email
-        model.put("message", new Message(Message.Type.SUCCESS, "Successfully Registered"));
+        model.put("message", Message.successfullySaved);
         return "signUp";
     }
 
@@ -80,19 +79,19 @@ public class SignController {
         if (user != null) {
             return "redirect://";
         }
-        model.put("moduleForm", new UserSignUpForm());
+        model.put("userForm", new UserForm());
         return "vendor/signup";
     }
 
     @RequestMapping(value = "vendor/signup", method = RequestMethod.POST)
     public String vendorSignUp(@Valid @ModelAttribute("moduleForm") VendorSignUpForm userForm, BindingResult error, ModelMap model) {
         if (error.hasErrors()) {
-            model.put("message", new Message(Message.Type.FAILED, "Please look error"));
+            model.put("message", Message.errorOccurred);
             return "vendor/signup";
         }
 
         if (userService.loadUserByUsername(userForm.getUsername()) != null) {
-            error.rejectValue("username", null, "Username exist !!!");
+            error.rejectValue("username", "username.duplicate");
             return "vendor/signUp";
         }
 
@@ -103,8 +102,8 @@ public class SignController {
 
         userService.saveOrUpdate(vendor);
 //        ToDo Send registration Email
-        model.put("message", new Message(Message.Type.SUCCESS, "Successfully Registered"));
-        return "signUp";
+        model.put("message", Message.successfullySaved);
+        return "vendor/signUp";
     }
 
     private void setToUser(User user, UserSignUpForm form) {

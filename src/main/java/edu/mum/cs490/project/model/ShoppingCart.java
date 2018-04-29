@@ -16,4 +16,21 @@ public class ShoppingCart {
     public void setOrderDetails(List<OrderDetail> orderDetails) {
         this.orderDetails = orderDetails;
     }
+
+    public double calculateTotalPrice(){
+        double sum = 0;
+        for(OrderDetail orderdetail : this.orderDetails){
+            sum += orderdetail.calculateTotalPrice();
+        }
+        return sum;
+    }
+
+    public double calculateTax(){
+        return calculateTotalPrice() * 0.07;
+
+    }
+
+    public double calculateTotalPriceWithTax(){
+        return calculateTotalPrice() * 1.07;
+    }
 }

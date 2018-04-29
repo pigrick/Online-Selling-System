@@ -1,5 +1,7 @@
 package edu.mum.cs490.project.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -7,14 +9,15 @@ public class CardDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private User owner;
     private String cardType;
     private String cardHolderName;
     private String cardNumber;
     private String last4Digit;
     private String cardExpirationDate;
-    private String ccv;
+    private String cvv;
     private String zipcode;
     private String status;
 
@@ -69,12 +72,12 @@ public class CardDetail {
         this.cardExpirationDate = cardExpirationDate;
     }
 
-    public String getCcv() {
-        return ccv;
+    public String getCvv() {
+        return cvv;
     }
 
-    public void setCcv(String ccv) {
-        this.ccv = ccv;
+    public void setCvv(String cvv) {
+        this.cvv = cvv;
     }
 
     public String getZipcode() {

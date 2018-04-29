@@ -11,21 +11,20 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Vendor vendor;
     private int quantity;
     private double price;
     private String description;
 
     @Transient
-    private MultipartFile productImage;
+    private MultipartFile image;
 
     @Enumerated(EnumType.STRING)
     private Status status;
-
-
 
 
     public Product(){}
@@ -95,10 +94,10 @@ public class Product {
     }
 
     public MultipartFile getProductImage() {
-        return productImage;
+        return image;
     }
 
     public void setProductImage(MultipartFile productImage) {
-        this.productImage = productImage;
+        this.image = productImage;
     }
 }

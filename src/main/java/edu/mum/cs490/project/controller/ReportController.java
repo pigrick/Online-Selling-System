@@ -1,34 +1,73 @@
 package edu.mum.cs490.project.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.context.*;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
+import edu.mum.cs490.project.domain.*;
 import edu.mum.cs490.project.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
-@RestController
+import java.util.ArrayList;
+import java.util.List;
+
+@Controller
 @RequestMapping("/report")
 public class ReportController {
-	@Autowired
-	private OrderDetailService orderDetailService;
 
-	@Autowired
-	private ApplicationContext applicationContext;
+    @Autowired
+    private OrderDetailService orderDetailService;
 
-	@RequestMapping(value = "adminReport", method = RequestMethod.GET)
-	public ModelAndView adminReport() {
-//		JasperReportsPdfView view = new JasperReportsPdfView();
-//		view.setUrl("classpath:jpreport/AdminReport.jrxml");
-//		view.setApplicationContext(applicationContext);
+    @Autowired
+    private VendorService vendorService;
 
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("datasource", orderDetailService.report());
+    @Autowired
+    private CategoryService categoryService;
 
-		return new ModelAndView("", params);
+    @Autowired
+    private ApplicationContext applicationContext;
 
-	}
+    @RequestMapping(value = "/adminReport", method = RequestMethod.GET)
+    public String adminReportLoading(Model model) {
+        List<Vendor> vendorList = vendorService.getAll();
+        List<String> vendorListNames = new ArrayList<>();
+        for (Vendor v : vendorList) {
+            String item = v.getCompanyName();
+            vendorListNames.add(item);
+        }
+        List<Category> categoryList = categoryService.getAllMainCategory();
+        List<String> categoryListNames = new ArrayList<>();
+        for (Category c : categoryList) {
+            String item = c.getName();
+            categoryListNames.add(item);
+        }
+        model.addAttribute("vendors", vendorListNames);
+        model.addAttribute("categories", categoryListNames);
+        return "report/adminReport";
+    }
+
+    @RequestMapping(value = "/adminExport", method = RequestMethod.POST)
+    public String adminReportExport(Model model, @RequestParam String from, @RequestParam String to, @RequestParam String vendor, @RequestParam String category) {
+        
+        return "report/adminExport";
+    }
+
+    @RequestMapping(value = "/vendorReport", method = RequestMethod.GET)
+    public String vendorReportLoading(Model model) {
+        List<Category> categoryList = categoryService.getAllMainCategory();
+        List<String> categoryListNames = new ArrayList<>();
+        for (Category c : categoryList) {
+            String item = c.getName();
+            categoryListNames.add(item);
+        }
+        model.addAttribute("categories", categoryListNames);
+        return "report/vendorReport";
+    }
+
+    @RequestMapping(value = "/vendorExport", method = RequestMethod.POST)
+    public String vendorReportExport(Model model, @RequestParam String from, @RequestParam String to, @RequestParam String category) {
+        return "report/vendorExport";
+    }
+
+
 }

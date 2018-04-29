@@ -17,6 +17,9 @@ public interface OrderService {
     List<Order> findAll();
 
     @Async
+    List<Order> findallEnabledByCustomer_id(Integer customerId);
+
+    @Async
     List<Order> findByCustomer_id(Integer customerId);
 
     @Async

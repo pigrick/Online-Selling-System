@@ -1,6 +1,7 @@
 package edu.mum.cs490.project.service.impl;
 
 import edu.mum.cs490.project.domain.Order;
+import edu.mum.cs490.project.domain.Status;
 import edu.mum.cs490.project.repository.OrderRepository;
 import edu.mum.cs490.project.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,16 +17,23 @@ public class OrderServiceImpl implements OrderService {
 
     public final OrderRepository orderRespository;
 
-    @Override
-    public List<Order> findAll() {
-        return this.orderRespository.findAll();
-    }
-
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository){
         this.orderRespository = orderRepository;
 
     }
+
+    @Override
+    public List<Order> findAll() {
+        return this.orderRespository.findAll();
+    }
+
+    @Override
+    public List<Order> findallEnabledByCustomer_id(Integer customerId) {
+        return this.orderRespository.findByStatusAndCustomer_id(Status.ENABLED, customerId);
+    }
+
+
 
     //Order Manipulation
     @Override

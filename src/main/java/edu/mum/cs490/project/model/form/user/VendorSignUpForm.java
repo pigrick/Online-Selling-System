@@ -1,4 +1,4 @@
-package edu.mum.cs490.project.model.form;
+package edu.mum.cs490.project.model.form.user;
 
 import edu.mum.cs490.project.domain.Vendor;
 
@@ -12,14 +12,6 @@ public class VendorSignUpForm extends UserSignUpForm implements Serializable {
 
     @NotBlank
     private String companyName;
-
-    public VendorSignUpForm() {
-    }
-
-    public VendorSignUpForm(Vendor vendor) {
-        super(vendor);
-        this.companyName = vendor.getCompanyName();
-    }
 
     public String getCompanyName() {
         return companyName;

@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.nio.file.Path;
 
+/**
+ * Created by ChanPiseth on 4/28/2018
+ */
+
 @Controller
 @RequestMapping("/admin/product")
 public class AdminProductController  {
@@ -33,7 +37,7 @@ public class AdminProductController  {
     }
 
     @RequestMapping(value="/save", method=RequestMethod.GET)
-    public String addProduct(@RequestParam(value="id", required=false) Long productId, Model model) {
+    public String addProduct(@RequestParam(value="id", required=false) Integer productId, Model model) {
         // edit product
             // create product
             Product product = new Product();

@@ -1,11 +1,12 @@
 package edu.mum.cs490.project;
 
 import edu.mum.cs490.project.domain.Customer;
-import edu.mum.cs490.project.domain.User;
 import edu.mum.cs490.project.domain.Vendor;
 import edu.mum.cs490.project.model.Message;
-import edu.mum.cs490.project.model.form.CustomerSignUpSignUpForm;
-import edu.mum.cs490.project.model.form.VendorSignUpForm;
+import edu.mum.cs490.project.model.form.user.CustomerForm;
+import edu.mum.cs490.project.model.form.user.CustomerSignUpForm;
+import edu.mum.cs490.project.model.form.user.VendorForm;
+import edu.mum.cs490.project.model.form.user.VendorSignUpForm;
 import edu.mum.cs490.project.service.CustomerService;
 import edu.mum.cs490.project.service.VendorService;
 import org.junit.Assert;
@@ -14,12 +15,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -33,10 +30,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class TestUserSignController {
 
-    @MockBean
+    @Autowired
     private CustomerService customerService;
 
-    @MockBean
+    @Autowired
     private VendorService vendorService;
 
     @Autowired
@@ -45,9 +42,9 @@ public class TestUserSignController {
     @Test
     public void checkforwardedUrl() throws Exception {
 
-        mockMvc.perform(get("/login")).andExpect(forwardedUrl("/WEB-INF/jsp/login.jsp")).andExpect(model().attribute("message", "helloworld"));
-        mockMvc.perform(get("/vendor/signup")).andExpect(forwardedUrl("/WEB-INF/jsp/vendor/signup.jsp")).andExpect(model().attribute("message", "helloworld"));
-        mockMvc.perform(get("/signup")).andExpect(forwardedUrl("/WEB-INF/jsp/signup.jsp")).andExpect(model().attribute("message", "helloworld"));
+        mockMvc.perform(get("/login")).andExpect(forwardedUrl("/WEB-INF/jsp/login.jsp"));
+        mockMvc.perform(get("/vendor/signup")).andExpect(forwardedUrl("/WEB-INF/jsp/vendor/signUp.jsp"));
+        mockMvc.perform(get("/signup")).andExpect(forwardedUrl("/WEB-INF/jsp/signUp.jsp"));
 //        Admin test = (Admin) userService.saveOrUpdate(admin);
 
     }
@@ -56,7 +53,7 @@ public class TestUserSignController {
 //    @WithMockUser(username="admin",roles={"CUSTOMER","VENDOR", "ADMIN"})
     public void checkExistingUser() throws Exception {
 
-        CustomerSignUpSignUpForm signUpForm = new CustomerSignUpSignUpForm();
+        CustomerSignUpForm signUpForm = new CustomerSignUpForm();
         VendorSignUpForm vendorSignUpForm = new VendorSignUpForm();
 
         signUpForm.setFirstName("Erdenebayar");
@@ -82,7 +79,7 @@ public class TestUserSignController {
     @Test
     public void isSavingToDatabase() throws Exception {
 
-        CustomerSignUpSignUpForm signUpForm = new CustomerSignUpSignUpForm();
+        CustomerSignUpForm signUpForm = new CustomerSignUpForm();
         VendorSignUpForm vendorSignUpForm = new VendorSignUpForm();
 
         signUpForm.setFirstName("Erdenebayar");
@@ -97,22 +94,16 @@ public class TestUserSignController {
         vendorSignUpForm.setEmail("ebatsukh@mum.edu");
 
         mockMvc.perform(post("/signup").flashAttr("moduleForm", signUpForm))
-                .andExpect(model().attribute("message", new Message(Message.Type.SUCCESS, "Successfully Registered")));
+                .andExpect(model().attribute("message", new Message(Message.Type.SUCCESS, "successfully.saved")));
 
         mockMvc.perform(post("/vendor/signup").flashAttr("moduleForm", vendorSignUpForm))
-                .andExpect(model().attribute("message", new Message(Message.Type.SUCCESS, "Successfully Registered")));
+                .andExpect(model().attribute("message", new Message(Message.Type.SUCCESS, "successfully.saved")));
 
 
-        check();
-    }
+        Customer customers = (Customer) customerService.loadUserByUsername("uniqueUser1");
+        Vendor vendors = (Vendor) vendorService.loadUserByUsername("uniqueUser2");
 
-    @Test
-    public void check(){
-        Customer customers = (Customer) customerService.loadUserByUsername("yeerick");
-        Vendor vendors = (Vendor) vendorService.loadUserByUsername("vendor");
-        List<Vendor> list = vendorService.getAll();
-
-        Assert.assertNull(customers);
-        Assert.assertNull(vendors);
+        Assert.assertNotNull(customers);
+        Assert.assertNotNull(vendors);
     }
 }

@@ -1,5 +1,7 @@
 package edu.mum.cs490.project.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -7,9 +9,10 @@ public class OrderDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Order order;
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private Product product;
     private int quantity;
     private double price;
@@ -54,5 +57,9 @@ public class OrderDetail {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public double calculateTotalPrice(){
+        return this.quantity * this.price;
     }
 }

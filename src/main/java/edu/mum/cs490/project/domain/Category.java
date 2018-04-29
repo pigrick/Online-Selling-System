@@ -1,8 +1,14 @@
 package edu.mum.cs490.project.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import edu.mum.cs490.project.controller.ProductController;
+import edu.mum.cs490.project.service.CategoryService;
+import edu.mum.cs490.project.service.ProductService;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.List;
 
 
 @Entity
@@ -12,33 +18,43 @@ public class Category implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Category parentCategory;
-
     @NotBlank(message = "Can not be empty")
     private String name;
+
+
+    @OneToMany
+    @JsonIgnore
+    /*private ProductService productService;
+    List<Product> productList = productService.getAllProduct();*/
+    private List<Product> products;
+
 
     public Integer getId() {
         return id;
     }
-
     public void setId(Integer id) {
         this.id = id;
     }
-
     public Category getParentCategory() {
         return parentCategory;
     }
-
     public void setParentCategory(Category parentCategory) {
         this.parentCategory = parentCategory;
     }
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }

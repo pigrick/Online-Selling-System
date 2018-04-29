@@ -114,7 +114,7 @@
                         <!-- / logo  -->
                         <!-- cart box -->
                         <div class="aa-cartbox">
-                            <a class="aa-cart-link" href="#">
+                            <a class="aa-cart-link" href="/order/shoppingcart">
                                 <span class="fa fa-shopping-basket"></span>
                                 <span class="aa-cart-title">CART</span>
 

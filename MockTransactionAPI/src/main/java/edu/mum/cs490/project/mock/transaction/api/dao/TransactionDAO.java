@@ -16,7 +16,7 @@ import org.springframework.data.jpa.repository.Query;
  */
 public interface TransactionDAO extends JpaRepository<Transaction, Long> {
 
-    @Query("SELECT t FROM Transaction t WHERE (t.srcCardNo = ?1 AND t.payCash = true) or (t.dstCardNo = ?1 AND t.result = 1) ORDER BY t.id DESC")
+    @Query("SELECT t FROM Transaction t WHERE (t.dstCardNo = ?1 AND t.payCash = true) or (t.srcCardNo = ?1 AND t.result = 1) ORDER BY t.id DESC")
     List<Transaction> getLastActiveTransaction(String srcCardNo);
 
     static <T> T getSingleResultOrNull(List<T> list) {

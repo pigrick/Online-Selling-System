@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 public interface OrderDetailRepository extends JpaRepository<OrderDetail, Integer>{
 
 
-    @Query("select distinct o from OrderDetail o inner join o.order or where or.orderDate between :begin_Date and :end_Date")
+    @Query("select distinct o from OrderDetail o where o.order.orderDate between :begin_Date and :end_Date")
     List<OrderDetail> findByDate(@Param("begin_Date") Date begin_Date, @Param("end_Date") Date end_Date);
 
     @Query("select distinct o from OrderDetail o where o.product.vendor.id in :vendor_Ids and o.order.orderDate between :begin_Date and :end_Date")

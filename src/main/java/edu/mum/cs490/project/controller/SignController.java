@@ -80,19 +80,19 @@ public class SignController {
             return "redirect://";
         }
         model.put("moduleForm", new VendorSignUpForm());
-        return "vendor/signup";
+        return "vendor/signUp";
     }
 
     @RequestMapping(value = "vendor/signup", method = RequestMethod.POST)
     public String vendorSignUp(@Valid @ModelAttribute("moduleForm") VendorSignUpForm userForm, BindingResult error, ModelMap model) {
         if (error.hasErrors()) {
             model.put("message", Message.errorOccurred);
-            return "vendor/signup";
+            return "vendor/signUp";
         }
 
         if (userService.loadUserByUsername(userForm.getUsername()) != null) {
             error.rejectValue("username", "username.duplicate");
-            return "vendor/signup";
+            return "vendor/signUp";
         }
 
         Vendor vendor = new Vendor();
@@ -103,7 +103,7 @@ public class SignController {
         userService.saveOrUpdate(vendor);
 //        ToDo Send registration Email
         model.put("message", Message.successfullySaved);
-        return "vendor/signup";
+        return "vendor/signUp";
     }
 
     private void setToUser(User user, UserSignUpForm form) {

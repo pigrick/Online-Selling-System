@@ -59,11 +59,13 @@ public class TestUserSignController {
         signUpForm.setFirstName("Erdenebayar");
         signUpForm.setLastName("Batsukh");
         signUpForm.setPassword("hello");
+        signUpForm.setRePassword("hello");
         signUpForm.setUsername("erdenebayar");
         signUpForm.setEmail("ebatsukh@mum.edu");
 
         vendorSignUpForm.setCompanyName("Erdenebayar");
         vendorSignUpForm.setPassword("hello");
+        vendorSignUpForm.setRePassword("hello");
         vendorSignUpForm.setUsername("erdenebayar");
         vendorSignUpForm.setEmail("ebatsukh@mum.edu");
 
@@ -85,19 +87,21 @@ public class TestUserSignController {
         signUpForm.setFirstName("Erdenebayar");
         signUpForm.setLastName("Batsukh");
         signUpForm.setPassword("hello");
+        signUpForm.setRePassword("hello");
         signUpForm.setUsername("uniqueUser1");
         signUpForm.setEmail("ebatsukh@mum.edu");
 
         vendorSignUpForm.setCompanyName("Erdenebayar");
         vendorSignUpForm.setPassword("hello");
+        vendorSignUpForm.setRePassword("hello");
         vendorSignUpForm.setUsername("uniqueUser2");
         vendorSignUpForm.setEmail("ebatsukh@mum.edu");
 
         mockMvc.perform(post("/signup").flashAttr("moduleForm", signUpForm))
-                .andExpect(model().attribute("message", new Message(Message.Type.SUCCESS, "successfully.saved")));
+                .andExpect(model().attribute("message", Message.successfullySaved));
 
         mockMvc.perform(post("/vendor/signup").flashAttr("moduleForm", vendorSignUpForm))
-                .andExpect(model().attribute("message", new Message(Message.Type.SUCCESS, "successfully.saved")));
+                .andExpect(model().attribute("message", Message.successfullySaved));
 
 
         Customer customers = (Customer) customerService.loadUserByUsername("uniqueUser1");

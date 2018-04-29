@@ -1,13 +1,25 @@
 package edu.mum.cs490.project.service;
 
-import edu.mum.cs490.project.domain.OrderDetail;
+import java.util.*;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import edu.mum.cs490.project.domain.*;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional(readOnly = true)
 public interface OrderDetailService {
-	List<OrderDetail> findAll();
-	List<Map<String, Object>> report();
-	List<OrderDetail> findByOrder_OrderDate(Date from, Date to);
+
+	@Transactional
+	OrderDetail getOne(Integer id);
+
+	@Transactional
+	List<OrderDetail> findByDate(Date begin_Date, Date end_Date);
+
+	@Transactional
+	List<OrderDetail> findByVendor_Id(List<Integer> vendor_Ids, Date begin_Date, Date end_Date);
+
+	@Transactional
+	List<OrderDetail> findByCategory_Id(List<Integer> category_Ids, Date begin_Date, Date end_Date);
+
+	@Transactional
+	List<OrderDetail> findByVendor_IdAndCategory_Id(List<Integer> vendor_Ids, List<Integer> category_Ids, Date begin_Date, Date end_Date);
 }

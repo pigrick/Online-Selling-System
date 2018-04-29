@@ -3,6 +3,7 @@ package edu.mum.cs490.project.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 public class OrderDetail {
@@ -16,6 +17,12 @@ public class OrderDetail {
     private Product product;
     private int quantity;
     private double price;
+
+    @Transient
+    private Date beginDate;
+
+    @Transient
+    private Date endDate;
 
     public OrderDetail(){}
 
@@ -57,6 +64,22 @@ public class OrderDetail {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public Date getBeginDate() {
+        return beginDate;
+    }
+
+    public void setBeginDate(Date beginDate) {
+        this.beginDate = beginDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
     }
 
     public double calculateTotalPrice(){

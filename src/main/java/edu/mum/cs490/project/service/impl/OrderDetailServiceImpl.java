@@ -1,48 +1,46 @@
 package edu.mum.cs490.project.service.impl;
 
-import java.util.ArrayList;
+import edu.mum.cs490.project.domain.OrderDetail;
+import edu.mum.cs490.project.repository.OrderDetailRepository;
+import edu.mum.cs490.project.service.OrderDetailService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.springframework.beans.factory.annotation.*;
-import org.springframework.stereotype.*;
-import org.springframework.transaction.annotation.*;
-
-import edu.mum.cs490.project.domain.*;
-import edu.mum.cs490.project.repository.*;
-import edu.mum.cs490.project.service.*;
-
-@Service("orderDetailService")
-@Transactional
+@Service
 public class OrderDetailServiceImpl implements OrderDetailService {
 
+	private final OrderDetailRepository orderDetailRepository;
+
 	@Autowired
-	private OrderDetailRepository orderDetailRepository;
-
-	@Override
-	public List<OrderDetail> findAll() {
-		return orderDetailRepository.findAll();
+	public OrderDetailServiceImpl(OrderDetailRepository orderDetailRepository) {
+		this.orderDetailRepository = orderDetailRepository;
 	}
 
 	@Override
-	public List<Map<String, Object>> report() {
-		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
-		for(OrderDetail orderDetail: this.findAll()) {
-			Map<String, Object> item = new HashMap<String, Object>();
-			item.put("id", orderDetail.getId());
-			//item.put("orderDate", orderDetail.getOrder().getOrderDate());
-//			item.put("customer", orderDetail.getOrder().getCustomer());
-//			item.put("vendor", orderDetail.getProduct().getVendor());
-//			item.put("price", orderDetail.getPrice());
-			item.put("product", orderDetail.getProduct().getName());
-			item.put("quantity", orderDetail.getQuantity());
-			result.add(item);
-		}
-		return result;
+	public OrderDetail getOne(Integer id) {
+		return orderDetailRepository.getOne(id);
 	}
 
+	@Override
+	public List<OrderDetail> findByDate(Date begin_Date, Date end_Date) {
+		return orderDetailRepository.findByDate(begin_Date, end_Date);
+	}
 
+	@Override
+	public List<OrderDetail> findByVendor_Id(List<Integer> vendor_Ids, Date begin_Date, Date end_Date) {
+		return orderDetailRepository.findByVendor_Id(vendor_Ids, begin_Date, end_Date);
+	}
 
+	@Override
+	public List<OrderDetail> findByCategory_Id(List<Integer> category_Ids, Date begin_Date, Date end_Date) {
+		return orderDetailRepository.findByCategory_Id(category_Ids, begin_Date, end_Date);
+	}
+
+	@Override
+	public List<OrderDetail> findByVendor_IdAndCategory_Id(List<Integer> vendor_Ids, List<Integer> category_Ids, Date begin_Date, Date end_Date) {
+		return orderDetailRepository.findByVendor_IdAndCategory_Id(vendor_Ids, category_Ids, begin_Date, end_Date);
+	}
 }

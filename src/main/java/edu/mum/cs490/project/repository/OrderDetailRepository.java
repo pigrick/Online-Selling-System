@@ -6,7 +6,23 @@ import java.util.List;
 import org.springframework.data.jpa.repository.*;
 
 import edu.mum.cs490.project.domain.*;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface OrderDetailRepository extends JpaRepository<OrderDetail, Integer>{
+
+
+    @Query("select distinct o from OrderDetail o inner join o.order or where or.orderDate between :begin_Date and :end_Date")
+    List<OrderDetail> findByDate(@Param("begin_Date") Date begin_Date, @Param("end_Date") Date end_Date);
+
+    @Query("select distinct o from OrderDetail o where o.product.vendor.id in :vendor_Ids and o.order.orderDate between :begin_Date and :end_Date")
+    List<OrderDetail> findByVendor_Id(@Param("vendor_Ids") List<Integer> vendor_Ids, @Param("begin_Date") Date begin_Date, @Param("end_Date") Date end_Date);
+
+    @Query("select distinct o from OrderDetail o where o.product.category.id in :category_Ids and o.order.orderDate between :begin_Date and :end_Date")
+    List<OrderDetail> findByCategory_Id(@Param("category_Ids") List<Integer> category_Ids, @Param("begin_Date") Date begin_Date, @Param("end_Date") Date end_Date);
+
+    @Query("select distinct o from OrderDetail o where o.product.vendor.id in :vendor_Ids and o.product.category.id in :category_Ids and o.order.orderDate between :begin_Date and :end_Date")
+    List<OrderDetail> findByVendor_IdAndCategory_Id(@Param("vendor_Ids") List<Integer> vendor_Ids, @Param("category_Ids") List<Integer> category_Ids, @Param("begin_Date") Date begin_Date, @Param("end_Date") Date end_Date);
 
 }

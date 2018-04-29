@@ -26,7 +26,7 @@ public class AdminCategoryController {
     private CategoryService categoryService;
 
     @RequestMapping(value = "/m", method = RequestMethod.GET)
-    public String categoryManagement(Model model){
+    public String categoryManagement(Model model) {
         List<Category> categoryList = categoryService.getAllCategory();
         model.addAttribute("categoryList", categoryList);
 

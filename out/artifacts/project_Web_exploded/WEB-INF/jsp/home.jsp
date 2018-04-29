@@ -10,6 +10,7 @@
 <%@include file="/WEB-INF/jsp/template/header.jsp"%>
 
 
+
 <!-- Products section -->
         <!-- start prduct navigation -->
 

@@ -1,6 +1,9 @@
 package edu.mum.cs490.project.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import edu.mum.cs490.project.controller.ProductController;
+import edu.mum.cs490.project.service.CategoryService;
+import edu.mum.cs490.project.service.ProductService;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -20,8 +23,11 @@ public class Category implements Serializable {
     @NotBlank(message = "Can not be empty")
     private String name;
 
+
     @OneToMany
     @JsonIgnore
+    /*private ProductService productService;
+    List<Product> productList = productService.getAllProduct();*/
     private List<Product> products;
 
 

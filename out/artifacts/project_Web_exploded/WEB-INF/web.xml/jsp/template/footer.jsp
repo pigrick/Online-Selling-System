@@ -142,9 +142,9 @@
 <script type="text/javascript" src="/resources/js/jquery.smartmenus.js"></script>
 <!-- SmartMenus jQuery Bootstrap Addon -->
 <script type="text/javascript" src="/resources/js/jquery.smartmenus.bootstrap.js" ></script>
-
 <!-- To Slider JS -->
 <script src="/resources/js/sequence.js" ></script>
+<script src="/resources/js/jquery.simpleGallery.js" ></script>
 <script src="/resources/js/sequence-theme.modern-slide-in.js"  ></script>
 <!-- prduct view slider -->
 <script  type="text/javascript" src="/resources/js/jquery.simpleGallery.js"   ></script>

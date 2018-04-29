@@ -36,9 +36,7 @@
                                     <option value="<my:replaceParam name='st' value='1' />">Price Descending</option>
                                 </select>
                             </form>
-
                         </div>
-
                     </div>
                     <div class="aa-product-catg-body">
                         <ul class="aa-product-catg">

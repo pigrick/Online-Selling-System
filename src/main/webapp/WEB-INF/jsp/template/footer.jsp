@@ -127,39 +127,33 @@
 </div>
 
 <!-- Angular JS -->
-<<script src="/resources/js/angular.min.js"></script>
+
+
+<script src="/resources/js/angular.min.js"></script>
+<script src="/resources/js/jquery.min.js"></script>
+<script src="/resources/js/jquery.simpleLens.js"></script>
+<script src="/resources/js/sequence.js"></script>
+
+
 
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="/resources/js/bootstrap.min.js"></script>
 <!-- SmartMenus jQuery plugin -->
 <script type="text/javascript" src="/resources/js/jquery.smartmenus.js"></script>
-
 <!-- SmartMenus jQuery Bootstrap Addon -->
-
 <script type="text/javascript" src="/resources/js/jquery.smartmenus.bootstrap.js" ></script>
-
 <!-- To Slider JS -->
-
 <script src="/resources/js/sequence.js" ></script>
-
+<script src="/resources/js/jquery.simpleGallery.js" ></script>
 <script src="/resources/js/sequence-theme.modern-slide-in.js"  ></script>
-
 <!-- prduct view slider -->
 <script  type="text/javascript" src="/resources/js/jquery.simpleGallery.js"   ></script>
-
-<script  type="text/javascript" src="/js/jquery.simpleLens.js"  ></script>
-
 <!-- slick slider -->
 <script  type="text/javascript" src="/resources/js/slick.js"  ></script>
-
-
 <!-- Price picker slider -->
 <script  type="text/javascript" src="/resources/js/nouislider.min.js" ></script>
-
 <!-- Custom js -->
-
 <script src="/resources/js/custom.js" ></script>
-
 <script  src="/resources/js/controller.js" ></script>
 
 </body>

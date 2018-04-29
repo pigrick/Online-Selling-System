@@ -12,7 +12,8 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     private Customer customer;
     @OneToOne
     private CardDetail card;
@@ -27,7 +28,8 @@ public class Order {
     @OneToMany(mappedBy = "order")
     private List<OrderDetail> orderDetails;
 
-    public Order(){}
+    public Order() {
+    }
 
     public Integer getId() {
         return id;

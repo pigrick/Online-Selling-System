@@ -24,4 +24,13 @@ public class ShoppingCart {
         }
         return sum;
     }
+
+    public double calculateTax(){
+        return calculateTotalPrice() * 0.07;
+
+    }
+
+    public double calculateTotalPriceWithTax(){
+        return calculateTotalPrice() * 1.07;
+    }
 }

@@ -5,7 +5,7 @@
 
 <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="/resources/paymentdetail/css/styles.css">
+<link rel="stylesheet" type="text/css" href="/resources/css/order/order.css">
 
 <div class="container">
 <form:form id="submit-payment" modelAttribute="paymentForm" method="post" action="checkout/submit">
@@ -29,7 +29,7 @@
             </div>
             <div class="form-group" id="expiration-date">
                 <label>Expiration Date</label>
-                <select>
+                <select name="month">
                     <option value="01">January</option>
                     <option value="02">February</option>
                     <option value="03">March</option>
@@ -43,7 +43,7 @@
                     <option value="11">November</option>
                     <option value="12">December</option>
                 </select>
-                <select>
+                <select name="year">
                     <option value="18"> 2018</option>
                     <option value="19"> 2019</option>
                     <option value="20"> 2020</option>

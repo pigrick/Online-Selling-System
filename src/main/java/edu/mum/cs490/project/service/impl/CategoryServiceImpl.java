@@ -1,6 +1,7 @@
 package edu.mum.cs490.project.service.impl;
 
 import edu.mum.cs490.project.domain.Category;
+import edu.mum.cs490.project.domain.Status;
 import edu.mum.cs490.project.repository.CategoryRepository;
 import edu.mum.cs490.project.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public Category getOne(Integer id) {
+        return null;
+    }
+
+    @Override
     public List<Category> getAllMainCategory() {
         return categoryRepostitory.findAllByParentCategoryIsNull();
     }
@@ -44,7 +50,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void delete(Integer categoryId) {
-
+        Category category = getOne(categoryId);
+        category.setStatus(Status.DELETED);
+        categoryRepostitory.save(category);
     }
 
     @Override

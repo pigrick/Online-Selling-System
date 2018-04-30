@@ -17,8 +17,8 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>MainCategory</th>
-                <th>SubCategory</th>
+                <th>CategoryId</th>
+                <th>Category</th>
                 <th></th>
             </tr>
             </thead>
@@ -31,7 +31,7 @@
                     <td>
                         <a href="/admin/category/save?id=${category.id}">
                             <span class="glyphicon glyphicon-pencil"></span></a>
-                        <a href="/admin/ca/d?id=${category.id}">
+                        <a href="/admin/category/delete?id=${category.id}">
                             <span class="glyphicon glyphicon-remove"></span></a>
 
                     </td>

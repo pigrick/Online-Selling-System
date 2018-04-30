@@ -24,7 +24,7 @@ public class Product {
     private MultipartFile image;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status = Status.ENABLED;
 
 
     public Product(){}

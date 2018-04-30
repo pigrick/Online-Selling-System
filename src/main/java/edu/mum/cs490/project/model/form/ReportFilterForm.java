@@ -1,5 +1,7 @@
 package edu.mum.cs490.project.model.form;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -13,8 +15,10 @@ public class ReportFilterForm implements Serializable {
 
     private List<Integer> lstCategory_Id;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date begin_Date;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date end_Date;
 
     public ReportFilterForm(){}

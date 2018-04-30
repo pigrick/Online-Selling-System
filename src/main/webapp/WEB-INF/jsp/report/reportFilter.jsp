@@ -26,12 +26,12 @@
                         <form:form modelAttribute="reportFilterForm" method="post">
                             <div class="form-group" style="border-width: 20px ">
                                 <label class="col-md-3">From:</label>
-                                <input id="from" class="col-md-7" type="date" path="from" min="2017-01-10"/>
+                                <form:input id="from" class="col-md-7" path="begin_Date" type="date" min="2017-01-10"/>
                             </div>
                             <br/><br/>
                             <div class="form-group" style="border-width: 20px ">
                                 <label class="col-md-3 ">To:</label>
-                                <input id="to" class="col-md-7" type="date" path="to" max="2050-01-10"/>
+                                <form:input id="to" class="col-md-7"  path="end_Date" type="date" max="2050-01-10"/>
                             </div>
                             <br/>
                             <!-- check sec ROLE-->
@@ -40,7 +40,7 @@
                                     <label class="col-md-3">Vendor:</label>
                                     <select id="lstVendor_Id" class="col-md-7" path="lstVendor_Id" multiple="multiple"
                                             size="5">
-                                        <option selected="selected">ALL</option>
+                                        <option selected="selected" value="0">ALL</option>
                                         <c:forEach var="v" items="${vendors}">
                                             <option value="${v.id}">${v.companyName}</option>
                                         </c:forEach>
@@ -52,7 +52,7 @@
                                 <label class="col-md-3">Category:</label>
                                 <select id="lstCategory_Id" class="col-md-7" path="lstCategory_Id" multiple="multiple"
                                         size="5">
-                                    <option selected="selected">ALL</option>
+                                    <option selected="selected" value="0">ALL</option>
                                     <c:forEach var="c" items="${categories}">
                                         <option value="c.id">${c.name}</option>
                                     </c:forEach>
@@ -60,7 +60,7 @@
                             </div>
                             <br/><br/> <br/><br/><br/>
                             <div class="col-md-10" align="center">
-                                <input id="btnExport" style="color: orangered" type="submit" value="Export"/>
+                                <input id="btnExport" style="color: orangered" type="submit" value="Export" formtarget="_blank"/>
                             </div>
                         </form:form>
                     </div>

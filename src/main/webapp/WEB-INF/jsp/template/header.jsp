@@ -1,4 +1,4 @@
-<%@include file="/WEB-INF/include.jsp"%>
+<%@include file="/WEB-INF/include.jsp" %>
 <html>
 <head>
     <meta charset="utf-8">
@@ -34,7 +34,7 @@
     <link href="/resources/css/custom.css" rel="stylesheet">
 
     <!-- jQuery library -->
-    <script src="/resources/js/jquery.min.js" ></script>
+    <script src="/resources/js/jquery.min.js"></script>
 </head>
 <body>
 <%--<!-- wpf loader Two -->
@@ -68,7 +68,8 @@
                                         <span class="caret"></span>
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                        <li><a href="#"><img src="/resources/img/flag/english.jpg" alt="">ENGLISH</a></li>
+                                        <li><a href="#"><img src="/resources/img/flag/english.jpg" alt="">ENGLISH</a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -91,10 +92,10 @@
 
                                         </c:when>
                                     </c:choose>
-                                    <li><a href="#" >My Account</a> </li>
+                                    <li><a href="#">My Account</a></li>
                                     <li>
                                         <form id="logoutForm" action="/logout">
-                                            <a href="#logout" onclick="$('#logoutForm').submit()" >Logout</a>
+                                            <a href="#logout" onclick="$('#logoutForm').submit()">Logout</a>
                                             <sec:csrfInput/>
                                         </form>
                                     </li>
@@ -140,13 +141,15 @@
                             <div class="aa-cartbox-summary">
                                 <ul>
                                     <li>
-                                        <a class="aa-cartbox-img"><img src="/images/{{item.product.productId}}/0.png" alt="img"></a>
+                                        <a class="aa-cartbox-img"><img src="/images/{{item.product.productId}}/0.png"
+                                                                       alt="img"></a>
                                         <div class="aa-cartbox-info">
                                             <h4><a href="#"></a></h4>
                                             Item.quantity x productPrice
 
                                         </div>
-                                        <a class="aa-remove-product" href="#" ng-click="removeFromCart(item.cartItemId,'${_csrf.parameterName}=${_csrf.token}')">
+                                        <a class="aa-remove-product" href="#"
+                                           ng-click="removeFromCart(item.cartItemId,'${_csrf.parameterName}=${_csrf.token}')">
                                             <span class="fa fa-times"></span>
                                         </a>
                                     </li>
@@ -161,7 +164,7 @@
                         </div>
                         <!-- / cart box -->
                         <!-- search box -->
-                        <form >
+                        <form>
                             <div class="aa-search-box">
                                 <input type="text" ng-model="keyword" placeholder="Product Name">
                                 <button type="submit" style="width: 50px; height: 40px" class="fa fa-search"></button>
@@ -210,7 +213,9 @@
                         </li>
 
                         <li><a href="/contact">Contact</a></li>
-                        <li><a href="/report/reportFilter">Report</a></li>
+                        <sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_VENDOR')">
+                            <li><a href="/report/reportFilter">Report</a></li>
+                        </sec:authorize>
                         <li><a href="#">Pages <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="#">All Products</a></li>

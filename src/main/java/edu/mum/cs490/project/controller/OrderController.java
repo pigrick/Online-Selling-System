@@ -134,7 +134,8 @@ public class OrderController {
     @PostMapping("checkout/submit")
     public String customerOrderPayment(Model model, HttpSession session, @Valid PaymentForm paymentForm, BindingResult bindingResult,
                                        @RequestParam("month") String month, @RequestParam("year") String year) {
-
+        System.out.println(bindingResult.toString());
+        paymentForm.setCardNumber(paymentForm.getCardNumber().replaceAll("\\s",""));
         paymentForm.setCardExpirationDate(month + "/" + year);
         Order order = (Order) session.getAttribute("checkoutorder");
         if (bindingResult.hasErrors()) {
@@ -206,6 +207,7 @@ public class OrderController {
     @PostMapping("guest/checkout/submit")
     public String guestOrderPayment(Model model, HttpSession session, @Valid PaymentForm paymentForm, BindingResult bindingResult,
                                     @RequestParam("month") String month, @RequestParam("year") String year) {
+        paymentForm.setCardNumber(paymentForm.getCardNumber().replaceAll("\\s",""));
         paymentForm.setCardExpirationDate(month + "/" + year);
         Order order = (Order) session.getAttribute("checkoutorder");
         if (bindingResult.hasErrors()) {

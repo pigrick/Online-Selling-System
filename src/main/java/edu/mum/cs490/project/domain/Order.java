@@ -27,7 +27,7 @@ public class Order {
     private Address address;
     @Enumerated(EnumType.STRING)
     private Status status;
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade={ CascadeType.PERSIST} )
     private List<OrderDetail> orderDetails;
 
     public Order() {

@@ -11,7 +11,7 @@ public class PaymentForm implements Serializable {
     private String cardType;
     @NotBlank
     private String cardHolderName;
-    @CreditCardNumber
+    //@CreditCardNumber
     private String cardNumber;
     private String last4Digit;
     @Pattern(regexp = "^((0[1-9])|(1[0-2]))\\/(\\d{2})$")

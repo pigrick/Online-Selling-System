@@ -157,6 +157,7 @@
 <!-- Custom js -->
 <script src="/resources/js/custom.js" ></script>
 <script  src="/resources/js/controller.js" ></script>
-
+<!--payment js-->
+<script src="/resources/paymentdetail/js/jquery.payform.min.js" charset="utf-8"></script>
 </body>
 </html>

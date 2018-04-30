@@ -29,9 +29,10 @@ $(function() {
 
         if ($.payform.parseCardType(cardNumber.val()) == 'visa') {
             mastercard.addClass('transparent');
-
+            $("#card-type").val("Visa");
         } else if ($.payform.parseCardType(cardNumber.val()) == 'mastercard') {
             visa.addClass('transparent');
+            $("#card-type").val("Mastercard");
         }
     });
 
@@ -41,16 +42,8 @@ $(function() {
 
         var isCardValid = $.payform.validateCardNumber(cardNumber.val());
         var isCvvValid = $.payform.validateCardCVC(CVV.val());
-        alert("hi");
-        // if(owner.val().length < 5){
-        //     alert("Wrong owner name");
-        // } else if (!isCardValid) {
-        //     alert("Wrong card number");
-        // } else if (!isCvvValid) {
-        //     alert("Wrong CVV");
-        // } else {
-            // Everything is correct. Add your form submission code here.
-            $('#submit-payment').submit();
-        // }
+        // var cardNumber = $("#cardNumber").val();
+        // $("#cardNumber").val(cardNumber.split(" ").join(""));
+        $("#submit-payment").submit();
     });
 });

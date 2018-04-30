@@ -91,13 +91,15 @@
 
 
     <div class="container">
-        <form:form id="submit-payment" modelAttribute="paymentForm" method="post" action="checkout/submit">
+
             <div class="creditCardForm">
                 <div class="heading">
                     <h1>Confirm Purchase</h1>
                 </div>
+                <div class="alert-warning">${badcard}</div>
                 <div class="payment">
-
+            <form:form id="submit-payment" modelAttribute="paymentForm" method="post" action="checkout/submit">
+                    <form:hidden path="cardType" id="card-type"/>
                     <div class="form-group owner">
                         <label for="owner">Card Holder</label>
                         <form:input path="cardHolderName" class="form-control" id="owner"/>
@@ -147,16 +149,15 @@
                     <div class="form-group" id="pay-now">
                         <button type="submit" class="btn btn-default" id="confirm-purchase">Confirm</button>
                     </div>
-
+            </form:form>
                 </div>
             </div>
 
-        </form:form>
+
     </div>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="/resources/paymentdetail/js/jquery.payform.min.js" charset="utf-8"></script>
+
 <script src="/resources/paymentdetail/js/script.js"></script>
 
 

@@ -17,10 +17,10 @@ INSERT INTO vendor VALUES ('BARTIET', 5);
 INSERT INTO vendor VALUES ('GAMET', 6);
 INSERT INTO vendor VALUES ('PANASONIC', 7);
 
-INSERT INTO category VALUES (1, "Clothing",1);
-INSERT INTO category VALUES (2, "Watches",1);
-INSERT INTO category VALUES (3, "Shoes",1);
-INSERT INTO category VALUES (4, "Bag",1);
+INSERT INTO category VALUES (1, "Clothing",null );
+INSERT INTO category VALUES (2, "Watches",null );
+INSERT INTO category VALUES (3, "Shoes",null );
+INSERT INTO category VALUES (4, "Bag",null );
 
 
 INSERT INTO user VALUES (3, 'ylai@mum.edu','$2a$10$ibMbCkRcLFo4snX8071GSuJ9bV15Jvl9wFNafEkiSBTFuFt8m9BtO', 'ENABLED', 'yeerick');

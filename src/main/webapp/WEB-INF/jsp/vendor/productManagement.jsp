@@ -1,5 +1,6 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="/WEB-INF/include.jsp"%>
 <%@include file="/WEB-INF/jsp/template/header.jsp"%>
 
 <!--<h1>Product Inventory</h1> -->
@@ -16,7 +17,6 @@
                 <th>Quantity</th>
                 <th>Price</th>
                 <th>Description</th>
-                <th>Vendor Name</th>
                 <th></th>
             </tr>
             </thead>
@@ -27,8 +27,6 @@
                     <td>${product.quantity}</td>
                     <td>${product.price}</td>
                     <td>${product.description}</td>
-                    <td>${product.vendor.getCompanyName()}</td>
-
                     <td>
                         <a href="#">
                             <span class="glyphicon glyphicon-info-sign"></span></a>
@@ -41,7 +39,7 @@
             </c:forEach>
             </tbody>
         </table>
-        <a href="/admin/product/save"><button class="btn btn-primary">Add Product</button></a>
+        <a href="/vendor/product/save"><button class="btn btn-primary">Add Product</button></a>
     </div>
 </div>
 </div>

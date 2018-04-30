@@ -1,11 +1,20 @@
 package edu.mum.cs490.project.controller;
 
 import edu.mum.cs490.project.domain.Product;
+import edu.mum.cs490.project.domain.Status;
+import edu.mum.cs490.project.domain.Vendor;
+import edu.mum.cs490.project.model.Message;
+import edu.mum.cs490.project.model.form.ProductForm;
+import edu.mum.cs490.project.service.CategoryService;
 import edu.mum.cs490.project.service.ProductService;
+import edu.mum.cs490.project.utils.SignedUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -13,10 +22,12 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
+    private final CategoryService categoryService;
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, CategoryService categoryService) {
         this.productService = productService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping("all")
@@ -24,17 +35,6 @@ public class ProductController {
         theModel.addAttribute("products" , this.productService.getAllProduct());
         return "products";
          //return "list-all-products" ;
-    }
-
-    @GetMapping("/{productId}")
-    public String getById(Model theModel, @PathVariable("productId") Integer productId){
-
-        Product theProduct=this.productService.getOne(productId);
-
-        theModel.addAttribute("product", theProduct);
-
-        return "";
-        //return "get-by-product-id";
     }
 
     @GetMapping("/{productName}")
@@ -55,23 +55,6 @@ public class ProductController {
 
         return " ";
         //return "find-by-product-vendor";
-    }
-
-    @PostMapping("/save")
-    public String saveOrUpdateProduct(@PathVariable("product") Product product){
-
-        this.productService.saveOrUpdateProduct(product);
-
-        return "";
-        //return "list-all-products";
-    }
-
-    @PostMapping("/delete")
-    public String deleteProduct(@PathVariable("product") Product product){
-
-        this.productService.deleteProduct(product);
-        return "";
-        //return "deleteProduct";
     }
 
     @GetMapping("/{category}")

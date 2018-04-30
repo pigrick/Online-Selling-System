@@ -1,7 +1,5 @@
-package edu.mum.cs490.project.controller.admin;
+package edu.mum.cs490.project.controller.vendor;
 
-
-import edu.mum.cs490.project.domain.Category;
 import edu.mum.cs490.project.domain.Product;
 import edu.mum.cs490.project.domain.Status;
 import edu.mum.cs490.project.domain.Vendor;
@@ -21,32 +19,28 @@ import java.nio.file.Path;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/product")
-public class AdminProductController {
-
+@RequestMapping("/vendor/product")
+public class VendorProductController {
     private Path path;
 
-    private final ProductService productService;
-
-    private final CategoryService categoryService;
+    @Autowired
+    private ProductService productService;
 
     @Autowired
-    public AdminProductController(ProductService productService, CategoryService categoryService) {
-        this.productService = productService;
-        this.categoryService = categoryService;
-    }
+    private CategoryService categoryService;
 
     @RequestMapping(value = "/m", method = RequestMethod.GET)
-    public String productManagement(Model model) {
-        List<Product> productsList = productService.getAllProduct();
+    public String productManagement(@AuthenticationPrincipal Vendor vendor, Model model) {
+        List<Product> productsList = productService.findByVendor(vendor.getId());
         model.addAttribute("productList", productsList);
 
-        return "admin/productManagement";
+        return "vendor/productManagement";
     }
 
     @GetMapping("/save")
     public String saveOrUpdateProduct(@RequestParam(required = false) Integer id, Model model) {
 
+        model.addAttribute("title", "Add Product");
 
         if (id != null && id != 0) {
             model.addAttribute("productForm", new ProductForm(productService.getOne(id)));
@@ -67,14 +61,27 @@ public class AdminProductController {
 
         if (result.hasErrors()) {
             model.addAttribute("message", new Message(Message.Type.FAILED, "Check your forms!!!"));
-            return "admin/saveProduct";
+            return "saveProduct";
         }
 
+        Product product;
+        if (form.getId() != null) {
+            product = productService.getOne(form.getId());
+        }
+        product = new Product();
 
-        Product product = new Product();
+        product.setStatus(Status.ENABLED);
+        product.setCategory(categoryService.getCategoryById(form.getCategoryId()));
+        product.setDescription(form.getDescription());
+        product.setName(form.getName());
+        product.setPrice(form.getPrice());
+        product.setQuantity(form.getQuantity());
+        product.setVendor(vendor);
 
+        productService.saveOrUpdateProduct(product);
+        model.addAttribute("message", new Message(Message.Type.SUCCESS, "successfully.saved"));
 
+        //return "";
         return "admin/saveProduct";
     }
-
 }

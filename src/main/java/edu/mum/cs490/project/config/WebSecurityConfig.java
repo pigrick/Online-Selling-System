@@ -1,6 +1,7 @@
 package edu.mum.cs490.project.config;
 
 import edu.mum.cs490.project.service.UserService;
+import edu.mum.cs490.project.utils.AESConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

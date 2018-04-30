@@ -1,26 +1,22 @@
 package edu.mum.cs490.project.controller;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import edu.mum.cs490.project.domain.*;
 import edu.mum.cs490.project.model.ShoppingCart;
 import edu.mum.cs490.project.model.form.CustomerOrderShippingForm;
 import edu.mum.cs490.project.model.form.GuestOrderShippingForm;
 import edu.mum.cs490.project.model.form.PaymentForm;
 import edu.mum.cs490.project.service.OrderService;
+import edu.mum.cs490.project.service.impl.MockPaymentServiceImpl;
+import edu.mum.cs490.project.utils.AESConverter;
 import edu.mum.cs490.project.utils.SignedUser;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -36,26 +32,32 @@ import java.util.List;
 public class OrderController {
     private final OrderService orderService;
 
+    private final MockPaymentServiceImpl mockPaymentService;
+
+    private final AESConverter aesConverter;
+
     @Autowired
-    public OrderController(OrderService orderService){
+    public OrderController(OrderService orderService, MockPaymentServiceImpl mockPaymentService, AESConverter aesConverter) {
         this.orderService = orderService;
+        this.mockPaymentService = mockPaymentService;
+        this.aesConverter = aesConverter;
     }
 
     //Get all the orders depending on admin and vendor
     @GetMapping("all")
-    public String getAllOrders(Model model, HttpSession session, HttpServletRequest request){
-        if(request.isUserInRole("ROLE_ADMIN")){
+    public String getAllOrders(Model model, HttpSession session, HttpServletRequest request) {
+        if (request.isUserInRole("ROLE_ADMIN")) {
             model.addAttribute("orders", this.orderService.findAll());
-        } else if (request.isUserInRole("ROLE_CUSTOMER")){
+        } else if (request.isUserInRole("ROLE_CUSTOMER")) {
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            Integer customerId = ((User)auth.getPrincipal()).getId();
+            Integer customerId = ((User) auth.getPrincipal()).getId();
             model.addAttribute("orders", this.orderService.findByCustomer_id(customerId));
         }
         return "order/orderlist";
     }
 
     @GetMapping("shoppingcart")
-    public String getShoppingCart(Model model, HttpServletResponse response, HttpSession session){
+    public String getShoppingCart(Model model, HttpServletResponse response, HttpSession session) {
         ShoppingCart sc = new ShoppingCart();
         List<OrderDetail> od = new ArrayList<>();
         OrderDetail aa = new OrderDetail();
@@ -80,12 +82,13 @@ public class OrderController {
     }
 
     @PostMapping("shoppingcart/update")
-    public @ResponseBody String updateCart(HttpSession session, @RequestParam("productid") String productid, @RequestParam("updatedquantity") String quantity){
+    public @ResponseBody
+    String updateCart(HttpSession session, @RequestParam("productid") String productid, @RequestParam("updatedquantity") String quantity) {
         ShoppingCart sc = (ShoppingCart) session.getAttribute("shoppingcart");
         int pquantity = Integer.parseInt(quantity);
-        for(OrderDetail od : sc.getOrderDetails()){
-            if(od.getProduct().getId().equals(new Integer(productid))){
-                if(pquantity == 0){
+        for (OrderDetail od : sc.getOrderDetails()) {
+            if (od.getProduct().getId().equals(new Integer(productid))) {
+                if (pquantity == 0) {
                     sc.getOrderDetails().remove(od);
                 } else {
                     od.setQuantity(pquantity);
@@ -101,19 +104,27 @@ public class OrderController {
 
     @GetMapping("checkout")
     public String checkoutFromShoppingCart(Model model, HttpSession session,
-                                           @ModelAttribute("customerOrderShippingForm")CustomerOrderShippingForm customerOrderShippingForm){
+                                           @ModelAttribute("customerOrderShippingForm") CustomerOrderShippingForm customerOrderShippingForm) {
+        ShoppingCart sc = (ShoppingCart) session.getAttribute("shoppingcart");
+        if (sc == null || sc.getOrderDetails().isEmpty()) {
+            return "order/emptycart";
+        }
         return "order/checkoutcart";
     }
 
     @PostMapping("checkout")
     public String customerCheckout(@Valid CustomerOrderShippingForm customerOrderShippingForm, BindingResult bindingResult,
-                           @ModelAttribute("paymentForm") PaymentForm paymentForm, HttpSession session){
-        if(bindingResult.hasErrors()){
+                                   @ModelAttribute("paymentForm") PaymentForm paymentForm, HttpSession session) {
+        if (bindingResult.hasErrors()) {
             return "order/checkoutcart";
         } else {
             User user = SignedUser.getSignedUser();
-            Order order = new Order();
-            order.setCustomer((Customer)user);
+            List<OrderDetail> orderdetails = ((ShoppingCart) session.getAttribute("shoppingcart")).getOrderDetails();
+
+            Order order = new Order((Customer) user, new Address(customerOrderShippingForm.getPhoneNumber(),
+                    customerOrderShippingForm.getStreet(), customerOrderShippingForm.getCity(),
+                    customerOrderShippingForm.getState(), customerOrderShippingForm.getZipcode(), user),
+                    orderdetails);
 
             session.setAttribute("checkoutorder", order);
             return "order/submitorder";
@@ -121,26 +132,71 @@ public class OrderController {
     }
 
     @PostMapping("checkout/submit")
-    public String customerOrderPayment(Model model, HttpSession session, @Valid PaymentForm paymentForm, BindingResult bindingResult){
-        //Order order = (Order)session.getAttribute("checkoutorder");
+    public String customerOrderPayment(Model model, HttpSession session, @Valid PaymentForm paymentForm, BindingResult bindingResult,
+                                       @RequestParam("month") String month, @RequestParam("year") String year) {
 
-        return "redirect:/order/all";
+        paymentForm.setCardExpirationDate(month + "/" + year);
+        Order order = (Order) session.getAttribute("checkoutorder");
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("badcard", "Invalid Card details");
+            return "order/submitorder";
+        }
+        User user = SignedUser.getSignedUser();
+        String cardType;
+        if (paymentForm.getCardNumber().charAt(0) == '4') {
+            cardType = "Visa";
+        } else {
+            cardType = "Mastercard";
+        }
+
+        CardDetail cardDetail = new CardDetail(user, cardType, aesConverter.encrypt(paymentForm.getCardHolderName()),
+                aesConverter.encrypt(paymentForm.getCardNumber())
+                , paymentForm.getCardNumber().substring(paymentForm.getCardNumber().length() - 4),
+                aesConverter.encrypt(paymentForm.getCardExpirationDate()),
+                aesConverter.encrypt(paymentForm.getCvv()), aesConverter.encrypt(paymentForm.getCardZipcode()));
+        order.setCard(cardDetail);
+
+        double totalPrice = order.getTotalPriceWithoutTax();
+        double tax = order.getTax();
+        double totalPriceWithTax = order.getTotalPriceWithTax();
+        double VendorEarning = totalPrice * 0.8;
+
+        Integer responseCode = mockPaymentService.purchase(System.currentTimeMillis() + "", paymentForm.getCardNumber(),
+                paymentForm.getCardExpirationDate(), paymentForm.getCardHolderName(), paymentForm.getCvv(),
+                paymentForm.getCardZipcode(), totalPriceWithTax, "4322637205582291");
+        System.out.println(responseCode);
+        if (responseCode != 1) {
+            model.addAttribute("badcard", "Creditcard Declined!");
+            return "/order/submitorder";
+        }
+        order.setOrderDate(new Date());
+        order.setShippingDate(new Date());
+        orderService.saveOrUpdate(order);
+        //Send Email!!!!!!
+        return "/order/ordersuccess";
     }
 
 
     @GetMapping("guest/checkout")
     public String guestCheckoutFromShoppingCart(Model model,
-                                                @ModelAttribute("guestOrderShippingForm")GuestOrderShippingForm guestOrderShippingForm){
+                                                @ModelAttribute("guestOrderShippingForm") GuestOrderShippingForm guestOrderShippingForm) {
         return "order/guestcheckoutcart";
     }
+
     @PostMapping("guest/checkout")
-    public String guestCheckout(@Valid GuestOrderShippingForm GuestOrderShippingForm, BindingResult bindingResult,
-                                   @ModelAttribute("paymentForm") PaymentForm paymentForm,
-                                   HttpSession session){
-        if(bindingResult.hasErrors()){
+    public String guestCheckout(@Valid GuestOrderShippingForm guestOrderShippingForm, BindingResult bindingResult,
+                                @ModelAttribute("paymentForm") PaymentForm paymentForm,
+                                HttpSession session) {
+        if (bindingResult.hasErrors()) {
             return "order/guestcheckoutcart";
         } else {
-            Order order = new Order();
+            Address guestAddress = new Address(guestOrderShippingForm.getPhoneNumber(),
+                    guestOrderShippingForm.getStreet(), guestOrderShippingForm.getCity(),
+                    guestOrderShippingForm.getState(), guestOrderShippingForm.getZipcode(), null);
+            Guest guest = new Guest(guestOrderShippingForm.getFirstName(),
+                    guestOrderShippingForm.getLastName(), guestAddress, guestOrderShippingForm.getEmail());
+            Order order = new Order(guest, guestAddress,
+                    ((ShoppingCart) session.getAttribute("shoppingcart")).getOrderDetails());
 
             session.setAttribute("checkoutorder", order);
             return "order/submitorder";
@@ -148,8 +204,45 @@ public class OrderController {
     }
 
     @PostMapping("guest/checkout/submit")
-    public String guestOrderPayment(Model model, HttpSession session, @Valid PaymentForm paymentForm, BindingResult bindingResult){
-        return "";
+    public String guestOrderPayment(Model model, HttpSession session, @Valid PaymentForm paymentForm, BindingResult bindingResult,
+                                    @RequestParam("month") String month, @RequestParam("year") String year) {
+        paymentForm.setCardExpirationDate(month + "/" + year);
+        Order order = (Order) session.getAttribute("checkoutorder");
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("badcard", "Invalid Card details");
+            return "order/submitorder";
+        }
+        String cardType;
+        if (paymentForm.getCardNumber().charAt(0) == '4') {
+            cardType = "Visa";
+        } else {
+            cardType = "Mastercard";
+        }
+        CardDetail cardDetail = new CardDetail(order.getGuest(), cardType, aesConverter.encrypt(paymentForm.getCardHolderName()),
+                aesConverter.encrypt(paymentForm.getCardNumber())
+                , paymentForm.getCardNumber().substring(paymentForm.getCardNumber().length() - 4),
+                aesConverter.encrypt(paymentForm.getCardExpirationDate()),
+                aesConverter.encrypt(paymentForm.getCvv()), aesConverter.encrypt(paymentForm.getCardZipcode()));
+        order.setCard(cardDetail);
+
+        double totalPrice = order.getTotalPriceWithoutTax();
+        double tax = order.getTax();
+        double totalPriceWithTax = order.getTotalPriceWithTax();
+        double VendorEarning = totalPrice * 0.8;
+
+        Integer responseCode = mockPaymentService.purchase(System.currentTimeMillis() + "", paymentForm.getCardNumber(),
+                paymentForm.getCardExpirationDate(), paymentForm.getCardHolderName(), paymentForm.getCvv(),
+                paymentForm.getCardZipcode(), totalPriceWithTax, "4322637205582291");
+        System.out.println(responseCode);
+        if (responseCode != 1) {
+            model.addAttribute("badcard", "Creditcard Declined!");
+            return "/order/submitorder";
+        }
+        order.setOrderDate(new Date());
+        order.setShippingDate(new Date());
+        orderService.saveOrUpdate(order);
+        //Send Email!!!!!!
+        return "/order/ordersuccess";
     }
 
 

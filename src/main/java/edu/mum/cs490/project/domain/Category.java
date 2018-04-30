@@ -23,13 +23,8 @@ public class Category implements Serializable {
     @NotBlank(message = "Can not be empty")
     private String name;
 
-
-    @OneToMany
-    @JsonIgnore
-    /*private ProductService productService;
-    List<Product> productList = productService.getAllProduct();*/
-    private List<Product> products;
-
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     public Integer getId() {
         return id;
@@ -50,11 +45,11 @@ public class Category implements Serializable {
         this.name = name;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

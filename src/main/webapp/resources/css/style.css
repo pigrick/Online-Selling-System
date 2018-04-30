@@ -2602,6 +2602,11 @@ img {
   width: 100%;
 }
 
+#aa-myaccount .aa-myaccount-area .aa-myaccount-report {
+  display: inline;
+  float: left;
+  width: 100%;
+}
 /*---- Login form ----*/
 
 .aa-login-form input[type="text"],
@@ -2627,7 +2632,7 @@ img {
 .aa-login-form input[type="checkbox"] {
   margin-top: 5px;
 }
-.aa-login-form button {
+.aa-login-form button input {
   font-size: 14px;
   padding: 8px 20px;
   margin-right: 5px;

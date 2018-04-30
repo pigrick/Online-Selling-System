@@ -112,7 +112,7 @@
                                         <li>
                                             <figure>
                                                 <a class="aa-product-img"
-                                                   href="<c:url value="/{productId}=${product.id}" />">
+                                                   href="<c:url value="/product/${product.id}" />">
                                                     <img style="width: 250px; height: 300px"
                                                          src="<c:url value="/resources/images/${product.id}/0.png" />"></a>
 
@@ -121,7 +121,7 @@
                                                 </a>
                                                 <figcaption>
                                                     <h4 class="aa-product-title"><a
-                                                            href="<c:url value="/{productId}=${product.id}" />">${product.name}</a>
+                                                            href="<c:url value="/product/${product.id}" />">${product.name}</a>
                                                     </h4>
                                                     <span class="aa-product-price">$${product.price}</span><span
                                                         class="aa-product-price"><del>$999</del></span>

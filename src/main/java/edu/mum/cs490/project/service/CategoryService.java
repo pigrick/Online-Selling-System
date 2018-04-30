@@ -2,6 +2,7 @@ package edu.mum.cs490.project.service;
 
 import edu.mum.cs490.project.domain.Category;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 
@@ -12,6 +13,8 @@ import java.util.List;
 public interface CategoryService {
 
     List<Category> getAllCategory();
+    @Transactional
+    Category getOne(Integer id);
 
     List<Category> getAllMainCategory();
 

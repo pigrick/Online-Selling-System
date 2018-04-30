@@ -1,33 +1,23 @@
 package edu.mum.cs490.project.controller;
 
 import edu.mum.cs490.project.domain.Product;
-import edu.mum.cs490.project.domain.Status;
-import edu.mum.cs490.project.domain.Vendor;
-import edu.mum.cs490.project.model.Message;
-import edu.mum.cs490.project.model.form.ProductForm;
-import edu.mum.cs490.project.service.CategoryService;
 import edu.mum.cs490.project.service.ProductService;
-import edu.mum.cs490.project.utils.SignedUser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("product")
 public class ProductController {
 
     private final ProductService productService;
-    private final CategoryService categoryService;
 
     @Autowired
-    public ProductController(ProductService productService, CategoryService categoryService) {
+    public ProductController(ProductService productService) {
         this.productService = productService;
-        this.categoryService = categoryService;
     }
 
     @GetMapping("all")
@@ -37,7 +27,19 @@ public class ProductController {
          //return "list-all-products" ;
     }
 
-    @GetMapping("/{productName}")
+    @GetMapping("/{productId}")
+    public String getById(Model theModel, @PathVariable("productId") Integer productId){
+
+        Product theProduct=this.productService.getOne(productId);
+
+        theModel.addAttribute("product", theProduct);
+
+        return "product";
+        //return "get-by-product-id";
+    }
+
+    // /product/name
+    @GetMapping("name/{productName}")
     public String findByProductName(Model theModel, @PathVariable("productName") String productName){
         List<Product> products = this.productService.findByName(productName);
 
@@ -47,7 +49,7 @@ public class ProductController {
         //return "find-by-product-name";
     }
 
-    @GetMapping("/{vendor}")
+    /*@GetMapping("/{vendor}")
     public String findByVendor(Model theModel, @PathVariable("vendor") Integer vendor){
         List<Product> products = this.productService.findByVendor(vendor);
 
@@ -56,8 +58,25 @@ public class ProductController {
         return " ";
         //return "find-by-product-vendor";
     }
+*/
+    @PostMapping("/save")
+    public String saveOrUpdateProduct(@PathVariable("product") Product product){
 
-    @GetMapping("/{category}")
+        this.productService.saveOrUpdateProduct(product);
+
+        return "";
+        //return "list-all-products";
+    }
+
+    @PostMapping("/delete")
+    public String deleteProduct(@PathVariable("product") Product product){
+
+        this.productService.deleteProduct(product);
+        return "";
+        //return "deleteProduct";
+    }
+
+    @GetMapping("category/{category}")
     public String findByCategory(Model theModel, @PathVariable("category") Integer category){
         List<Product> products = this.productService.findByCategory(category);
 

@@ -14,12 +14,23 @@ public class Address {
     private String city;
     private String state;
     private String zipcode;
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private User user;
 
     public Address(){}
+
+    public Address(String phoneNumber, String street, String city, String state, String zipcode, User user) {
+        this.phoneNumber = phoneNumber;
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.zipcode = zipcode;
+        this.user = user;
+        this.status = Status.ENABLED;
+    }
 
     public Integer getId() {
         return id;
@@ -69,11 +80,11 @@ public class Address {
         this.zipcode = zipcode;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

@@ -12,8 +12,16 @@ public class Guest {
     @OneToOne
     private Address address;
     private String email;
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
+    public Guest(String firstName, String lastName, Address address, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.email = email;
+        this.status = Status.ENABLED;
+    }
 
     public Guest(){}
 
@@ -57,11 +65,11 @@ public class Guest {
         this.email = email;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

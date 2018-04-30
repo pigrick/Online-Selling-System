@@ -10,8 +10,9 @@ public class CardDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
     private User owner;
+    @OneToOne(cascade = { CascadeType.PERSIST, CascadeType.MERGE})
+    private Guest guest;
     private String cardType;
     private String cardHolderName;
     private String cardNumber;
@@ -19,8 +20,38 @@ public class CardDetail {
     private String cardExpirationDate;
     private String cvv;
     private String zipcode;
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
+    public CardDetail(Guest owner, String cardType, String cardHolderName, String cardNumber, String last4Digit, String cardExpirationDate, String cvv, String zipcode) {
+        this.guest = owner;
+        this.cardType = cardType;
+        this.cardHolderName = cardHolderName;
+        this.cardNumber = cardNumber;
+        this.last4Digit = last4Digit;
+        this.cardExpirationDate = cardExpirationDate;
+        this.cvv = cvv;
+        this.zipcode = zipcode;
+    }
+
+    public CardDetail(User owner, String cardType, String cardHolderName, String cardNumber, String last4Digit, String cardExpirationDate, String cvv, String zipcode) {
+        this.owner = owner;
+        this.cardType = cardType;
+        this.cardHolderName = cardHolderName;
+        this.cardNumber = cardNumber;
+        this.last4Digit = last4Digit;
+        this.cardExpirationDate = cardExpirationDate;
+        this.cvv = cvv;
+        this.zipcode = zipcode;
+    }
+
+    public Guest getGuest() {
+        return guest;
+    }
+
+    public void setGuest(Guest guest) {
+        this.guest = guest;
+    }
 
     public CardDetail(){}
 
@@ -88,11 +119,11 @@ public class CardDetail {
         this.zipcode = zipcode;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

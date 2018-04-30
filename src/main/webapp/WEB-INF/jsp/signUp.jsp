@@ -14,7 +14,16 @@
 
                             <h4>Register</h4>
 
-
+                            <c:if test="${!empty message}">
+                                <c:choose>
+                                    <c:when test="${message.type eq 'SUCCESS'}">
+                                        <div class="panel-success">${messaage.message}</div>
+                                    </c:when>
+                                    <c:when test="${message.type eq 'FAILED'}">
+                                        <div class="panel-danger">${messaage.message}</div>
+                                    </c:when>
+                                </c:choose>
+                            </c:if>
                             <%--<c:url value="/signup" var="signupProcessingUrl"/>--%>
                             <%--<form:form action="${signupProcessingUrl}" method="post">--%>
                                 <form:form modelAttribute="moduleForm" action="${pageContext.request.contextPath}/signup" method="post">
@@ -46,17 +55,17 @@
                                 <div class="form-group">
                                     <label for="password">Password<span style="color: red">*</span></label>
                                     <form:errors path="password" cssStyle="color: red" />
-                                    <form:input path="password" id="password" type="password" class="form-Control" />
+                                    <form:password path="password" class="form-Control" />
                                 </div>
                                 <div class="form-group">
-                                    <label for="passwordConfirm">Password again<span style="color: red">*</span></label>
-                                    <input type="password" id="passwordConfirm" class="form-Control">
+                                    <label for="rePassword">Password again<span style="color: red">*</span></label>
+                                    <form:password path="rePassword" class="form-Control" />
                                 </div>
 
                                 <script>
-                                    $("#passwordConfirm").on("change paste keyup", function() {
+                                    $("#rePassword").on("change paste keyup", function() {
                                         var password = $("#password").val();
-                                        var confirmPassword = $("#passwordConfirm").val();
+                                        var confirmPassword = $("#rePassword").val();
 
                                         if (password != confirmPassword){
                                             $("#register-submit").prop('disabled', true);

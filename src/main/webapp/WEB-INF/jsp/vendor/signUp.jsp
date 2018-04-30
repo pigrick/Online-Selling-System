@@ -32,6 +32,12 @@
                                     <form:input path="username" id="username" class="form-Control" />
                                 </div>
 
+                                <div class="form-group">
+                                    <label for="companyName">Company name<span style="color: red">*</span></label>
+                                    <form:errors path="companyName" cssStyle="color: red" />
+                                    <form:input path="companyName" id="companyName" class="form-Control" />
+                                </div>
+
 
                                 <div class="form-group">
                                     <label for="email">Email<span style="color: red">*</span></label>
@@ -54,14 +60,14 @@
                                 </div>
 
                                 <%--<div class="form-group">
-                                    <label for="passwordConfirm">Password again<span style="color: red">*</span></label>
-                                    <input type="password" id="passwordConfirm" class="form-Control">
+                                    <label for="rePassword">Password again<span style="color: red">*</span></label>
+                                    <input type="password" id="rePassword" class="form-Control">
                                 </div>--%>
 
                                 <script>
-                                    $("#passwordConfirm").on("change paste keyup", function() {
+                                    $("#rePassword").on("change paste keyup", function() {
                                         var password = $("#password").val();
-                                        var confirmPassword = $("#passwordConfirm").val();
+                                        var confirmPassword = $("#rePassword").val();
 
                                         if (password != confirmPassword){
                                             $("#register-submit").prop('disabled', true);

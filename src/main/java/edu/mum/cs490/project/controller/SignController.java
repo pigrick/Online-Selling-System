@@ -54,7 +54,7 @@ public class SignController {
     public String signUp(@Valid @ModelAttribute("moduleForm") CustomerSignUpForm userForm, BindingResult error, ModelMap model) {
         if (error.hasErrors()) {
             model.put("message", Message.errorOccurred);
-            return "ErrorSingup";
+            return "signUp";
         }
 
         if (userService.loadUserByUsername(userForm.getUsername()) != null) {

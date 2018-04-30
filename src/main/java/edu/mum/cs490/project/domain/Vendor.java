@@ -27,4 +27,8 @@ public class Vendor extends User{
         return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_VENDOR,ROLE_CUSTOMER");
     }
 
+    @Override
+    public String getUserType() {
+        return "vendor";
+    }
 }

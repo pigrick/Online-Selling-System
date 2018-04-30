@@ -24,6 +24,8 @@ public class User implements UserDetails{
     private List<Address> addresses;
     @OneToMany(mappedBy = "owner")
     private List<CardDetail> cards;
+    @Transient
+    private String userType;
 
     public User(){
 
@@ -85,6 +87,10 @@ public class User implements UserDetails{
 
     public void setAddresses(List<Address> addresses) {
         this.addresses = addresses;
+    }
+
+    public String getUserType() {
+        return userType;
     }
 
     @Override

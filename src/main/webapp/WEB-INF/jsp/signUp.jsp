@@ -1,5 +1,5 @@
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@include file="/WEB-INF/include.jsp"%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 
 <%@include file="/WEB-INF/jsp/template/header.jsp"%>

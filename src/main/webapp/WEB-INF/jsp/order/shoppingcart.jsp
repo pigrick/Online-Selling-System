@@ -1,7 +1,6 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="/WEB-INF/include.jsp"%>
+
 <%@include file="/WEB-INF/jsp/template/header.jsp" %>
 
 <link rel="stylesheet" type="text/css" href="/resources/css/order/order.css">
@@ -26,7 +25,7 @@
             <tr id="${orderdetail.product.id}" class='clickable-row' data-href="text">
                 <input type="hidden" id="productid" name="productid" value="${orderdetail.product.id}"/>
                 <td>${orderdetail.product.name}</td>
-                <td id="price"><fmt:formatNumber value="${orderdetail.price}" type="currency"/></td>
+                <td id="price"><fmt:formatNumber value="${orderdetail.price}" type="currency" currencySymbol="$" /></td>
                 <td id="quantity">${orderdetail.quantity}</td>
                 <td>
                     <input type="number" id="cartquantity2" onblur="updateQuantity(${orderdetail.product.id})" min="0" value="${orderdetail.quantity}"/>
@@ -35,7 +34,7 @@
                     <%--</button>--%>
                 </td>
                 <td id="totalprice"><fmt:formatNumber value="${orderdetail.calculateTotalPrice()}"
-                                                      type="currency"/></td>
+                                                      type="currency" currencySymbol="$" /></td>
             </tr>
 
         </c:forEach>
@@ -45,12 +44,12 @@
         <tr>
             <td colspan="3"></td>
             <td>Tax ( 7% )</td>
-            <td id="tax"><fmt:formatNumber value="${shoppingcart.calculateTax()}" type="currency"/></td>
+            <td id="tax"><fmt:formatNumber value="${shoppingcart.calculateTax()}" type="currency" currencySymbol="$" /></td>
         </tr>
         <tr class="border-dark">
             <td colspan="4"></td>
             <td id="totalpricewithtax"><fmt:formatNumber value="${shoppingcart.calculateTotalPriceWithTax()}"
-                                                         type="currency"/></td>
+                                                         type="currency" currencySymbol="$" /></td>
         </tr>
         </tbody>
     </table>

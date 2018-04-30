@@ -1,7 +1,6 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="/WEB-INF/include.jsp"%>
+
 <%@include file="/WEB-INF/jsp/template/header.jsp" %>
 <link rel="stylesheet" type="text/css" href="/resources/css/order/order.css">
 <div class="container tpy">
@@ -21,9 +20,9 @@
             <c:forEach var="orderdetail" items="${shoppingcart.orderDetails}">
                 <tr>
                     <td><a href="">${orderdetail.product.name}</a></td>
-                    <td><fmt:formatNumber value="${orderdetail.price}" type="currency"/></td>
+                    <td><fmt:formatNumber value="${orderdetail.price}" type="currency" currencySymbol="$" /></td>
                     <td>${orderdetail.quantity}</td>
-                    <td><fmt:formatNumber value="${orderdetail.calculateTotalPrice()}" type="currency"/></td>
+                    <td><fmt:formatNumber value="${orderdetail.calculateTotalPrice()}" type="currency" currencySymbol="$" /></td>
                 </tr>
             </c:forEach>
             <tr>
@@ -32,11 +31,11 @@
             <tr>
                 <td colspan="2"></td>
                 <td>Tax ( 7% )</td>
-                <td><fmt:formatNumber value="${shoppingcart.calculateTax()}" type="currency"/></td>
+                <td><fmt:formatNumber value="${shoppingcart.calculateTax()}" type="currency" currencySymbol="$" /></td>
             </tr>
             <tr class="border-dark">
                 <td colspan="3"></td>
-                <td><fmt:formatNumber value="${shoppingcart.calculateTotalPriceWithTax()}" type="currency"/></td>
+                <td><fmt:formatNumber value="${shoppingcart.calculateTotalPriceWithTax()}" type="currency" currencySymbol="$" /></td>
             </tr>
             </tbody>
         </table>

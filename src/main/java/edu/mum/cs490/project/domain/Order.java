@@ -5,11 +5,14 @@ import edu.mum.cs490.project.model.form.CustomerOrderShippingForm;
 import edu.mum.cs490.project.model.form.GuestOrderShippingForm;
 import edu.mum.cs490.project.model.form.PaymentForm;
 import edu.mum.cs490.project.utils.AESConverter;
+import org.bouncycastle.jce.provider.symmetric.AES;
 
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name="`order`", indexes = {@Index(columnList = "customer_id", name = "customer_idx")})
@@ -53,12 +56,10 @@ public class Order {
                 guestOrderShippingForm.getEmail());
     }
 
-    public void receivePaymentFormAndEncrypt(PaymentForm paymentForm){
-        AESConverter aesConverter = new AESConverter();
+    public void receivePaymentFormAndEncrypt(PaymentForm paymentForm, AESConverter aesConverter){
         this.card = new CardDetail();
         this.card.setStatus(Status.ENABLED);
         this.card.setCardNumber(aesConverter.encrypt(paymentForm.getCardNumber()));
-        System.out.println(aesConverter.encrypt(paymentForm.getCardNumber()));
         this.card.setCardHolderName(aesConverter.encrypt(paymentForm.getCardHolderName()));
         this.card.setCvv(aesConverter.encrypt(paymentForm.getCvv()));
         this.card.setCardExpirationDate(aesConverter.encrypt(paymentForm.getCardExpirationDate()));
@@ -178,7 +179,20 @@ public class Order {
         return getTotalPriceWithoutTax() * 0.07;
     }
 
+    public double getCompanyEarning(){
+        return getTotalPriceWithoutTax() * 0.2;
+    }
+
     public double getTotalPriceWithTax(){
         return getTotalPriceWithoutTax() * 1.07;
+    }
+
+    public Map<Integer, Double> getVendorPayment(){
+        Map<Integer,Double> vendorPayment = new HashMap<>();
+        for(OrderDetail od : this.getOrderDetails()){
+            vendorPayment.put(od.getProduct().getVendor().getId(),
+                    vendorPayment.getOrDefault(od.getProduct().getVendor().getId(), 0.0) +  (od.getQuantity() * od.getPrice() * 0.8));
+        }
+        return vendorPayment;
     }
 }

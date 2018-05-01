@@ -37,12 +37,15 @@ public class OrderController {
 
     private final MockPaymentServiceImpl mockPaymentService;
 
+    private final AESConverter aesConverter;
+
 
     @Autowired
-    public OrderController(OrderService orderService, MockPaymentServiceImpl mockPaymentService, ProductService productService) {
+    public OrderController(OrderService orderService, MockPaymentServiceImpl mockPaymentService, ProductService productService, AESConverter aesConverter) {
         this.orderService = orderService;
         this.mockPaymentService = mockPaymentService;
         this.productService = productService;
+        this.aesConverter  = aesConverter;
     }
 
     //Get all the orders depending on admin and vendor
@@ -142,7 +145,7 @@ public class OrderController {
             return "order/submitorder";
         }
         User user = SignedUser.getSignedUser();
-        order.receivePaymentFormAndEncrypt(paymentForm);
+        order.receivePaymentFormAndEncrypt(paymentForm, this.aesConverter);
 
         Integer responseCode = mockPaymentService.purchase(System.currentTimeMillis() + "", paymentForm.getCardNumber(),
                 paymentForm.getCardExpirationDate(), paymentForm.getCardHolderName(), paymentForm.getCvv(),
@@ -158,6 +161,7 @@ public class OrderController {
         order.setOrderDate(new Date());
         order.setShippingDate(new Date());
         orderService.saveOrUpdate(order);
+        System.out.println(order.getVendorPayment());
         //Send Email!!!!!!
         return "order/ordersuccess";
     }
@@ -197,13 +201,12 @@ public class OrderController {
             model.addAttribute("badcard", "Invalid Card details");
             return "order/guestsubmitorder";
         }
-        order.receivePaymentFormAndEncrypt(paymentForm);
+        order.receivePaymentFormAndEncrypt(paymentForm, this.aesConverter);
 
 
         Integer responseCode = mockPaymentService.purchase(System.currentTimeMillis() + "", paymentForm.getCardNumber(),
                 paymentForm.getCardExpirationDate(), paymentForm.getCardHolderName(), paymentForm.getCvv(),
                 paymentForm.getCardZipcode(), order.getTotalPriceWithTax(), "4322637205582291");
-        System.out.println(responseCode);
         if (responseCode != 1) {
             model.addAttribute("badcard", "Creditcard Declined!");
             return "order/guestsubmitorder";
@@ -211,6 +214,7 @@ public class OrderController {
         order.setOrderDate(new Date());
         order.setShippingDate(new Date());
         orderService.saveOrUpdate(order);
+
         //Send Email!!!!!!
         return "order/ordersuccess";
     }

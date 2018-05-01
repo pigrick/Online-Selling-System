@@ -9,6 +9,7 @@ import java.io.Serializable;
 
 public class CustomerOrderShippingForm implements Serializable {
 
+    private Integer addressId;
     @Pattern(regexp = "\\d{10}")
     private String phoneNumber;
     private String street;
@@ -19,6 +20,14 @@ public class CustomerOrderShippingForm implements Serializable {
     private String zipcode;
 
     public CustomerOrderShippingForm(){}
+
+    public Integer getAddressId() {
+        return addressId;
+    }
+
+    public void setAddressId(Integer addressId) {
+        this.addressId = addressId;
+    }
 
     public CustomerOrderShippingForm(String phoneNumber, String street, String city, String state, String zipcode) {
         this.phoneNumber = phoneNumber;

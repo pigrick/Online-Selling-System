@@ -8,6 +8,8 @@ import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 public class PaymentForm implements Serializable {
+
+    private Integer cardId;
     private String cardType;
     @NotBlank
     private String cardHolderName;
@@ -22,6 +24,14 @@ public class PaymentForm implements Serializable {
     private String cardZipcode;
 
     public PaymentForm(){}
+
+    public Integer getCardId() {
+        return cardId;
+    }
+
+    public void setCardId(Integer cardId) {
+        this.cardId = cardId;
+    }
 
     public String getCardType() {
         return cardType;

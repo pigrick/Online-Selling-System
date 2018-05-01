@@ -25,7 +25,7 @@ INSERT INTO category VALUES (4, "Bag",'ENABLED',1);
 
 INSERT INTO user VALUES (3, 'ylai@mum.edu','$2a$10$ibMbCkRcLFo4snX8071GSuJ9bV15Jvl9wFNafEkiSBTFuFt8m9BtO', 'ENABLED', 'yeerick');
 INSERT INTO customer VALUES ('Yee Rick', 'Lai', 3);
-INSERT INTO card_detail VALUES(1, '11/20', 'Yee Rick Lai', '$2a$10$b1eHDXU3TQnCrLBSr1o25OW9o0mo./esjdwkK8JZTyTYl0ggKNutK', 'Visa', '$2a$10$ssDys2u9Qvas6pi0JgATRem3RvVKtJy4r1YVP7G8R.VRwaX6lZoIK', '1111', 'ENABLED', '52557', NULL,3);
+INSERT INTO card_detail VALUES(1, 'WiHDur8q3aeQmyi87fjwaw==', '5wM9IyibGkIBralK1Lb6vA==', 'gMJ7svtpR5YGu5UiYXg0G/gzFwyz9ICwGILHUe1Ku8c=', 'vSi7w/I1S+ABSrUo+vlbIQ==', 'AIZ9VtyuXwhp/Wj+Cz4yug==', '3699', 'ENABLED', '52557', NULL, 3);
 INSERT INTO address VALUES (1, 'Fairfield', '2058871599', 'Iowa', 'ENABLED', '1000 N 4th St', '52557', 3);
 
 INSERT INTO product VALUES(1, 'Branded Mechanical Watch', 'ROLEX VISION',  150, 3, 'ENABLED', 2, 2);

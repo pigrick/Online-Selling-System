@@ -6,6 +6,7 @@ import edu.mum.cs490.project.model.form.CustomerOrderShippingForm;
 import edu.mum.cs490.project.model.form.GuestOrderShippingForm;
 import edu.mum.cs490.project.model.form.PaymentForm;
 import edu.mum.cs490.project.service.OrderService;
+import edu.mum.cs490.project.service.ProductService;
 import edu.mum.cs490.project.service.impl.MockPaymentServiceImpl;
 import edu.mum.cs490.project.utils.AESConverter;
 import edu.mum.cs490.project.utils.SignedUser;
@@ -32,15 +33,19 @@ import java.util.List;
 public class OrderController {
     private final OrderService orderService;
 
+    private final ProductService productService;
+
     private final MockPaymentServiceImpl mockPaymentService;
 
     private final AESConverter aesConverter;
 
+
     @Autowired
-    public OrderController(OrderService orderService, MockPaymentServiceImpl mockPaymentService, AESConverter aesConverter) {
+    public OrderController(OrderService orderService, MockPaymentServiceImpl mockPaymentService, ProductService productService, AESConverter aesConverter) {
         this.orderService = orderService;
         this.mockPaymentService = mockPaymentService;
-        this.aesConverter = aesConverter;
+        this.productService = productService;
+        this.aesConverter  = aesConverter;
     }
 
     //Get all the orders depending on admin and vendor
@@ -61,19 +66,15 @@ public class OrderController {
         ShoppingCart sc = new ShoppingCart();
         List<OrderDetail> od = new ArrayList<>();
         OrderDetail aa = new OrderDetail();
-        Product p = new Product();
-        p.setId(4);
-        p.setName("Mac");
+        Product p = productService.getOne(new Integer(1));
         aa.setProduct(p);
-        aa.setPrice(3000);
+        aa.setPrice(p.getPrice());
         aa.setQuantity(3);
-        Product b = new Product();
-        b.setId(5);
-        b.setName("PC");
+        Product b = productService.getOne(new Integer(2));
         OrderDetail bb = new OrderDetail();
         bb.setProduct(b);
         bb.setQuantity(5);
-        bb.setPrice(600);
+        bb.setPrice(b.getPrice());
         od.add(aa);
         od.add(bb);
         sc.setOrderDetails(od);
@@ -120,11 +121,9 @@ public class OrderController {
         } else {
             User user = SignedUser.getSignedUser();
             List<OrderDetail> orderdetails = ((ShoppingCart) session.getAttribute("shoppingcart")).getOrderDetails();
-
-            Order order = new Order((Customer) user, new Address(customerOrderShippingForm.getPhoneNumber(),
-                    customerOrderShippingForm.getStreet(), customerOrderShippingForm.getCity(),
-                    customerOrderShippingForm.getState(), customerOrderShippingForm.getZipcode(), user),
-                    orderdetails);
+            Order order = new Order();
+            order.receiveCustomerShippingForm(user, customerOrderShippingForm);
+            order.setOrderDetails(orderdetails);
 
             session.setAttribute("checkoutorder", order);
             return "order/submitorder";
@@ -135,38 +134,34 @@ public class OrderController {
     public String customerOrderPayment(Model model, HttpSession session, @Valid PaymentForm paymentForm, BindingResult bindingResult,
                                        @RequestParam("month") String month, @RequestParam("year") String year) {
         System.out.println(bindingResult.toString());
+
         paymentForm.setCardNumber(paymentForm.getCardNumber().replaceAll("\\s",""));
         paymentForm.setCardExpirationDate(month + "/" + year);
+        paymentForm.setLast4Digit(paymentForm.getCardNumber().substring(paymentForm.getCardNumber().length() - 4));
+
         Order order = (Order) session.getAttribute("checkoutorder");
         if (bindingResult.hasErrors()) {
             model.addAttribute("badcard", "Invalid Card details");
             return "order/submitorder";
         }
         User user = SignedUser.getSignedUser();
-
-        CardDetail cardDetail = new CardDetail(user, paymentForm.getCardType(), aesConverter.encrypt(paymentForm.getCardHolderName()),
-                aesConverter.encrypt(paymentForm.getCardNumber())
-                , paymentForm.getCardNumber().substring(paymentForm.getCardNumber().length() - 4),
-                aesConverter.encrypt(paymentForm.getCardExpirationDate()),
-                aesConverter.encrypt(paymentForm.getCvv()), aesConverter.encrypt(paymentForm.getCardZipcode()));
-        order.setCard(cardDetail);
-
-        double totalPrice = order.getTotalPriceWithoutTax();
-        double tax = order.getTax();
-        double totalPriceWithTax = order.getTotalPriceWithTax();
-        double VendorEarning = totalPrice * 0.8;
+        order.receivePaymentFormAndEncrypt(paymentForm, this.aesConverter);
 
         Integer responseCode = mockPaymentService.purchase(System.currentTimeMillis() + "", paymentForm.getCardNumber(),
                 paymentForm.getCardExpirationDate(), paymentForm.getCardHolderName(), paymentForm.getCvv(),
-                paymentForm.getCardZipcode(), totalPriceWithTax, "4322637205582291");
-        System.out.println(responseCode);
+                paymentForm.getCardZipcode(), order.getTotalPriceWithTax(), "4322637205582291");
+
+
         if (responseCode != 1) {
             model.addAttribute("badcard", "Creditcard Declined!");
             return "/order/submitorder";
         }
+
+
         order.setOrderDate(new Date());
         order.setShippingDate(new Date());
         orderService.saveOrUpdate(order);
+        System.out.println(order.getVendorPayment());
         //Send Email!!!!!!
         return "order/ordersuccess";
     }
@@ -184,18 +179,14 @@ public class OrderController {
                                 HttpSession session) {
         if (bindingResult.hasErrors()) {
             return "order/guestcheckoutcart";
-        } else {
-            Address guestAddress = new Address(guestOrderShippingForm.getPhoneNumber(),
-                    guestOrderShippingForm.getStreet(), guestOrderShippingForm.getCity(),
-                    guestOrderShippingForm.getState(), guestOrderShippingForm.getZipcode(), null);
-            Guest guest = new Guest(guestOrderShippingForm.getFirstName(),
-                    guestOrderShippingForm.getLastName(), guestAddress, guestOrderShippingForm.getEmail());
-            Order order = new Order(guest, guestAddress,
-                    ((ShoppingCart) session.getAttribute("shoppingcart")).getOrderDetails());
-
-            session.setAttribute("checkoutorder", order);
-            return "order/guestsubmitorder";
         }
+        Order order = new Order();
+        order.receiveGuestShippingForm(guestOrderShippingForm);
+        order.setOrderDetails(((ShoppingCart) session.getAttribute("shoppingcart")).getOrderDetails());
+
+        session.setAttribute("checkoutorder", order);
+        return "order/guestsubmitorder";
+
     }
 
     @PostMapping("guest/checkout/submit")
@@ -203,27 +194,19 @@ public class OrderController {
                                     @RequestParam("month") String month, @RequestParam("year") String year) {
         paymentForm.setCardNumber(paymentForm.getCardNumber().replaceAll("\\s",""));
         paymentForm.setCardExpirationDate(month + "/" + year);
+        paymentForm.setLast4Digit(paymentForm.getCardNumber().substring(paymentForm.getCardNumber().length() - 4));
+
         Order order = (Order) session.getAttribute("checkoutorder");
         if (bindingResult.hasErrors()) {
             model.addAttribute("badcard", "Invalid Card details");
             return "order/guestsubmitorder";
         }
-        CardDetail cardDetail = new CardDetail(order.getGuest(), paymentForm.getCardType(), aesConverter.encrypt(paymentForm.getCardHolderName()),
-                aesConverter.encrypt(paymentForm.getCardNumber())
-                , paymentForm.getCardNumber().substring(paymentForm.getCardNumber().length() - 4),
-                aesConverter.encrypt(paymentForm.getCardExpirationDate()),
-                aesConverter.encrypt(paymentForm.getCvv()), aesConverter.encrypt(paymentForm.getCardZipcode()));
-        order.setCard(cardDetail);
+        order.receivePaymentFormAndEncrypt(paymentForm, this.aesConverter);
 
-        double totalPrice = order.getTotalPriceWithoutTax();
-        double tax = order.getTax();
-        double totalPriceWithTax = order.getTotalPriceWithTax();
-        double VendorEarning = totalPrice * 0.8;
 
         Integer responseCode = mockPaymentService.purchase(System.currentTimeMillis() + "", paymentForm.getCardNumber(),
                 paymentForm.getCardExpirationDate(), paymentForm.getCardHolderName(), paymentForm.getCvv(),
-                paymentForm.getCardZipcode(), totalPriceWithTax, "4322637205582291");
-        System.out.println(responseCode);
+                paymentForm.getCardZipcode(), order.getTotalPriceWithTax(), "4322637205582291");
         if (responseCode != 1) {
             model.addAttribute("badcard", "Creditcard Declined!");
             return "order/guestsubmitorder";
@@ -231,6 +214,7 @@ public class OrderController {
         order.setOrderDate(new Date());
         order.setShippingDate(new Date());
         orderService.saveOrUpdate(order);
+
         //Send Email!!!!!!
         return "order/ordersuccess";
     }

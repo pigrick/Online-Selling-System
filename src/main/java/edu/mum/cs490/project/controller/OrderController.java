@@ -143,14 +143,8 @@ public class OrderController {
             return "order/submitorder";
         }
         User user = SignedUser.getSignedUser();
-        String cardType;
-        if (paymentForm.getCardNumber().charAt(0) == '4') {
-            cardType = "Visa";
-        } else {
-            cardType = "Mastercard";
-        }
 
-        CardDetail cardDetail = new CardDetail(user, cardType, aesConverter.encrypt(paymentForm.getCardHolderName()),
+        CardDetail cardDetail = new CardDetail(user, paymentForm.getCardType(), aesConverter.encrypt(paymentForm.getCardHolderName()),
                 aesConverter.encrypt(paymentForm.getCardNumber())
                 , paymentForm.getCardNumber().substring(paymentForm.getCardNumber().length() - 4),
                 aesConverter.encrypt(paymentForm.getCardExpirationDate()),
@@ -174,7 +168,7 @@ public class OrderController {
         order.setShippingDate(new Date());
         orderService.saveOrUpdate(order);
         //Send Email!!!!!!
-        return "/order/ordersuccess";
+        return "order/ordersuccess";
     }
 
 
@@ -200,7 +194,7 @@ public class OrderController {
                     ((ShoppingCart) session.getAttribute("shoppingcart")).getOrderDetails());
 
             session.setAttribute("checkoutorder", order);
-            return "order/submitorder";
+            return "order/guestsubmitorder";
         }
     }
 
@@ -212,15 +206,9 @@ public class OrderController {
         Order order = (Order) session.getAttribute("checkoutorder");
         if (bindingResult.hasErrors()) {
             model.addAttribute("badcard", "Invalid Card details");
-            return "order/submitorder";
+            return "order/guestsubmitorder";
         }
-        String cardType;
-        if (paymentForm.getCardNumber().charAt(0) == '4') {
-            cardType = "Visa";
-        } else {
-            cardType = "Mastercard";
-        }
-        CardDetail cardDetail = new CardDetail(order.getGuest(), cardType, aesConverter.encrypt(paymentForm.getCardHolderName()),
+        CardDetail cardDetail = new CardDetail(order.getGuest(), paymentForm.getCardType(), aesConverter.encrypt(paymentForm.getCardHolderName()),
                 aesConverter.encrypt(paymentForm.getCardNumber())
                 , paymentForm.getCardNumber().substring(paymentForm.getCardNumber().length() - 4),
                 aesConverter.encrypt(paymentForm.getCardExpirationDate()),
@@ -238,13 +226,13 @@ public class OrderController {
         System.out.println(responseCode);
         if (responseCode != 1) {
             model.addAttribute("badcard", "Creditcard Declined!");
-            return "/order/submitorder";
+            return "order/guestsubmitorder";
         }
         order.setOrderDate(new Date());
         order.setShippingDate(new Date());
         orderService.saveOrUpdate(order);
         //Send Email!!!!!!
-        return "/order/ordersuccess";
+        return "order/ordersuccess";
     }
 
 

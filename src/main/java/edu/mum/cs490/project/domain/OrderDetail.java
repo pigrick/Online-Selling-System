@@ -11,7 +11,6 @@ public class OrderDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonIgnore
     private Order order;
     @OneToOne(fetch = FetchType.LAZY)
     private Product product;

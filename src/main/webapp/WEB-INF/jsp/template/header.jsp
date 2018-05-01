@@ -102,7 +102,13 @@
                                 </sec:authorize>
                                 <sec:authorize access="!isAuthenticated()">
                                     <li>
-                                        <a href="/login"" >Login</a>
+                                        <a href="/login">Login</a>
+                                    </li>
+                                    <li>
+                                        <a href="/signup">signUp</a>
+                                    </li>
+                                    <li>
+                                        <a href="/vendor/signup">vendor signUp</a>
                                     </li>
                                 </sec:authorize>
                             </ul>
@@ -211,7 +217,15 @@
                                 </li>-->
                             </ul>
                         </li>
-
+                        <sec:authorize access="hasRole('ADMIN')">
+                            <li><a href="/admin/product/m">admin Product Management</a></li>
+                            <li><a href="/admin/category/m">admin category Management</a></li>
+                        </sec:authorize>
+                        <c:if test="${signedUser.userType eq 'vendor'}">
+                            <sec:authorize access="hasRole('VENDOR')">
+                                <li><a href="/vendor/product/m">vendor Product Management</a></li>
+                            </sec:authorize>
+                        </c:if>
                         <li><a href="/contact">Contact</a></li>
                         <sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_VENDOR')">
                             <li><a href="/report/reportFilter">Report</a></li>

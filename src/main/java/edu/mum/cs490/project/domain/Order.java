@@ -132,6 +132,6 @@ public class Order {
     }
 
     public double getTotalPriceWithTax(){
-        return getTotalPriceWithoutTax() * 0.08;
+        return getTotalPriceWithoutTax() * 1.08;
     }
 }

@@ -96,7 +96,7 @@
                 <div class="heading">
                     <h1>Confirm Purchase</h1>
                 </div>
-                <div class="alert-warning">${badcard}</div>
+                <div class="alert-danger">${badcard}</div>
                 <div class="payment">
             <form:form id="submit-payment" modelAttribute="paymentForm" method="post" action="/order/checkout/submit">
                     <form:hidden path="cardType" id="card-type"/>

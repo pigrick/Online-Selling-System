@@ -22,7 +22,7 @@ public class Address {
 
     public Address(){}
 
-    public Address(String phoneNumber, String street, String city, String state, String zipcode, User user) {
+    public Address(Integer id, String phoneNumber, String street, String city, String state, String zipcode, User user) {
         this.phoneNumber = phoneNumber;
         this.street = street;
         this.city = city;
@@ -30,6 +30,7 @@ public class Address {
         this.zipcode = zipcode;
         this.user = user;
         this.status = Status.ENABLED;
+        this.id = id;
     }
 
     public Integer getId() {

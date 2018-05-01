@@ -19,7 +19,7 @@
 
 
                                 <!-- use param.error assuming FormLoginConfigurer#failureUrl contains the query parameter error -->
-                                <c:if test="${param.error != null}">
+                                <c:if test="${SPRING_SECURITY_LAST_EXCEPTION != null}">
                                     <div>
                                         <p id="error" style="color: red"> Failed to login.</p>
                                         <c:if test="${SPRING_SECURITY_LAST_EXCEPTION != null}">

@@ -45,7 +45,11 @@ public class UserServiceImpl<T extends User> implements UserService<T> {
 
     @Override
     public T loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.getByUsername(username);
+        T user = userRepository.getByUsername(username);
+        if (user != null)
+            return user;
+        else
+            throw new UsernameNotFoundException("Username not found");
     }
 
     @Override

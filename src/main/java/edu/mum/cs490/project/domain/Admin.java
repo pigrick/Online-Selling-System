@@ -33,11 +33,6 @@ public class Admin extends User {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN,ROLE_VENDOR,ROLE_CUSTOMER");
-    }
-
-    @Override
-    public String getUserType() {
-        return "admin";
+        return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN");
     }
 }

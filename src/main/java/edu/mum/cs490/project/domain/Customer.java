@@ -50,9 +50,4 @@ public class Customer extends User {
         return AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_CUSTOMER");
     }
 
-    @Override
-    public String getUserType() {
-        return "customer";
-    }
-
 }

@@ -81,17 +81,13 @@
                             <ul class="aa-head-top-nav-right">
                                 <sec:authorize access="isAuthenticated()">
                                     <li><a href="#" style="cursor: default">Welcome: ${signedUser.username} </a></li>
-                                    <c:choose>
-                                        <c:when test="${signedUser.userType eq 'vendor'}">
-                                            <li><a href="#">${signedUser.companyName}</a></li>
-                                        </c:when>
-                                        <c:when test="${signedUser.userType eq 'admin'}">
-                                            <li><a href="#">Admin</a></li>
-                                        </c:when>
-                                        <c:when test="${signedUser.userType eq 'customer'}">
-
-                                        </c:when>
-                                    </c:choose>
+                                    <sec:authorize access="hasRole('VENDOR')">
+                                        <li><a href="#">${signedUser.companyName}</a></li>
+                                    </sec:authorize>
+                                    <sec:authorize access="hasRole('ADMIN')">
+                                        <li><a href="#">Admin</a></li>
+                                    </sec:authorize>
+                                    <sec:authorize access="hasRole('CUSTOMER')"></sec:authorize>
                                     <li><a href="#">My Account</a></li>
                                     <li>
                                         <form id="logoutForm" action="/logout">
@@ -221,11 +217,9 @@
                             <li><a href="/admin/product/m">admin Product Management</a></li>
                             <li><a href="/admin/category/m">admin category Management</a></li>
                         </sec:authorize>
-                        <c:if test="${signedUser.userType eq 'vendor'}">
-                            <sec:authorize access="hasRole('VENDOR')">
-                                <li><a href="/vendor/product/m">vendor Product Management</a></li>
-                            </sec:authorize>
-                        </c:if>
+                        <sec:authorize access="hasRole('VENDOR')">
+                            <li><a href="/vendor/product/m">vendor Product Management</a></li>
+                        </sec:authorize>
                         <li><a href="/contact">Contact</a></li>
                         <sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_VENDOR')">
                             <li><a href="/report/reportFilter">Report</a></li>

@@ -24,8 +24,6 @@ public class User implements UserDetails{
     private List<Address> addresses;
     @OneToMany(mappedBy = "owner")
     private List<CardDetail> cards;
-    @Transient
-    private String userType;
 
     public User(){
 
@@ -89,13 +87,9 @@ public class User implements UserDetails{
         this.addresses = addresses;
     }
 
-    public String getUserType() {
-        return userType;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_GUEST"));
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_CUSTOMER"));
     }
 
     @Override

@@ -1,3 +1,4 @@
+<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 <%--
   Created by IntelliJ IDEA.
   User: chanpiseth
@@ -11,32 +12,36 @@
 
 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
-    <div class="container">
-        <div class="page-header">
-            <h1>${title}</h1>
+    <div class="page-header">
+        <h1>${title}</h1>
+    </div>
+
+    <form:form modelAttribute="category" action="${pageContext.request.contextPath}/admin/category/save" method="post">
+        <div class="form-group">
+            <label class="control-label col-md-4">MainCategory</label>
+            <div class="col-md-8">
+                <sf:select path="id" items="${categories}" itemLabel="name" itemValue="id" class="form-control"/>
+
+                <div class="text-right">
+                    <br/>
+                    <sf:hidden path="parentCategory"/>
+
+                </div>
+            </div>
+
         </div>
 
-        <form:form action="/admin/category/save" method="post" commandName="category">
+        <label class="control-label col-md-4">SubCategory</label>
+        <div class="col-md-8">
+            <sf:select path="name" items="${categories}" itemLabel="name" itemValue="id" class="form-control"/>
+            <div class="text-right">
+                <br/>
 
-            <form:hidden path="name" value="${category.categoryname}" />
-            <div class="form-group"><form:errors path="mainCategoryName" cssStyle="color: red" />
-                <label for="mainCategoryName">MainCategory</label>
-                <form:input path="mainCategoryName" id="mainCategoryName" class="form-Control" />
+                <input type="submit" value="Save" class="btn btn-default">
+                <a href="<c:url value="/admin/category/m" />" class="btn btn-default">Cancel</a>
             </div>
-
-            <div class="form-group"><form:errors path="subCategoryName" cssStyle="color: red" />
-                <label for="subCategoryName">SubCategory</label>
-                <form:input path="subCategoryName" id="subCategoryName" class="form-Control" />
-            </div>
-
-            <input type="submit" value="submit" class="btn btn-default">
-            <a href="<c:url value="/admin/category/m" />" class="btn btn-default">Cancel</a>
-
-        </form:form>
-    </div>
+        </div>
+    </form:form>
 </div>
-
-
-
 
 <%@include file="/WEB-INF/jsp/template/footer.jsp"%>

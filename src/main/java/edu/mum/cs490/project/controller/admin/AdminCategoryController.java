@@ -57,7 +57,22 @@ public class AdminCategoryController {
             return "admin/saveCategory";
         }
         categoryService.save(category);
+        return " redirect:/admin/category/m";
+    }
+
+    @RequestMapping("/delete")
+    public String deleteProductById(@RequestParam(value="id", required=true) Integer categoryId) {
+
+        categoryService.delete(categoryId);
+
         return "redirect:/admin/category/m";
     }
+
+    @ModelAttribute("categories")
+    public List<Category> modelCategories() {
+        return categoryService.getAllCategory();
+    }
+
+
 
 }

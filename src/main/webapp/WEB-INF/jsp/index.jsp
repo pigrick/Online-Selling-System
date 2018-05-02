@@ -124,7 +124,7 @@
                                                             href="<c:url value="/product/${product.id}" />">${product.name}</a>
                                                     </h4>
                                                     <span class="aa-product-price">$${product.price}</span><span
-                                                        class="aa-product-price"><del>$999</del></span>
+                                                        class="aa-product-price"><del>$333</del></span>
                                                 </figcaption>
                                             </figure>
 

@@ -117,7 +117,7 @@ public class AdminUserController {
             model.addAttribute("message", Message.errorOccurred);
             return "admin/user/admin/create";
         }
-        if (adminService.loadUserByUsername(adminForm.getUsername()) != null) {
+        if (adminService.getByUsername(adminForm.getUsername()) != null) {
             model.addAttribute("message", new Message(Message.Type.FAILED, "username.duplicate"));
             result.rejectValue("username", "username.duplicate");
             return "admin/user/admin/create";

@@ -57,7 +57,7 @@ public class SignController {
             return "signUp";
         }
 
-        if (userService.loadUserByUsername(userForm.getUsername()) != null) {
+        if (userService.getByUsername(userForm.getUsername()) != null) {
             error.rejectValue("username", "username.duplicate");
             return "signUp";
         }
@@ -90,7 +90,7 @@ public class SignController {
             return "vendor/signUp";
         }
 
-        if (userService.loadUserByUsername(userForm.getUsername()) != null) {
+        if (userService.getByUsername(userForm.getUsername()) != null) {
             error.rejectValue("username", "username.duplicate");
             return "vendor/signUp";
         }

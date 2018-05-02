@@ -104,8 +104,8 @@ public class TestUserSignController {
                 .andExpect(model().attribute("message", Message.successfullySaved));
 
 
-        Customer customers = (Customer) customerService.loadUserByUsername("uniqueUser1");
-        Vendor vendors = (Vendor) vendorService.loadUserByUsername("uniqueUser2");
+        Customer customers = (Customer) customerService.getByUsername("uniqueUser1");
+        Vendor vendors = (Vendor) vendorService.getByUsername("uniqueUser2");
 
         Assert.assertNotNull(customers);
         Assert.assertNotNull(vendors);

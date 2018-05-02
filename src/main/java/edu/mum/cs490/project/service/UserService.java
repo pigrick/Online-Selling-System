@@ -13,6 +13,8 @@ public interface UserService<T extends User> extends UserDetailsService{
 
     T getById(Integer id);
 
+    T getByUsername(String username);
+
     Boolean existByIdNotAndUsername(Integer id, String username);
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

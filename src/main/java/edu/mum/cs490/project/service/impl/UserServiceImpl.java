@@ -29,6 +29,11 @@ public class UserServiceImpl<T extends User> implements UserService<T> {
     }
 
     @Override
+    public T getByUsername(String username) {
+        return userRepository.getByUsername(username);
+    }
+
+    @Override
     public Boolean existByIdNotAndUsername(Integer id, String username) {
         return userRepository.existByIdNotAndUsername(id, username);
     }

@@ -10,13 +10,15 @@ import java.io.Serializable;
 public class CustomerOrderShippingForm implements Serializable {
 
     private Integer addressId;
-    @Pattern(regexp = "\\d{10}")
+    @Pattern(regexp = "\\d{10}", message = "Pleasee enter your Phone number without symbols and space")
     private String phoneNumber;
+    @NotBlank(message = "Please fill in your shipping street address!")
     private String street;
+    @NotBlank(message = "Please fill in your shipping city address!")
     private String city;
-    @NotNull
+    @NotNull(message = "Please fill in your shipping state address!")
     private String state;
-    @Pattern(regexp = "\\d{5}")
+    @Pattern(regexp = "\\d{5}", message = "Please fill in your 5 digit zipcode!")
     private String zipcode;
 
     public CustomerOrderShippingForm(){}

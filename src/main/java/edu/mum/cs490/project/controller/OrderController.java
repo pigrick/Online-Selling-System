@@ -5,6 +5,7 @@ import edu.mum.cs490.project.model.ShoppingCart;
 import edu.mum.cs490.project.model.form.CustomerOrderShippingForm;
 import edu.mum.cs490.project.model.form.GuestOrderShippingForm;
 import edu.mum.cs490.project.model.form.PaymentForm;
+import edu.mum.cs490.project.service.CustomerService;
 import edu.mum.cs490.project.service.OrderService;
 import edu.mum.cs490.project.service.ProductService;
 import edu.mum.cs490.project.service.impl.MockPaymentServiceImpl;
@@ -35,17 +36,21 @@ public class OrderController {
 
     private final ProductService productService;
 
+    private final CustomerService customerService;
+
     private final MockPaymentServiceImpl mockPaymentService;
 
     private final AESConverter aesConverter;
 
 
     @Autowired
-    public OrderController(OrderService orderService, MockPaymentServiceImpl mockPaymentService, ProductService productService, AESConverter aesConverter) {
+    public OrderController(OrderService orderService, MockPaymentServiceImpl mockPaymentService, CustomerService customerService,
+                           ProductService productService, AESConverter aesConverter) {
         this.orderService = orderService;
         this.mockPaymentService = mockPaymentService;
         this.productService = productService;
         this.aesConverter  = aesConverter;
+        this.customerService = customerService;
     }
 
     //Get all the orders depending on admin and vendor
@@ -87,6 +92,7 @@ public class OrderController {
     String updateCart(HttpSession session, @RequestParam("productid") String productid, @RequestParam("updatedquantity") String quantity) {
         ShoppingCart sc = (ShoppingCart) session.getAttribute("shoppingcart");
         int pquantity = Integer.parseInt(quantity);
+        System.out.println(sc.getOrderDetails());
         for (OrderDetail od : sc.getOrderDetails()) {
             if (od.getProduct().getId().equals(new Integer(productid))) {
                 if (pquantity == 0) {
@@ -110,6 +116,8 @@ public class OrderController {
         if (sc == null || sc.getOrderDetails().isEmpty()) {
             return "order/emptycart";
         }
+        User user = SignedUser.getSignedUser();
+        model.addAttribute("addresses", customerService.findByUser_id(user.getId()));
         return "order/checkoutcart";
     }
 

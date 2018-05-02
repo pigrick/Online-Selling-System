@@ -1,7 +1,9 @@
 package edu.mum.cs490.project.service.impl;
 
+import edu.mum.cs490.project.domain.Address;
 import edu.mum.cs490.project.domain.Customer;
 import edu.mum.cs490.project.domain.Status;
+import edu.mum.cs490.project.repository.AddressRepository;
 import edu.mum.cs490.project.repository.CustomerRepository;
 import edu.mum.cs490.project.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +18,19 @@ import java.util.List;
 public class CustomerServiceImpl extends UserServiceImpl<Customer> implements CustomerService{
 
     private final CustomerRepository repository;
+    private final AddressRepository addressRepository;
 
     @Autowired
-    public CustomerServiceImpl(CustomerRepository repository) {
+    public CustomerServiceImpl(CustomerRepository repository, AddressRepository addressRepository) {
         super(repository);
         this.repository = repository;
+        this.addressRepository = addressRepository;
+    }
+
+
+    @Override
+    public List<Address> findByUser_id(Integer userId) {
+        return this.addressRepository.findByUser_id(userId);
     }
 
     @Override

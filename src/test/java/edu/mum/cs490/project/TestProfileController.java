@@ -58,13 +58,13 @@ public class TestProfileController {
         customerForm.setUsername("yeerick");
 
         mockMvc.perform(post("/profile/edit").flashAttr("editForm", customerForm))
-                .andExpect(model().attribute("message", Message.successfullySaved));
+            .andExpect(model().attribute("message", Message.successfullySaved));
 
-        Customer customer = (Customer) userService.getByUsername("yeerick");
+    Customer customer = (Customer) userService.loadUserByUsername("yeerick");
 
         Assert.assertEquals(customer.getFirstName(), "firstname");
 
-    }
+}
 
     @Test
     @WithUserDetails(value = "akron")
@@ -77,7 +77,7 @@ public class TestProfileController {
         mockMvc.perform(post("/profile/vendor/edit").flashAttr("editForm", vendorForm))
                 .andExpect(model().attribute("message", Message.successfullySaved));
 
-        Vendor vendor = (Vendor) userService.getByUsername("akron");
+        Vendor vendor = (Vendor) userService.loadUserByUsername("akron");
 
         Assert.assertEquals(vendor.getCompanyName(), "companyName");
     }

@@ -7,7 +7,7 @@
 
 
 <div class="container tpy">
-    <h1>Order successfully processed! <br/> An confirmation email is sent to your inbox.</h1>
+    <h1>Order successfully processed! <br/> A confirmation email is sent to your inbox.</h1>
 </div>
 
 <div class="container border mbot">

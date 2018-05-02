@@ -2,6 +2,7 @@ package edu.mum.cs490.project.service.impl;
 
 import edu.mum.cs490.project.domain.Order;
 import edu.mum.cs490.project.domain.Status;
+import edu.mum.cs490.project.repository.AddressRepository;
 import edu.mum.cs490.project.repository.OrderRepository;
 import edu.mum.cs490.project.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,12 @@ public class OrderServiceImpl implements OrderService {
 
     public final OrderRepository orderRespository;
 
-    @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository){
-        this.orderRespository = orderRepository;
+    public final AddressRepository addressRepository;
 
+    @Autowired
+    public OrderServiceImpl(OrderRepository orderRepository, AddressRepository addressRepository){
+        this.orderRespository = orderRepository;
+        this.addressRepository = addressRepository;
     }
 
     @Override
@@ -53,6 +56,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order saveOrUpdate(Order order) {
+        this.addressRepository.save(order.getAddress());
         return this.orderRespository.save(order);
     }
 

@@ -10,11 +10,11 @@ import javax.validation.constraints.Pattern;
 public class GuestOrderShippingForm extends CustomerOrderShippingForm {
 
 
-    @NotBlank
+    @NotBlank(message="Please fill in your First Name")
     private String firstName;
-    @NotBlank
+    @NotBlank(message = "Please fill in your Last name")
     private String lastName;
-    @Email
+    @Email(message = "Please fill in an valid email")
     private String email;
 
     public GuestOrderShippingForm() {

@@ -51,6 +51,8 @@
         <br/>
         <div class="container">
             <h1>Shipping Address Detail</h1>
+            <label>Phone Number: <form:errors path="phoneNumber" cssClass="alert-danger" /> </label>
+            <form:input path="phoneNumber" class="form-control" />
             <label>Street: <form:errors path="street" cssClass="alert-danger"/></label>
             <form:input path="street" class="form-control"/>
 

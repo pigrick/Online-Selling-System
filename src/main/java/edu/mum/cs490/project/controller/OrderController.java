@@ -160,9 +160,12 @@ public class OrderController {
 
         order.setOrderDate(new Date());
         order.setShippingDate(new Date());
-        orderService.saveOrUpdate(order);
-        System.out.println(order.getVendorPayment());
+        order = orderService.saveOrUpdate(order);
         //Send Email!!!!!!
+
+        session.removeAttribute("order");
+        session.removeAttribute("shoppingcart");
+        model.addAttribute("order", order);
         return "order/ordersuccess";
     }
 
@@ -213,9 +216,13 @@ public class OrderController {
         }
         order.setOrderDate(new Date());
         order.setShippingDate(new Date());
-        orderService.saveOrUpdate(order);
+        order = orderService.saveOrUpdate(order);
 
         //Send Email!!!!!!
+
+        session.removeAttribute("order");
+        session.removeAttribute("shoppingcart");
+        model.addAttribute("order", order);
         return "order/ordersuccess";
     }
 

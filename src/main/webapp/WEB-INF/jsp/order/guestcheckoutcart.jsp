@@ -57,6 +57,8 @@
             <form:input path="lastName" class="form-control"/>
             <label>Email: <form:errors path="email" cssClass="alert-danger"/></label>
             <form:input path="email" class="form-control"/>
+            <label>Phone Number: <form:errors path="phoneNumber" cssClass="alert-danger" /> </label>
+            <form:input path="phoneNumber" class="form-control" />
             <label>Street: <form:errors path="street" cssClass="alert-danger"/></label>
             <form:input path="street" class="form-control"/>
             <label>City: <form:errors path="city" cssClass="alert-danger"/></label>

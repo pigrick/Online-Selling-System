@@ -64,7 +64,7 @@ public class Order {
         this.card.setCvv(aesConverter.encrypt(paymentForm.getCvv()));
         this.card.setCardExpirationDate(aesConverter.encrypt(paymentForm.getCardExpirationDate()));
         this.card.setZipcode(aesConverter.encrypt(paymentForm.getCardZipcode()));
-        this.card.setCardType(aesConverter.encrypt(paymentForm.getCardType()));
+        this.card.setCardType(paymentForm.getCardType());
         this.card.setLast4Digit(paymentForm.getLast4Digit());
         this.card.setId(paymentForm.getCardId());
         if(this.customer == null){
@@ -174,6 +174,7 @@ public class Order {
         }
         return sum;
     }
+
 
     public double getTax(){
         return getTotalPriceWithoutTax() * 0.07;

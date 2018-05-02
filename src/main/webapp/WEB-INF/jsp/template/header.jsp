@@ -32,6 +32,9 @@
     <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
 
     <link href="/resources/css/custom.css" rel="stylesheet">
+    <link href="/resources/js/sticky/sticky.css" rel="stylesheet">
+    <link href="/resources/js/smoke/smoke.css" rel="stylesheet">
+    <link href="/resources/js/smoke/themes/gebo.css" rel="stylesheet">
 
     <!-- jQuery library -->
     <script src="/resources/js/jquery.min.js"></script>

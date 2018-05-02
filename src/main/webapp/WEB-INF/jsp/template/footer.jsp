@@ -128,6 +128,14 @@
     </div><!-- /.modal-dialog -->
 </div>
 
+<div id="edit-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div id="edit-target"></div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <!-- Angular JS -->
 
 
@@ -159,5 +167,9 @@
 <script  src="/resources/js/controller.js" ></script>
 <!--payment js-->
 <script src="/resources/paymentdetail/js/jquery.payform.min.js" charset="utf-8"></script>
+<%--Form--%>
+<script src="/resources/js/jquery.form.js" charset="utf-8"></script>
+<script src="/resources/js/smoke/smoke.min.js" charset="utf-8"></script>
+<script src="/resources/js/sticky/sticky.min.js" charset="utf-8"></script>
 </body>
 </html>

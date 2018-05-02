@@ -6,51 +6,26 @@
 
 <div class="container">
     <div class="main">
-
-        <h1 class="page-header">Product Inventory</h1>
-
+        <h1 class="page-header">Manage Admins</h1>
+        <div class="clearfix">
+            <div class="pull-left">
+                <form id="filterForm" class="form-inline">
+                    <input type="text" name="username" class="form-control" width="100" placeholder="Username">
+                    <input type="text" name="lastName" class="form-control" width="100" placeholder="Last Name">
+                    <input type="text" name="firstName" class="form-control" width="100" placeholder="First Name">
+                    <select name="status" class="form-control">
+                        <c:forEach items="${statuses}" var="row">
+                            <option value="${row}">${row}</option>
+                        </c:forEach>
+                    </select>
+                    <button class="btn btn-default" type="button" onclick="module.list()">Search</button>
+                </form>
+            </div>
+        </div>
         <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Name</th>
-                    <th>Status</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach items="${list}" var="row">
-                    <tr>
-                        <td><i>${row.username}</i></td>
-                        <td><i>${row.email}</i></td>
-                        <td>${row.firstName} - ${row.lastName}</td>
-                        <td>${row.status}</td>
-                        <td>
-                                <%--<a href="#" type="button" onclick="module.delete('${row.id}')">
-                                    <i class="glyphicon glyphicon-info-sign"></i>
-                                </a>--%>
-                            <a href="/admin/user/admin/edit">
-                                <i class="glyphicon glyphicon-pencil"></i>
-                            </a>
-                            <c:if test="${row.status eq 'ENABLED'}">
-                                <a href="#delete" type="button" onclick="module.delete('${row.id}')">
-                                    <i class="glyphicon glyphicon-remove"></i>
-                                </a>
-                            </c:if>
-                            <c:if test="${row.status ne 'ENABLED'}">
-                                <a href="#changeStatus" type="button" onclick="module.changeStatus('${row.id}', 'ENABLED')">
-                                    <i class="glyphicon glyphicon-ok"></i>
-                                </a>
-                            </c:if>
-                        </td>
-                    </tr>
-                </c:forEach>
-                </tbody>
-            </table>
+            <div id="list-target"></div>
             <br/>
-            <a href="<c:url value="/admin/u/c/a"/>"><button class="btn btn-primary">Add Admin</button></a>
+            <a href="#create" onclick="module.create()"><button class="btn btn-primary">Add Admin</button></a>
         </div>
     </div>
 </div>
@@ -60,13 +35,27 @@
 <%@include file="/WEB-INF/jsp/template/footer.jsp"%>
 
 <script type="text/javascript">
+    $(function () {
+        module.list();
+    });
     module = {
         list : function(){
-            window.location.replace("/admin/user/admin");
+            $.get('/admin/user/admin/list', $("#filterForm").serialize(), function(data){
+                $('#list-target').html(data);
+            });
+        },
+        create : function(){
+            $('#edit-target').html('');
+            $('#edit-modal').modal({
+                backdrop: 'static'
+            });
+            $.get('/admin/user/admin/create', null, function(data){
+                $('#edit-target').html(data);
+            });
         },
         edit : function(id){
             $('#edit-target').html('');
-            $('#createModal').modal({
+            $('#edit-modal').modal({
                 backdrop: 'static'
             });
             $.get('/admin/user/admin/edit', 'id='+id, function(data){
@@ -74,28 +63,28 @@
             });
         },
         changeStatus: function(id,status){
-            //            smoke.confirm('Are sure to delete this!',function(e){
-//                if (e){
-            $.get('/admin/user/changeStatus', 'id='+id+'&status='+status, function(msg){
-                var message = msg.message || msg;
-                var type = 'st-'+(msg.type || 'success').toLowerCase();
-//                        $.sticky(message, {autoclose: 10000, position:'top-right', type: type});
-                module.list();
-            });
-//                }
-//            }, {cancel:"Cancel", ok:"Delete"});
+            smoke.confirm('Are sure to change status of this!',function(e){
+                if (e){
+                    $.get('/admin/user/changeStatus', 'id='+id+'&status='+status, function(msg){
+                        var message = msg.message || msg;
+                        var type = 'st-'+(msg.type || 'success').toLowerCase();
+                        $.sticky(message, {autoclose: 10000, position:'top-right', type: type});
+                        module.list();
+                    });
+                }
+            }, {cancel:"Cancel", ok:"Change"});
         },
         delete: function(id){
-//            smoke.confirm('Are sure to delete this!',function(e){
-//                if (e){
-            $.get('/admin/user/delete', 'id='+id, function(msg){
-                var message = msg.message || msg;
-                var type = 'st-'+(msg.type || 'success').toLowerCase();
-//                        $.sticky(message, {autoclose: 10000, position:'top-right', type: type});
-                module.list();
-            });
-//                }
-//            }, {cancel:"Cancel", ok:"Delete"});
+            smoke.confirm('Are sure to delete this!',function(e){
+                if (e){
+                    $.get('/admin/user/delete', 'id='+id, function(msg){
+                        var message = msg.message || msg;
+                        var type = 'st-'+(msg.type || 'success').toLowerCase();
+                        $.sticky(message, {autoclose: 10000, position:'top-right', type: type});
+                        module.list();
+                    });
+                }
+            }, {cancel:"Cancel", ok:"Delete"});
         }
     };
 </script>

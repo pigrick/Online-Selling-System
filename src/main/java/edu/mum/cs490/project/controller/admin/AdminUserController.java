@@ -46,6 +46,13 @@ public class AdminUserController {
     }
 
     @RequestMapping(value = {"a", "admin"})
+    public String index(Model model) {
+        model.addAttribute("statuses", Status.values());
+        getAdmins(null, null, null, Status.ENABLED, model);
+        return "admin/user/admin/index";
+    }
+
+    @RequestMapping(value = {"a/l", "admin/list"})
     public String getAdmins(@RequestParam(required = false) String username,
                             @RequestParam(required = false) String firstName,
                             @RequestParam(required = false) String lastName,
@@ -53,13 +60,13 @@ public class AdminUserController {
                             Model model) {
         model.addAttribute("statuses", Status.values());
         model.addAttribute("list", adminService.find(username, firstName, lastName, status));
-        return "admin/user/admin/index";
+        return "admin/user/admin/list";
     }
 
     @RequestMapping(value = {"d", "delete"})
     @ResponseBody
     public Message delete(@RequestParam Integer id,
-                         Model model) {
+                          Model model) {
         userService.delete(id);
 //        model.addAttribute("message", new Message(Message.Type.SUCCESS, "successfully.deleted"));
         return new Message(Message.Type.SUCCESS, "successfully.deleted");
@@ -68,7 +75,7 @@ public class AdminUserController {
     @RequestMapping(value = {"changeStatus"})
     @ResponseBody
     public Message changeStatus(@RequestParam Integer id, @RequestParam Status status,
-                          Model model) {
+                                Model model) {
         userService.changeStatus(id, status);
 //        model.addAttribute("message", new Message(Message.Type.SUCCESS, "successfully.deleted"));
         return new Message(Message.Type.SUCCESS, "successfully.changed.status");
@@ -134,7 +141,7 @@ public class AdminUserController {
     }
 
     @RequestMapping(value = {"m/v", "manage/vendor"})
-    public String getAdmins(@RequestParam(required = false, defaultValue = "") String username,
+    public String getVendors(@RequestParam(required = false, defaultValue = "") String username,
                             @RequestParam(required = false, defaultValue = "") String companyName,
                             @RequestParam(required = false) Status status,
                             Model model) {

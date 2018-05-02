@@ -33,7 +33,7 @@ public class Order {
     @OneToOne(cascade={ CascadeType.PERSIST, CascadeType.MERGE})
     private Address address;
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status = Status.ENABLED;
     @OneToMany(mappedBy = "order", cascade={ CascadeType.PERSIST} )
     private List<OrderDetail> orderDetails;
 

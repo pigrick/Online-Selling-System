@@ -24,7 +24,7 @@ public class Category implements Serializable {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status = Status.ENABLED;
 
     public Integer getId() {
         return id;

@@ -19,7 +19,7 @@ public class User implements UserDetails{
     private String password;
     private String email;
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status = Status.ENABLED;
     @OneToMany(mappedBy = "user")
     private List<Address> addresses;
     @OneToMany(mappedBy = "owner")

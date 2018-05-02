@@ -21,7 +21,7 @@ public class CardDetail {
     private String cvv;
     private String zipcode;
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status = Status.ENABLED;
 
     public CardDetail(Guest owner, String cardType, String cardHolderName, String cardNumber, String last4Digit, String cardExpirationDate, String cvv, String zipcode) {
         this.guest = owner;

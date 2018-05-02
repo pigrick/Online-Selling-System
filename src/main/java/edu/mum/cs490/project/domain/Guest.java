@@ -13,7 +13,7 @@ public class Guest {
     private Address address;
     private String email;
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status = Status.ENABLED;
 
     public Guest(String firstName, String lastName, Address address, String email) {
         this.firstName = firstName;

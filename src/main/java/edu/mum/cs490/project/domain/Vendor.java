@@ -12,6 +12,7 @@ public class Vendor extends User{
 
     public Vendor(){
         super();
+        this.setStatus(Status.DISABLED);
     }
 
     public String getCompanyName() {

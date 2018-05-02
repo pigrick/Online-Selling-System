@@ -45,7 +45,7 @@ public class ReportController {
 
 	@GetMapping(value = "/reportFilter")
 	public String adminReportLoading(Model model, @ModelAttribute("reportFilterForm") ReportFilterForm reportFilterForm) {
-		List<Vendor> vendorList = vendorService.getAll();
+		List<Vendor> vendorList = vendorService.find("", "", Status.ENABLED);
 		List<Category> categoryList = categoryService.getAllCategory();
 		model.addAttribute("vendors", vendorList);
 		model.addAttribute("categories", categoryList);

@@ -15,7 +15,7 @@ public class Address {
     private String state;
     private String zipcode;
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status = Status.ENABLED;
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private User user;

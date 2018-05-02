@@ -36,7 +36,7 @@ public class AdminProductController {
         this.categoryService = categoryService;
     }
 
-    @RequestMapping(value = "/m", method = RequestMethod.GET)
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
     public String productManagement(Model model) {
         List<Product> productsList = productService.getAllProduct();
         model.addAttribute("productList", productsList);

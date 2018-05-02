@@ -29,9 +29,9 @@ public class VendorProductController {
     @Autowired
     private CategoryService categoryService;
 
-    @RequestMapping(value = "/m", method = RequestMethod.GET)
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
     public String productManagement(@AuthenticationPrincipal Vendor vendor, Model model) {
-        List<Product> productsList = productService.findByVendor(vendor.getId());
+        List<Product> productsList = productService.findByVendorAndStatus(vendor, Status.ENABLED);
         model.addAttribute("productList", productsList);
 
         return "vendor/productManagement";
@@ -49,8 +49,7 @@ public class VendorProductController {
         }
         model.addAttribute("categories", categoryService.getAllMainCategory());
 
-        //return "";
-        return "admin/saveProduct";
+        return "vendor/saveProduct";
     }
 
     @PostMapping("/save")
@@ -61,15 +60,16 @@ public class VendorProductController {
 
         if (result.hasErrors()) {
             model.addAttribute("message", new Message(Message.Type.FAILED, "Check your forms!!!"));
-            return "saveProduct";
+            return "vendor/saveProduct";
         }
 
         Product product;
-        if (form.getId() != null) {
+        if (form.getId() == null) {
+            product = new Product();
+        }
+        else{
             product = productService.getOne(form.getId());
         }
-        product = new Product();
-
         product.setStatus(Status.ENABLED);
         product.setCategory(categoryService.getCategoryById(form.getCategoryId()));
         product.setDescription(form.getDescription());
@@ -77,11 +77,17 @@ public class VendorProductController {
         product.setPrice(form.getPrice());
         product.setQuantity(form.getQuantity());
         product.setVendor(vendor);
-
         productService.saveOrUpdateProduct(product);
         model.addAttribute("message", new Message(Message.Type.SUCCESS, "successfully.saved"));
 
-        //return "";
-        return "admin/saveProduct";
+        return "redirect:/vendor/product/all";
     }
+    @GetMapping("/delete")
+    public String deleteProduct(@RequestParam(required = true) Integer id) {
+
+        productService.delete(id);
+
+        return "redirect:/vendor/product/all";
+    }
+
 }

@@ -2,6 +2,7 @@ package edu.mum.cs490.project.service.impl;
 
 import edu.mum.cs490.project.domain.Product;
 import edu.mum.cs490.project.domain.Status;
+import edu.mum.cs490.project.domain.Vendor;
 import edu.mum.cs490.project.repository.ProductRepository;
 import edu.mum.cs490.project.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +75,14 @@ public class ProductServiceImpl implements ProductService {
     public List<Product> findByCategory(Integer categoryId) {
         return this.productRepository.findByCategory_Id(categoryId);
     }
+    @Override
+    public List<Product> findByStatusIsTrue() {
+        return this.productRepository.findByStatusIsTrue();
+    }
 
+    @Override
+    public List<Product>  findByVendorAndStatus(Vendor vendor, Status status) {
+        return this.productRepository.findByVendorAndStatus(vendor,status);
+    }
 
 }

@@ -3,6 +3,7 @@ package edu.mum.cs490.project.service;
 import edu.mum.cs490.project.domain.Product;
 import edu.mum.cs490.project.domain.Status;
 import edu.mum.cs490.project.domain.User;
+import edu.mum.cs490.project.domain.Vendor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,4 +47,10 @@ public interface ProductService {
 
     @Transactional
     List<Product> findByCategory(Integer category);
+
+    @Transactional
+    List<Product> findByStatusIsTrue();
+
+    @Transactional
+    List<Product> findByVendorAndStatus(Vendor vendor, Status status);
 }

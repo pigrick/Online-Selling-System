@@ -17,8 +17,8 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>CategoryId</th>
-                <th>Category</th>
+                <th>MainCategory</th>
+                <th>SubCategory</th>
                 <th></th>
             </tr>
             </thead>
@@ -33,7 +33,6 @@
                             <span class="glyphicon glyphicon-pencil"></span></a>
                         <a href="/admin/category/delete?id=${category.id}">
                             <span class="glyphicon glyphicon-remove"></span></a>
-
                     </td>
                 </tr>
             </c:forEach>
@@ -44,7 +43,5 @@
 </div>
 </div>
 </div>
-
-
 
 <%@include file="/WEB-INF/jsp/template/footer.jsp"%>

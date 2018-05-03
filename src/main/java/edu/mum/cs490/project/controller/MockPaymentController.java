@@ -1,5 +1,6 @@
 package edu.mum.cs490.project.controller;
 
+import edu.mum.cs490.project.domain.TransactionType;
 import edu.mum.cs490.project.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,7 +38,7 @@ public class MockPaymentController {
                                 @PathVariable(value="dstCardNo") String dstCardNo,
                                 @PathVariable(value="cvv") String cvv){
         System.out.println(txnId);
-        System.out.println("Result of payment is " + paymentService.purchase(txnId,srcCardNo,"04/" + expirationDate,nameOnCard, cvv, zipCode,Double.parseDouble(amount),dstCardNo));
+        System.out.println("Result of payment is " + paymentService.doTransaction(txnId,srcCardNo,"04/" + expirationDate,nameOnCard, cvv, zipCode,Double.parseDouble(amount),dstCardNo, TransactionType.PURCHASE));
         return "mock";
     }
 }

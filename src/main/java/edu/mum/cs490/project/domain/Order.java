@@ -30,7 +30,7 @@ public class Order {
     private Date orderDate;
     @Temporal(TemporalType.DATE)
     private Date shippingDate;
-    @OneToOne(cascade={CascadeType.MERGE})
+    @OneToOne(cascade={CascadeType.MERGE, CascadeType.PERSIST})
     private Address address;
     @Enumerated(EnumType.STRING)
     private Status status = Status.ENABLED;
@@ -64,7 +64,7 @@ public class Order {
         this.card.setCvv(aesConverter.encrypt(paymentForm.getCvv()));
         this.card.setCardExpirationDate(aesConverter.encrypt(paymentForm.getCardExpirationDate()));
         this.card.setZipcode(aesConverter.encrypt(paymentForm.getCardZipcode()));
-        this.card.setCardType(paymentForm.getCardType());
+        this.card.setCardType(aesConverter.encrypt(paymentForm.getCardType()));
         this.card.setLast4Digit(paymentForm.getLast4Digit());
         this.card.setId(paymentForm.getCardId());
         if(this.customer == null){
@@ -182,6 +182,10 @@ public class Order {
 
     public double getCompanyEarning(){
         return getTotalPriceWithoutTax() * 0.2;
+    }
+
+    public double getVendorEarning(){
+        return getTotalPriceWithoutTax() * 0.8;
     }
 
     public double getTotalPriceWithTax(){

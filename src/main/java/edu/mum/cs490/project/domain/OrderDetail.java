@@ -84,4 +84,8 @@ public class OrderDetail {
     public double calculateTotalPrice(){
         return this.quantity * this.price;
     }
+
+    public double getVendorEarning(){
+        return calculateTotalPrice() * 0.8;
+    }
 }

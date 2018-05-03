@@ -9,7 +9,7 @@ public class Guest {
     private Integer id;
     private String firstName;
     private String lastName;
-    @OneToOne
+    @OneToOne(cascade=CascadeType.ALL)
     private Address address;
     private String email;
     @Enumerated(EnumType.STRING)

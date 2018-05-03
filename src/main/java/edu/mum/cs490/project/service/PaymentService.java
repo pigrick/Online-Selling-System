@@ -1,20 +1,22 @@
 package edu.mum.cs490.project.service;
 
+import edu.mum.cs490.project.domain.TransactionType;
+
 import javax.management.BadAttributeValueExpException;
 
 public interface PaymentService {
     /**
      *
      * @param txnId
-     * @param srcCardNo - SourceCardNo
+     * @param srcCardNo
      * @param expirationDate
      * @param nameOnCard
      * @param CVV
      * @param zipCode
      * @param amount
-     * @param dstCardNo - DestinationCardNo
+     * @param dstCardNo
+     * @param transactionType
      * @return 1 - success, 2 - not found error, 3 - not enough money, 500 - external system error, 999 - connection error
-     * @throws BadAttributeValueExpException
      */
-    Integer purchase(String txnId, String srcCardNo, String expirationDate, String nameOnCard, String CVV, String zipCode, Double amount, String dstCardNo);
+    Integer doTransaction(String txnId, String srcCardNo, String expirationDate, String nameOnCard, String CVV, String zipCode, Double amount, String dstCardNo, TransactionType transactionType);
 }

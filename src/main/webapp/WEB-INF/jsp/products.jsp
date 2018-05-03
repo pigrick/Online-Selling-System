@@ -21,7 +21,7 @@
 </section>
 
 <!-- product category -->
-<section id="aa-product-category">
+<section id="aa-product-category" ng-app="cartApp"  ng-controller="cartCtrl">
     <div class="container">
         <div class="row">
             <div class="col-lg-9 col-md-9 col-sm-8 col-md-push-3">
@@ -46,15 +46,15 @@
                                 <c:set var="counter" value="${counter + 1}" scope="page"/>
                                 <li id="product-li-number-${counter}">
                                     <figure>
-                                        <a class="aa-product-img" href="/product=${product.id}">
-                                            <img style="width: 250px; height: 300px" src="/images/${product.id}/0.png"></a>
-                                        <a class="aa-add-card-btn" style="cursor: hand" ng-click="addToCart('${product.productId}','${_csrf.parameterName}=${_csrf.token}')">
+                                        <a class="aa-product-img" href="/admin//product=${product.id}">
+                                            <img style="width: 250px; height: 300px" src="/resources/images/${product.id}/0.png"></a>
+                                        <a class="aa-add-card-btn" style="cursor: hand" ng-click="addToCart('${product.id}','${_csrf.parameterName}=${_csrf.token}')">
                                             <span class="fa fa-shopping-cart"></span>Add To Cart
                                         </a>
                                         <figcaption>
-                                            <h4 class="aa-product-title"><a href="/product=${product.id}">${product.productName}</a></h4>
+                                            <h4 class="aa-product-title"><a href="/product=${product.id}">${product.name}</a></h4>
                                             <span class="aa-product-price">$${product.price}</span><span class="aa-product-price"><del>$999</del></span>
-                                            <span class="aa-product-descrip">${product.productSummary}</span>
+                                            <span class="aa-product-descrip">${product.description}</span>
                                         </figcaption>
                                     </figure>
                                     <!-- product badge -->

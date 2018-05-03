@@ -32,6 +32,4 @@ ${title}
 
 </body>
 
-
-
 <%@include file="/WEB-INF/jsp/template/footer.jsp"%>

@@ -48,6 +48,8 @@ public interface ProductService {
     @Transactional
     List<Product> findByCategory(Integer category);
 
+
+
     @Transactional
     List<Product> findByStatusIsTrue();
 

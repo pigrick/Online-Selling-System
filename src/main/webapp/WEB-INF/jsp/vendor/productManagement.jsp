@@ -4,11 +4,11 @@
 
 <!--<h1>Product Inventory</h1> -->
 
-<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+<div class="col-sm-10 col-sm-offset-2 col-md-9 col-md-offset-2 main">
 
-    <h1 class="page-header">Product Inventory</h1>
+    <h1 class="page-header">${title}</h1>
 
-    <div class="table-responsive">
+       <div class="table-responsive">
         <table class="table table-striped">
 
             <thead>
@@ -16,9 +16,8 @@
                 <th>Name</th>
                 <th>Quantity</th>
                 <th>Price</th>
+                <th>Category</th>
                 <th>Description</th>
-                <th>Status</th>
-                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -27,11 +26,9 @@
                     <td>${product.name}</td>
                     <td>${product.quantity}</td>
                     <td>${product.price}</td>
+                    <td>${product.category.getName()}</td>
                     <td>${product.description}</td>
-                    <td>${product.status}</td>
                     <td>
-                        <a href="#">
-                            <span class="glyphicon glyphicon-info-sign"></span></a>
                         <a href="/vendor/product/save?id=${product.id}">
                             <span class="glyphicon glyphicon-pencil"></span></a>
                         <a href="/vendor/product/delete?id=${product.id}"

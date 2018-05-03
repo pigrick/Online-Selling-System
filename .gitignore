@@ -4,6 +4,8 @@
 /out/
 /classes/
 
+*.properties
+
 ### STS ###
 .apt_generated
 .classpath

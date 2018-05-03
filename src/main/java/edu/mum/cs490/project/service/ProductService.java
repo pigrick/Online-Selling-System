@@ -39,7 +39,7 @@ public interface ProductService {
     List<Product> findByVendor(Integer vendor);
 
     @Transactional
-    @PreAuthorize("#user.id == principal.id or hasRole('ROLE_ADMIN') or hasRole('ROLE_VENDOR')")
+    @PreAuthorize("#user.id == principal.id  or hasRole('ROLE_VENDOR')")
     void saveOrUpdateProduct(Product product);
 
     @Transactional

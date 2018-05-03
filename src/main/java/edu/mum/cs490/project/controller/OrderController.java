@@ -12,6 +12,7 @@ import edu.mum.cs490.project.service.impl.MockPaymentServiceImpl;
 import edu.mum.cs490.project.utils.AESConverter;
 import edu.mum.cs490.project.utils.SignedUser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -19,10 +20,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.awt.print.Pageable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -65,6 +68,38 @@ public class OrderController {
         }
         return "order/orderlist";
     }
+    @GetMapping("customer/all/{page}")
+    public String getAllCustomerOrderByPage(Model model, @PathVariable("page") int page){
+        Customer customer = (Customer)SignedUser.getSignedUser();
+        Page<Order> orders = orderService.findByCustomer_id(customer.getId(), page);
+
+        int current = orders.getNumber() + 1;
+        int begin = Math.max(1, current - 5);
+        int end = Math.min(begin + 10, orders.getTotalPages());
+
+        model.addAttribute("orders", orders);
+        model.addAttribute("beginIndex", begin);
+        model.addAttribute("endIndex", end);
+        model.addAttribute("currentIndex", current);
+
+        return "order/orderlist";
+    }
+
+    @GetMapping("customer/{orderId}")
+    public String getCustomerOrder(Model model, @PathVariable("orderId") Integer orderId){
+        Order order = orderService.findById(orderId);
+        Customer customer = (Customer)SignedUser.getSignedUser();
+        if(order == null){
+            return "redirect:/order/customer/all";
+        } else if(order.getCustomer().getId().equals(customer.getId())){
+            model.addAttribute("order",order);
+            return "order/orderreceipt";
+        } else {
+            return "redirect:/order/customer/all";
+        }
+
+    }
+
 
     @GetMapping("shoppingcart")
     public String getShoppingCart(Model model, HttpServletResponse response, HttpSession session) {
@@ -78,7 +113,7 @@ public class OrderController {
         Product b = productService.getOne(new Integer(3));
         OrderDetail bb = new OrderDetail();
         bb.setProduct(b);
-        bb.setQuantity(5);
+        bb.setQuantity(1);
         bb.setPrice(b.getPrice());
         od.add(aa);
         od.add(bb);
@@ -91,18 +126,8 @@ public class OrderController {
     public @ResponseBody
     String updateCart(HttpSession session, @RequestParam("productid") String productid, @RequestParam("updatedquantity") String quantity) {
         ShoppingCart sc = (ShoppingCart) session.getAttribute("shoppingcart");
-        int pquantity = Integer.parseInt(quantity);
-        System.out.println(sc.getOrderDetails());
-        for (OrderDetail od : sc.getOrderDetails()) {
-            if (od.getProduct().getId().equals(new Integer(productid))) {
-                if (pquantity == 0) {
-                    sc.getOrderDetails().remove(od);
-                } else {
-                    od.setQuantity(pquantity);
-                }
+        sc.update(Integer.parseInt(productid),Integer.parseInt(quantity)) ;
 
-            }
-        }
 
         session.setAttribute("shoppingcart", sc);
         return "success";

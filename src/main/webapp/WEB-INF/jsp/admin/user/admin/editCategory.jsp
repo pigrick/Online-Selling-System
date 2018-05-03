@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
-  User: Erdenebayar
-  Date: 5/2/2018
-  Time: 2:32 PM
+  User: chanpiseth
+  Date: 5/3/2018
+  Time: 7:47 AM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -31,28 +31,24 @@
     <h4 class="modal-title">Edit <i>${adminForm.username}</i> Admin</h4>
 </div>
 <div class="modal-body">
-    <form:form modelAttribute="adminForm" method="post">
+    <form:form modelAttribute="CategoryForm" method="post">
         <form:hidden path="id"/>
         <div class="form-group">
-            <form:errors path="firstName" cssStyle="color: red" />
-            <label for="firstName">firstName</label>
-            <form:input path="firstName" class="form-Control" />
+            <form:errors path="maincategory" cssStyle="color: red" />
+            <label for="maincategory">ManinCategory</label>
+            <form:input path="maincategory" class="form-Control" />
         </div>
         <div class="form-group">
-            <form:errors path="lastName" cssStyle="color: red" />
-            <label for="lastName">lastName</label>
-            <form:input path="lastName" class="form-Control" />
+            <form:errors path="subcategory" cssStyle="color: red" />
+            <label for="subcategory">SubCategory</label>
+            <form:input path="subcategory" class="form-Control" />
         </div>
         <div class="form-group">
-            <form:errors path="username" cssStyle="color: red" />
-            <label for="username">username</label>
-            <form:input path="username" class="form-Control" />
+            <form:errors path="status" cssStyle="color: red" />
+            <label for="status">Status</label>
+            <form:input path="status" class="form-Control" />
         </div>
-        <div class="form-group">
-            <form:errors path="email" cssStyle="color: red" />
-            <label for="email">email</label>
-            <form:input path="email" type="email" class="form-Control" />
-        </div>
+
     </form:form>
 </div>
 <div class="modal-footer">

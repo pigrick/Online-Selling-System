@@ -4,11 +4,17 @@ import edu.mum.cs490.project.domain.*;
 import edu.mum.cs490.project.framework.observer.*;
 import edu.mum.cs490.project.framework.template.PurchaseTemplate;
 import edu.mum.cs490.project.framework.template.impl.PurchaseTemplateImpl;
+import edu.mum.cs490.project.repository.AddressRepository;
 import edu.mum.cs490.project.repository.CardDetailRepository;
 import edu.mum.cs490.project.repository.OrderRepository;
 import edu.mum.cs490.project.service.OrderService;
 import edu.mum.cs490.project.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +27,17 @@ public class OrderServiceImpl implements OrderService {
     public final OrderRepository orderRespository;
     public final CardDetailRepository cardDetailRepository;
     public final PaymentService paymentService;
+    public final AddressRepository addressRepository;
 
+    private static final int PAGE_SIZE = 5;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, CardDetailRepository cardDetailRepository, PaymentService paymentService){
+    public OrderServiceImpl(OrderRepository orderRepository, CardDetailRepository cardDetailRepository,
+                            PaymentService paymentService, AddressRepository addressRepository){
         this.orderRespository = orderRepository;
         this.cardDetailRepository = cardDetailRepository;
         this.paymentService = paymentService;
+        this.addressRepository = addressRepository;
     }
 
     @Value("${card.detail.id.oss}")
@@ -60,12 +70,23 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Order findById(Integer orderId) {
+        return this.orderRespository.findById(orderId).orElse(null);
+    }
+
+    @Override
+    public Page<Order> findByCustomer_id(Integer customerId, int page) {
+        return this.orderRespository.findByCustomer_id(customerId, PageRequest.of(page-1, PAGE_SIZE));
+    }
+
+    @Override
     public List<Order> findByVendor_idBetweenDate(Integer vendorId, Date begin, Date end) {
         return this.orderRespository.findByVendor_idBetweenDate(vendorId, begin, end);
     }
 
     @Override
     public Order saveOrUpdate(Order order) {
+        this.addressRepository.save(order.getAddress());
         return this.orderRespository.save(order);
     }
 

@@ -11,14 +11,26 @@ created by Pagmaa
 
 <body>
 
-<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+<div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 main">
 
 <div class="container">
     <div class="page-header">
         <h1>${title}</h1>
     </div>
 
-<form:form modelAttribute="productForm" action="${pageContext.request.contextPath}/vendor/product/save" method="post">
+    <c:if test="${!empty message}">
+        <c:choose>
+            <c:when test="${message.type eq 'SUCCESS'}">
+                <div class="panel-success">${message.message}</div>
+            </c:when>
+            <c:when test="${message.type eq 'FAILED'}">
+                <div class="panel-danger" style="border: 2px solid red; margin: 10px;">${message.message}</div>
+            </c:when>
+        </c:choose>
+    </c:if>
+
+<form:form modelAttribute="productForm" action="${pageContext.request.contextPath}/vendor/product/save" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" /><br/>
     <table class="table table-hover">
         <tbody>
         <tr>
@@ -41,7 +53,7 @@ created by Pagmaa
 
         <tr>
             <td><label>Quantity:</label></td>
-            <td><form:input path="quantity" /></td>
+            <td><form:input path="quantity" type="number"/></td>
         </tr>
 
         <tr>
@@ -57,7 +69,7 @@ created by Pagmaa
         <tr>
             <td><label></label></td>
             <td><a href="/vendor/product/all"
-                    onclick="$window.location.href='productManagement'"><button class="btn btn-primary">Add Product</button></a></td>
+                    onclick="$window.location.href='vendor/productManagement'"><button class="btn btn-primary">Save</button></a></td>
         </tr>
 
         </tbody>

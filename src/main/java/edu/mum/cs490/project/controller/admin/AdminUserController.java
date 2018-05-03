@@ -140,36 +140,42 @@ public class AdminUserController {
         return "admin/user/admin/create";
     }
 
-    @RequestMapping(value = {"m/v", "manage/vendor"})
-    public String getVendors(@RequestParam(required = false, defaultValue = "") String username,
-                            @RequestParam(required = false, defaultValue = "") String companyName,
-                            @RequestParam(required = false) Status status,
+    @RequestMapping(value = {"v", "vendor"})
+    public String getVendors(Model model) {
+        model.addAttribute("statuses", Status.values());
+        return "admin/user/vendor/index";
+    }
+
+    @RequestMapping(value = {"v/l", "vendor/list"})
+    public String getAdmins(@RequestParam(required = false) String username,
+                            @RequestParam(required = false) String companyName,
+                            @RequestParam(required = false, defaultValue = "ENABLED") Status status,
                             Model model) {
         model.addAttribute("statuses", Status.values());
         model.addAttribute("list", vendorService.find(username, companyName, status));
-        return "admin/user/vendorManagement";
+        return "admin/user/vendor/list";
     }
 
-    @GetMapping(value = {"e/v", "edit/vendor"})
+    @GetMapping(value = {"v/e", "vendor/edit"})
     public String editVendor(@RequestParam Integer id, Model model) {
         Vendor vendor = vendorService.getById(id);
         if (vendor == null) {
             model.addAttribute("message", new Message(Message.Type.FAILED, "user.not.found"));
         }
         model.addAttribute("vendorForm", new VendorForm(vendor));
-        return "admin/user/editVendor";
+        return "admin/user/vendor/edit";
     }
 
-    @PostMapping(value = {"e/v", "edit/vendor"})
+    @PostMapping(value = {"v/e", "vendor/edit"})
     public String editVendor(@Valid @ModelAttribute("vendorForm") VendorForm vendorForm, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("message", Message.errorOccurred);
-            return "admin/user/editVendor";
+            return "admin/user/vendor/edit";
         }
         if (vendorService.existByIdNotAndUsername(vendorForm.getId(), vendorForm.getUsername())) {
             model.addAttribute("message", new Message(Message.Type.FAILED, "username.duplicate"));
             result.rejectValue("username", "username.duplicate");
-            return "admin/user/editVendor";
+            return "admin/user/vendor/edit";
         }
         Vendor vendor = vendorService.getById(vendorForm.getId());
         vendor.setEmail(vendorForm.getEmail());
@@ -177,40 +183,46 @@ public class AdminUserController {
         vendor.setCompanyName(vendorForm.getCompanyName());
         vendorService.saveOrUpdate(vendor);
         model.addAttribute("message", Message.successfullySaved);
-        return "admin/user/editVendor";
+        return "admin/user/vendor/edit";
     }
 
-    @RequestMapping(value = {"m/c", "manage/customer"})
-    public String getCustomers(@RequestParam(required = false, defaultValue = "") String username,
-                               @RequestParam(required = false, defaultValue = "") String firstName,
-                               @RequestParam(required = false, defaultValue = "") String lastName,
+    @RequestMapping(value = {"c", "customer"})
+    public String getCustomers(Model model) {
+        model.addAttribute("statuses", Status.values());
+        return "admin/user/customer/index";
+    }
+
+    @RequestMapping(value = {"c/l", "customer/list"})
+    public String getCustomers(@RequestParam(required = false) String username,
+                               @RequestParam(required = false) String firstName,
+                               @RequestParam(required = false) String lastName,
                                @RequestParam(required = false, defaultValue = "ENABLED") Status status,
                                Model model) {
         model.addAttribute("statuses", Status.values());
         model.addAttribute("list", customerService.find(username, firstName, lastName, status));
-        return "admin/user/customerManagement";
+        return "admin/user/customer/list";
     }
 
-    @GetMapping(value = {"e/c", "edit/customer"})
+    @GetMapping(value = {"c/e", "customer/edit"})
     public String editCustomer(@RequestParam Integer id, Model model) {
         Customer customer = customerService.getById(id);
         if (customer == null) {
             model.addAttribute("message", new Message(Message.Type.FAILED, "user.not.found"));
         }
         model.addAttribute("customerForm", new CustomerForm(customer));
-        return "admin/user/editCustomer";
+        return "admin/user/customer/edit";
     }
 
-    @PostMapping(value = {"e/c", "edit/customer"})
+    @PostMapping(value = {"c/e", "customer/edit"})
     public String editCustomer(@Valid @ModelAttribute("customerForm") CustomerForm customerForm, BindingResult result, Model model) {
         if (result.hasErrors()) {
             model.addAttribute("message", Message.errorOccurred);
-            return "admin/user/editCustomer";
+            return "admin/user/customer/edit";
         }
         if (customerService.existByIdNotAndUsername(customerForm.getId(), customerForm.getUsername())) {
             model.addAttribute("message", new Message(Message.Type.FAILED, "username.duplicate"));
             result.rejectValue("username", "username.duplicate");
-            return "admin/user/editCustomer";
+            return "admin/user/customer/edit";
         }
         Customer customer = customerService.getById(customerForm.getId());
         customer.setEmail(customerForm.getEmail());
@@ -219,7 +231,7 @@ public class AdminUserController {
         customer.setFirstName(customerForm.getFirstName());
         customerService.saveOrUpdate(customer);
         model.addAttribute("message", Message.successfullySaved);
-        return "admin/user/editCustomer";
+        return "admin/user/customer/edit";
     }
 
 }

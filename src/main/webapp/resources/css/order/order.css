@@ -14,3 +14,13 @@
 .inlineForm{
     display: inline;
 }
+
+.receiptOrder{
+    font-weight: bold;
+    font-size: 1.5em;
+    color: sandybrown;
+}
+
+.orderHeader{
+    background-color: lightgrey;
+}

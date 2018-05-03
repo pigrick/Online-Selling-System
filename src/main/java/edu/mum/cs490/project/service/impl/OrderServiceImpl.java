@@ -4,6 +4,7 @@ import edu.mum.cs490.project.domain.*;
 import edu.mum.cs490.project.framework.observer.*;
 import edu.mum.cs490.project.framework.template.PurchaseTemplate;
 import edu.mum.cs490.project.framework.template.impl.PurchaseTemplateImpl;
+import edu.mum.cs490.project.repository.AddressRepository;
 import edu.mum.cs490.project.repository.CardDetailRepository;
 import edu.mum.cs490.project.repository.OrderRepository;
 import edu.mum.cs490.project.service.OrderService;
@@ -26,15 +27,17 @@ public class OrderServiceImpl implements OrderService {
     public final OrderRepository orderRespository;
     public final CardDetailRepository cardDetailRepository;
     public final PaymentService paymentService;
-
+    public final AddressRepository addressRepository;
 
     private static final int PAGE_SIZE = 5;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, CardDetailRepository cardDetailRepository, PaymentService paymentService){
+    public OrderServiceImpl(OrderRepository orderRepository, CardDetailRepository cardDetailRepository,
+                            PaymentService paymentService, AddressRepository addressRepository){
         this.orderRespository = orderRepository;
         this.cardDetailRepository = cardDetailRepository;
         this.paymentService = paymentService;
+        this.addressRepository = addressRepository;
     }
 
     @Value("${card.detail.id.oss}")
@@ -83,6 +86,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order saveOrUpdate(Order order) {
+        this.addressRepository.save(order.getAddress());
         return this.orderRespository.save(order);
     }
 

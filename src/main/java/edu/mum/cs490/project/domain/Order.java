@@ -30,7 +30,7 @@ public class Order {
     private Date orderDate;
     @Temporal(TemporalType.DATE)
     private Date shippingDate;
-    @OneToOne(cascade={CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToOne(cascade={CascadeType.MERGE})
     private Address address;
     @Enumerated(EnumType.STRING)
     private Status status = Status.ENABLED;

@@ -33,4 +33,18 @@ public class ShoppingCart {
     public double calculateTotalPriceWithTax(){
         return calculateTotalPrice() * 1.07;
     }
+
+    public void update(Integer productid, int quantity){
+        int len = this.getOrderDetails().size();
+        for(int i = 0; i< len; i++){
+            if (this.getOrderDetails().get(i).getProduct().getId().equals(new Integer(productid))) {
+                if (quantity == 0) {
+                    this.getOrderDetails().remove(i);
+                } else {
+                    this.getOrderDetails().get(i).setQuantity(quantity);
+                }
+
+            }
+        }
+    }
 }

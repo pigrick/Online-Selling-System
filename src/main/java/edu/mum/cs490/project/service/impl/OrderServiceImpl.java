@@ -6,6 +6,10 @@ import edu.mum.cs490.project.repository.AddressRepository;
 import edu.mum.cs490.project.repository.OrderRepository;
 import edu.mum.cs490.project.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +23,8 @@ public class OrderServiceImpl implements OrderService {
     public final OrderRepository orderRespository;
 
     public final AddressRepository addressRepository;
+
+    private static final int PAGE_SIZE = 5;
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository, AddressRepository addressRepository){
@@ -47,6 +53,16 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> findByVendor_id(Integer vendorId) {
         return this.orderRespository.findByVendor_id(vendorId);
+    }
+
+    @Override
+    public Order findById(Integer orderId) {
+        return this.orderRespository.findById(orderId).orElse(null);
+    }
+
+    @Override
+    public Page<Order> findByCustomer_id(Integer customerId, int page) {
+        return this.orderRespository.findByCustomer_id(customerId, PageRequest.of(page-1, PAGE_SIZE));
     }
 
     @Override

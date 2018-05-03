@@ -1,9 +1,114 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="/WEB-INF/include.jsp"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@include file="/WEB-INF/jsp/template/header.jsp" %>
+<link rel="stylesheet" type="text/css" href="/resources/css/order/order.css">
 
+<div class="container tpy">
+    <div class="container">
+        <h1>Orders</h1>
+    </div>
 
+    <c:forEach var="order" items="${orders.content}">
+        <div class="row addborder">
+            <div class="col orderHeader">
+                <div class="row">
+                    <div class="col-sm-4">
+                        Order Placed:<br />
+                        <fmt:formatDate type="date" value="${order.orderDate}"/>
+                    </div>
+                    <div class="col-sm-4">
+                        Total: <br />
+                        <fmt:formatNumber value="${order.totalPriceWithTax}" type="currency" currencySymbol="$"/>
+                    </div>
+                    <div class="col-sm-4">
+                        <a class="receiptOrder" href="/order/customer/${order.id}">Receipt</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">Product Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Total Price</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <c:forEach var="orderdetail" items="${order.orderDetails}">
+                        <tr>
+                            <td><a href="">${orderdetail.product.name}</a></td>
+                            <td><fmt:formatNumber value="${orderdetail.price}" type="currency" currencySymbol="$"/></td>
+                            <td>${orderdetail.quantity}</td>
+                            <td><fmt:formatNumber value="${orderdetail.calculateTotalPrice()}" type="currency"
+                                                  currencySymbol="$"/></td>
+                        </tr>
+                    </c:forEach>
+                    <tr>
+                        <td colspan="4"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td>Tax ( 7% )</td>
+                        <td id="tax"><fmt:formatNumber value="${order.tax}" type="currency"
+                                                       currencySymbol="$"/></td>
+                    </tr>
+                    <tr class="border-dark">
+                        <td colspan="3"></td>
+                        <td id="totalpricewithtax"><fmt:formatNumber value="${order.totalPriceWithTax}"
+                                                                     type="currency" currencySymbol="$"/></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </c:forEach>
+    <c:url var="firstUrl" value="/order/customer/all/1" />
+    <c:url var="lastUrl" value="/order/customer/all/${orders.totalPages}" />
+    <c:url var="prevUrl" value="/order/customer/all/${currentIndex - 1}" />
+    <c:url var="nextUrl" value="/order/customer/all/${currentIndex + 1}" />
+
+    <div class="container">
+        <ul class="pagination">
+            <c:choose>
+                <c:when test="${currentIndex == 1}">
+                    <li class="disabled"><a href="#">&lt;&lt;</a></li>
+                    <li class="disabled"><a href="#">&lt;</a></li>
+                </c:when>
+                <c:otherwise>
+                    <li><a href="${firstUrl}">&lt;&lt;</a></li>
+                    <li><a href="${prevUrl}">&lt;</a></li>
+                </c:otherwise>
+            </c:choose>
+            <c:forEach var="i" begin="${beginIndex}" end="${endIndex}">
+                <c:url var="pageUrl" value="/order/customer/all/${i}" />
+                <c:choose>
+                    <c:when test="${i == currentIndex}">
+                        <li class="active"><a href="${pageUrl}"><c:out value="${i}" /></a></li>
+                    </c:when>
+                    <c:otherwise>
+                        <li><a href="${pageUrl}"><c:out value="${i}" /></a></li>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+            <c:choose>
+                <c:when test="${currentIndex == orders.totalPages}">
+                    <li class="disabled"><a href="#">&gt;</a></li>
+                    <li class="disabled"><a href="#">&gt;&gt;</a></li>
+                </c:when>
+
+                <c:otherwise>
+                    <li><a href="${nextUrl}">&gt;</a></li>
+                    <li><a href="${lastUrl}">&gt;&gt;</a></li>
+                </c:otherwise>
+            </c:choose>
+        </ul>
+    </div>
+</div>
 
 
 

@@ -136,16 +136,10 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<!-- Angular JS -->
 
-
-<script src="/resources/js/angular.min.js"></script>
 <script src="/resources/js/jquery.min.js"></script>
 <script src="/resources/js/jquery.simpleLens.js"></script>
 <script src="/resources/js/sequence.js"></script>
-
-
-
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="/resources/js/bootstrap.min.js"></script>
 <!-- SmartMenus jQuery plugin -->

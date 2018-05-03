@@ -6,13 +6,13 @@
 
 <div class="container">
     <div class="main">
-        <h1 class="page-header">Manage Admins</h1>
+        <h1 class="page-header">Manage Customers</h1>
         <div class="clearfix">
             <div class="pull-right">
                 <form id="filterForm" class="form-inline">
                     <input type="text" name="username" class="form-control" width="100" placeholder="Username">
-                    <input type="text" name="lastName" class="form-control" width="100" placeholder="Last Name">
                     <input type="text" name="firstName" class="form-control" width="100" placeholder="First Name">
+                    <input type="text" name="lastName" class="form-control" width="100" placeholder="Last Name">
                     <select name="status" class="form-control">
                         <c:forEach items="${statuses}" var="row">
                             <option value="${row}">${row}</option>
@@ -25,7 +25,6 @@
         <div class="table-responsive">
             <div id="list-target"></div>
             <br/>
-            <a href="#create" onclick="module.create()"><button class="btn btn-primary">Add Admin</button></a>
         </div>
     </div>
 </div>
@@ -40,17 +39,8 @@
     });
     module = {
         list : function(){
-            $.get('/admin/user/admin/list', $("#filterForm").serialize(), function(data){
+            $.get('/admin/user/customer/list', $("#filterForm").serialize(), function(data){
                 $('#list-target').html(data);
-            });
-        },
-        create : function(){
-            $('#edit-target').html('');
-            $('#edit-modal').modal({
-                backdrop: 'static'
-            });
-            $.get('/admin/user/admin/create', null, function(data){
-                $('#edit-target').html(data);
             });
         },
         edit : function(id){
@@ -58,7 +48,7 @@
             $('#edit-modal').modal({
                 backdrop: 'static'
             });
-            $.get('/admin/user/admin/edit', 'id='+id, function(data){
+            $.get('/admin/user/customer/edit', 'id='+id, function(data){
                 $('#edit-target').html(data);
             });
         },

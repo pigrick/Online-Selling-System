@@ -23,6 +23,7 @@ public class ProductController {
     @GetMapping("all")
     public String getAllProduct(Model theModel){
         theModel.addAttribute("products" , this.productService.getAllProduct());
+        theModel.addAttribute("title", "Products:");
         return "products";
          //return "list-all-products" ;
     }
@@ -59,22 +60,7 @@ public class ProductController {
         //return "find-by-product-vendor";
     }
 */
-    @PostMapping("/save")
-    public String saveOrUpdateProduct(@PathVariable("product") Product product){
 
-        this.productService.saveOrUpdateProduct(product);
-
-        return "";
-        //return "list-all-products";
-    }
-
-    @PostMapping("/delete")
-    public String deleteProduct(@PathVariable("product") Product product){
-
-        this.productService.deleteProduct(product);
-        return "";
-        //return "deleteProduct";
-    }
 
     @GetMapping("category/{category}")
     public String findByCategory(Model theModel, @PathVariable("category") Integer category){

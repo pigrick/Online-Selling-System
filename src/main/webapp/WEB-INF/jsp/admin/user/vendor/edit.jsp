@@ -11,9 +11,9 @@
 <script>
     create = {
         init: function() {
-            $('#adminForm').ajaxForm({
+            $('#vendorForm').ajaxForm({
                 target:'#edit-target',
-                url:'/admin/user/admin/edit'
+                url:'/admin/user/vendor/edit'
             });
         },
         success: function() {
@@ -21,27 +21,22 @@
             module.list();
         },
         submit: function() {
-            $('#adminForm').submit();
+            $('#vendorForm').submit();
         }
     };
 </script>
 
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title">Edit <i>${adminForm.username}</i> Admin</h4>
+    <h4 class="modal-title">Edit <i>${vendorForm.username}</i> Vendor</h4>
 </div>
 <div class="modal-body">
-    <form:form modelAttribute="adminForm" method="post">
+    <form:form modelAttribute="vendorForm" method="post">
         <form:hidden path="id"/>
         <div class="form-group">
-            <form:errors path="firstName" cssStyle="color: red" />
-            <label for="firstName">firstName</label>
-            <form:input path="firstName" class="form-Control" />
-        </div>
-        <div class="form-group">
-            <form:errors path="lastName" cssStyle="color: red" />
-            <label for="lastName">lastName</label>
-            <form:input path="lastName" class="form-Control" />
+            <form:errors path="companyName" cssStyle="color: red" />
+            <label for="companyName">Company Name</label>
+            <form:input path="companyName" class="form-Control" />
         </div>
         <div class="form-group">
             <form:errors path="username" cssStyle="color: red" />

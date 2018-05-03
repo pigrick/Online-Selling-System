@@ -13,9 +13,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Controller
@@ -25,6 +30,9 @@ public class VendorProductController {
 
     @Autowired
     private ProductService productService;
+
+    //Save the uploaded file to this folder
+    private static String UPLOADED_FOLDER = "D://temp//";
 
     @Autowired
     private CategoryService categoryService;
@@ -40,7 +48,7 @@ public class VendorProductController {
     @GetMapping("/save")
     public String saveOrUpdateProduct(@RequestParam(required = false) Integer id, Model model) {
 
-        model.addAttribute("title", "Add Product");
+        model.addAttribute("title", "Product:");
 
         if (id != null && id != 0) {
             model.addAttribute("productForm", new ProductForm(productService.getOne(id)));
@@ -54,31 +62,47 @@ public class VendorProductController {
 
     @PostMapping("/save")
     public String saveOrUpdateProduct(@Valid @ModelAttribute("productForm") ProductForm form, BindingResult result,
-                                      @AuthenticationPrincipal Vendor vendor, Model model) {
+                                      @AuthenticationPrincipal Vendor vendor,
+                                      @RequestParam("file") MultipartFile file,
+                                      RedirectAttributes model) {
 
-        model.addAttribute("categories", categoryService.getAllMainCategory());
+        model.addFlashAttribute("title", "Product");
+        model.addFlashAttribute("categories", categoryService.getAllMainCategory());
 
-        if (result.hasErrors()) {
-            model.addAttribute("message", new Message(Message.Type.FAILED, "Check your forms!!!"));
+        if (file.isEmpty() || result.hasErrors()) {
+            model.addFlashAttribute("message", "Please select a file to upload or check fields!!!");
             return "vendor/saveProduct";
         }
 
-        Product product;
-        if (form.getId() == null) {
-            product = new Product();
+        try {
+            String url=file.getOriginalFilename();
+            Product product;
+            if (form.getId() == null) {
+                product = new Product();
+            }
+            else{
+                product = productService.getOne(form.getId());
+            }
+            product.setStatus(Status.ENABLED);
+            product.setCategory(categoryService.getCategoryById(form.getCategoryId()));
+            product.setDescription(form.getDescription());
+            product.setName(form.getName());
+            product.setPrice(form.getPrice());
+            product.setQuantity(form.getQuantity());
+            product.setVendor(vendor);
+            product.setImage(UPLOADED_FOLDER +url);
+            productService.saveOrUpdateProduct(product);
+
+
+            // Get the file and save it somewhere
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
+            Files.write(path, bytes);
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        else{
-            product = productService.getOne(form.getId());
-        }
-        product.setStatus(Status.ENABLED);
-        product.setCategory(categoryService.getCategoryById(form.getCategoryId()));
-        product.setDescription(form.getDescription());
-        product.setName(form.getName());
-        product.setPrice(form.getPrice());
-        product.setQuantity(form.getQuantity());
-        product.setVendor(vendor);
-        productService.saveOrUpdateProduct(product);
-        model.addAttribute("message", new Message(Message.Type.SUCCESS, "successfully.saved"));
 
         return "redirect:/vendor/product/all";
     }
@@ -89,5 +113,6 @@ public class VendorProductController {
 
         return "redirect:/vendor/product/all";
     }
+
 
 }

@@ -31,4 +31,7 @@ public interface OrderService {
     @Transactional
     Order saveOrUpdate(Order order);
 
+    @Transactional
+    Integer purchase(Order order);
+
 }

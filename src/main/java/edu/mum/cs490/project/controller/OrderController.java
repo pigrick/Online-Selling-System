@@ -75,7 +75,7 @@ public class OrderController {
         aa.setProduct(p);
         aa.setPrice(p.getPrice());
         aa.setQuantity(3);
-        Product b = productService.getOne(new Integer(2));
+        Product b = productService.getOne(new Integer(3));
         OrderDetail bb = new OrderDetail();
         bb.setProduct(b);
         bb.setQuantity(5);
@@ -155,10 +155,11 @@ public class OrderController {
         User user = SignedUser.getSignedUser();
         order.receivePaymentFormAndEncrypt(paymentForm, this.aesConverter);
 
-        Integer responseCode = mockPaymentService.purchase(System.currentTimeMillis() + "", paymentForm.getCardNumber(),
-                paymentForm.getCardExpirationDate(), paymentForm.getCardHolderName(), paymentForm.getCvv(),
-                paymentForm.getCardZipcode(), order.getTotalPriceWithTax(), "4322637205582291");
+//        Integer responseCode = mockPaymentService.doTransaction(System.currentTimeMillis() + "", paymentForm.getCardNumber(),
+//                paymentForm.getCardExpirationDate(), paymentForm.getCardHolderName(), paymentForm.getCvv(),
+//                paymentForm.getCardZipcode(), order.getTotalPriceWithTax(), "4322637205582291");
 
+        Integer responseCode = orderService.purchase(order);
 
         if (responseCode != 1) {
             model.addAttribute("badcard", "Creditcard Declined!");
@@ -214,10 +215,11 @@ public class OrderController {
         }
         order.receivePaymentFormAndEncrypt(paymentForm, this.aesConverter);
 
+//        Integer responseCode = mockPaymentService.doTransaction(System.currentTimeMillis() + "", paymentForm.getCardNumber(),
+//                paymentForm.getCardExpirationDate(), paymentForm.getCardHolderName(), paymentForm.getCvv(),
+//                paymentForm.getCardZipcode(), order.getTotalPriceWithTax(), "4322637205582291");
+        Integer responseCode = orderService.purchase(order);
 
-        Integer responseCode = mockPaymentService.purchase(System.currentTimeMillis() + "", paymentForm.getCardNumber(),
-                paymentForm.getCardExpirationDate(), paymentForm.getCardHolderName(), paymentForm.getCvv(),
-                paymentForm.getCardZipcode(), order.getTotalPriceWithTax(), "4322637205582291");
         if (responseCode != 1) {
             model.addAttribute("badcard", "Creditcard Declined!");
             return "order/guestsubmitorder";
@@ -233,7 +235,6 @@ public class OrderController {
         model.addAttribute("order", order);
         return "order/ordersuccess";
     }
-
 
     //Testing stuff
     @RequestMapping("yo")

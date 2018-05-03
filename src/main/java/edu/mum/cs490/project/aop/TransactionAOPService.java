@@ -5,6 +5,9 @@
  */
 package edu.mum.cs490.project.aop;
 
+import edu.mum.cs490.project.domain.Transaction;
+import edu.mum.cs490.project.domain.TransactionType;
+import edu.mum.cs490.project.repository.TransactionRepository;
 import edu.mum.cs490.project.utils.AESConverter;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -22,6 +25,9 @@ public class TransactionAOPService {
 
     @Autowired
     private AESConverter aesConverter;
+
+    @Autowired
+    private TransactionRepository transactionRepository;
 
     /**
      * the method is called between OSS and ExternalTransactionAPI
@@ -45,6 +51,28 @@ public class TransactionAOPService {
 //        System.out.println("# AOP AFTER (5) #  is called on " + pjp.getSignature().toShortString() + " returnValue - " + (retVal != null ? retVal.toString() : null));
         retVal = aesConverter.decrypt(retVal != null ? retVal.toString() : "null");
         System.out.println("decrypted result - " + retVal);
+        return retVal;
+    }
+
+
+    @Around("execution(* edu.mum.cs490.project.service.PaymentService.doTransaction(..))&& args(txnId, srcCardNo, expirationDate, nameOnCard, CVV, zipCode, amount, dstCardNo, transactionType)")
+    public Object aopInternalEncryptDecryptService(ProceedingJoinPoint pjp, String txnId, String srcCardNo, String expirationDate, String nameOnCard, String CVV, String zipCode, Double amount, String dstCardNo, TransactionType transactionType) throws Throwable {
+        Transaction transaction = new Transaction(srcCardNo, dstCardNo, amount, "", txnId, transactionType);
+        try {
+            srcCardNo = aesConverter.decrypt(srcCardNo);
+            expirationDate = aesConverter.decrypt(expirationDate);
+            nameOnCard = aesConverter.decrypt(nameOnCard).toUpperCase();
+            CVV = aesConverter.decrypt(CVV);
+            dstCardNo = aesConverter.decrypt(dstCardNo);
+            zipCode = aesConverter.decrypt(zipCode);
+        } catch (Exception e) {
+            srcCardNo = e.getMessage();
+            System.err.println(e.getMessage());
+        }
+        System.out.println("decrypted data - " + txnId + " " + srcCardNo + " " + expirationDate + " " + nameOnCard + " " + CVV + " " + zipCode + " " + amount + " " + dstCardNo);
+        Object retVal = pjp.proceed(new Object[]{txnId, srcCardNo, expirationDate, nameOnCard, CVV, zipCode, amount, dstCardNo, transactionType});
+        transaction.setResult(retVal.toString());
+        transactionRepository.save(transaction);
         return retVal;
     }
 }

@@ -1,8 +1,10 @@
 package edu.mum.cs490.project.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import edu.mum.cs490.project.domain.TransactionType;
 import edu.mum.cs490.project.model.payment.mock.TransactionRequest;
 import edu.mum.cs490.project.service.PaymentService;
+import edu.mum.cs490.project.utils.AESConverter;
 import edu.mum.cs490.project.utils.HttpSender;
 import edu.mum.cs490.project.utils.JsonConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +19,15 @@ public class MockPaymentServiceImpl implements PaymentService {
     @Autowired
     private HttpSender httpSender;
 
+    @Autowired
+    private AESConverter aesConverter;
+
+
 
     @Override
-    public Integer purchase(String txnId, String srcCardNo, String expirationDate, String nameOnCard, String CVV, String zipCode, Double amount, String dstCardNo) {
+    public Integer doTransaction(String txnId, String srcCardNo, String expirationDate, String nameOnCard, String CVV, String zipCode, Double amount, String dstCardNo, TransactionType transactionType) {
 
-        System.out.println("PaymentService purchase method is called.");
+        System.out.println("PaymentService template method is called.");
 
         TransactionRequest transactionRequest = new TransactionRequest(txnId, srcCardNo, expirationDate, nameOnCard.toUpperCase(), CVV, zipCode, amount, dstCardNo);
 
@@ -47,7 +53,7 @@ public class MockPaymentServiceImpl implements PaymentService {
             responseCode = 999;
         }
 
-        System.out.println("Result of purchase method is " + responseCode);
+        System.out.println("Result of template method is " + responseCode);
         return responseCode;
     }
 

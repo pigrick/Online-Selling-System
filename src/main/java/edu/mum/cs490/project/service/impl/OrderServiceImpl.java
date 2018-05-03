@@ -1,30 +1,40 @@
 package edu.mum.cs490.project.service.impl;
 
-import edu.mum.cs490.project.domain.Order;
-import edu.mum.cs490.project.domain.Status;
-import edu.mum.cs490.project.repository.AddressRepository;
+import edu.mum.cs490.project.domain.*;
+import edu.mum.cs490.project.framework.observer.*;
+import edu.mum.cs490.project.framework.template.PurchaseTemplate;
+import edu.mum.cs490.project.framework.template.impl.PurchaseTemplateImpl;
+import edu.mum.cs490.project.repository.CardDetailRepository;
 import edu.mum.cs490.project.repository.OrderRepository;
 import edu.mum.cs490.project.service.OrderService;
+import edu.mum.cs490.project.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
+import java.security.InvalidParameterException;
 import java.util.Date;
 import java.util.List;
 @Service
 public class OrderServiceImpl implements OrderService {
 
     public final OrderRepository orderRespository;
+    public final CardDetailRepository cardDetailRepository;
+    public final PaymentService paymentService;
 
-    public final AddressRepository addressRepository;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, AddressRepository addressRepository){
+    public OrderServiceImpl(OrderRepository orderRepository, CardDetailRepository cardDetailRepository, PaymentService paymentService){
         this.orderRespository = orderRepository;
-        this.addressRepository = addressRepository;
+        this.cardDetailRepository = cardDetailRepository;
+        this.paymentService = paymentService;
     }
+
+    @Value("${card.detail.id.oss}")
+    private Integer cardDetailIdOSS;
+
+    @Value("${card.detail.id.tax}")
+    private Integer cardDetailIdTAX;
 
     @Override
     public List<Order> findAll() {
@@ -56,8 +66,27 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order saveOrUpdate(Order order) {
-        this.addressRepository.save(order.getAddress());
         return this.orderRespository.save(order);
     }
 
+    @Override
+    public Integer purchase(Order order) {
+        CardDetail OSSCardDetail = cardDetailRepository.findById(cardDetailIdOSS).get();
+        CardDetail TAXCardDetail = cardDetailRepository.findById(cardDetailIdTAX).get();
+        PurchaseTemplate purchaseTemplate = getPurchaseTemplate(order, OSSCardDetail, TAXCardDetail);
+        return purchaseTemplate.process();
+    }
+
+
+    private PurchaseTemplate getPurchaseTemplate(Order order, CardDetail OSSCardDetail, CardDetail taxCardDetail) {
+        NotifierSubject notifierSubject = new NotifierSubject();
+        notifierSubject.addObserver(new MailToCustomerObserver());
+        notifierSubject.addObserver(new MailToVendorObserver());
+
+        TransferSubject transferSubject = new TransferSubject();
+        transferSubject.addObserver(new TransferToVendorObserver(order, OSSCardDetail, paymentService, cardDetailRepository));
+        transferSubject.addObserver(new TransferToTAXObserver(order, OSSCardDetail, taxCardDetail, paymentService));
+        PurchaseTemplate purchaseTemplate = new PurchaseTemplateImpl(order, OSSCardDetail, notifierSubject, transferSubject, paymentService);
+        return purchaseTemplate;
+    }
 }

@@ -44,9 +44,10 @@ public class AdminProductController {
         return "admin/productManagement";
     }
 
-    @GetMapping("/save")
-    public String saveOrUpdateProduct(@RequestParam(required = false) Integer id, Model model) {
+    @GetMapping("/update")
+    public String updateProduct(@RequestParam(required = false) Integer id, Model model) {
 
+        model.addAttribute("title", "Update Product");
 
         if (id != null && id != 0) {
             model.addAttribute("productForm", new ProductForm(productService.getOne(id)));
@@ -55,12 +56,11 @@ public class AdminProductController {
         }
         model.addAttribute("categories", categoryService.getAllMainCategory());
 
-        //return "";
         return "admin/saveProduct";
     }
 
-    @PostMapping("/save")
-    public String saveOrUpdateProduct(@Valid @ModelAttribute("productForm") ProductForm form, BindingResult result,
+    @PostMapping("/update")
+    public String updateProduct(@Valid @ModelAttribute("productForm") ProductForm form, BindingResult result,
                                       @AuthenticationPrincipal Vendor vendor, Model model) {
 
         model.addAttribute("categories", categoryService.getAllMainCategory());
@@ -70,11 +70,26 @@ public class AdminProductController {
             return "admin/saveProduct";
         }
 
+        Product product = productService.getOne(form.getId());
 
-        Product product = new Product();
+        product.setStatus(Status.ENABLED);
+        product.setCategory(categoryService.getCategoryById(form.getCategoryId()));
+        product.setDescription(form.getDescription());
+        product.setName(form.getName());
+        product.setPrice(form.getPrice());
+        product.setQuantity(form.getQuantity());
+        product.setVendor(vendor);
+        productService.saveOrUpdateProduct(product);
+        model.addAttribute("message", new Message(Message.Type.SUCCESS, "successfully.saved"));
 
-
-        return "admin/saveProduct";
+        return "redirect:admin/product/all";
     }
 
+    @GetMapping("/delete")
+    public String deleteProduct(@RequestParam(required = true) Integer id) {
+
+        productService.delete(id);
+
+        return "admin/productManagement";
+    }
 }

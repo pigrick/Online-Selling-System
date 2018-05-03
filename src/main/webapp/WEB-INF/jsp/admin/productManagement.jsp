@@ -34,18 +34,16 @@
                     <td>${product.status}</td>
 
                     <td>
-                        <a href="#">
-                            <span class="glyphicon glyphicon-info-sign"></span></a>
-                        <a href="#">
-                            <span class="glyphicon glyphicon-pencil"></span></a>
-                        <a href="#">
+                        <a href="/admin/product/update?id=${product.id}">
+                        <span class="glyphicon glyphicon-pencil"></span></a>
+                        <a href="/admin/product/delete?id=${product.id}"
+                           onclick="${message} return false">
                             <span class="glyphicon glyphicon-remove"></span></a>
                     </td>
                 </tr>
             </c:forEach>
             </tbody>
         </table>
-        <a href="/admin/product/save"><button class="btn btn-primary">Add Product</button></a>
     </div>
 </div>
 </div>

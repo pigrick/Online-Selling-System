@@ -19,9 +19,8 @@ public class Product {
     private int quantity;
     private double price;
     private String description;
+    private String image;
 
-    @Transient
-    private MultipartFile image;
 
     @Enumerated(EnumType.STRING)
     private Status status = Status.ENABLED;
@@ -93,11 +92,11 @@ public class Product {
         this.category = category;
     }
 
-    public MultipartFile getProductImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setProductImage(MultipartFile productImage) {
-        this.image = productImage;
+    public void setImage(String image) {
+        this.image = image;
     }
 }

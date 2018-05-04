@@ -1,9 +1,11 @@
 package edu.mum.cs490.project.model;
 
 import edu.mum.cs490.project.domain.OrderDetail;
+import edu.mum.cs490.project.domain.Product;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ShoppingCart {
     List<OrderDetail> orderDetails;
@@ -47,6 +49,18 @@ public class ShoppingCart {
                     this.getOrderDetails().get(i).setQuantity(quantity);
                 }
 
+            }
+        }
+    }
+
+    public void convergeProductAvailability(Map<Product,Integer> productUnavailability){
+        for(int i = 0 ; i<this.getOrderDetails().size() ; i++){
+            Product product = this.getOrderDetails().get(i).getProduct();
+            if(productUnavailability.containsKey(product)){
+                this.getOrderDetails().get(i).setQuantity(productUnavailability.get(product));
+                if(product.getQuantity() == 0){
+                    this.getOrderDetails().remove(i);
+                }
             }
         }
     }

@@ -14,6 +14,7 @@ import edu.mum.cs490.project.utils.SignedUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 //4929127657563699
 @Controller
@@ -213,30 +215,37 @@ public class OrderController {
 
     @PostMapping("checkout/submit")
     public String customerOrderPayment(Model model, HttpSession session, @Valid PaymentForm paymentForm, BindingResult bindingResult,
-                                       HttpServletRequest request) {
+                                       HttpServletRequest request, @AuthenticationPrincipal User user) {
+
         if (request.getParameter("existing") != null) {
             CardDetail cards = this.orderService.findCardById(Integer.parseInt(request.getParameter("cardId")));
             paymentForm.transferCardDetail(cards, this.aesConverter);
             if (!request.getParameter("cvv").equals(paymentForm.getCvv())) {
-                User user = SignedUser.getSignedUser();
                 model.addAttribute("cards", this.orderService.findCardByUser_id(user.getId()));
                 model.addAttribute("wrongcvv", "Unable to verify your CVV!");
                 return "/order/submitorder";
             }
         }
+
+        paymentForm.setLast4Digit(paymentForm.getCardNumber().substring(paymentForm.getCardNumber().length() - 4));
         paymentForm.setCardNumber(paymentForm.getCardNumber().replaceAll("\\s", ""));
         if (request.getParameter("month") != null && request.getParameter("year") != null) {
             paymentForm.setCardExpirationDate(request.getParameter("month") + "/" + request.getParameter("year"));
             if (bindingResult.hasErrors()) {
+                model.addAttribute("cards", this.orderService.findCardByUser_id(user.getId()));
                 model.addAttribute("badcard", "Invalid Card details");
                 return "order/submitorder";
             }
         }
-        paymentForm.setLast4Digit(paymentForm.getCardNumber().substring(paymentForm.getCardNumber().length() - 4));
+
 
         Order order = (Order) session.getAttribute("checkoutorder");
-        User user = SignedUser.getSignedUser();
         order.receivePaymentFormAndEncrypt(paymentForm, this.aesConverter);
+
+        Map<Product, Integer> productUnavailability = this.orderService.checkProduct(order.getOrderDetails());
+        if(!productUnavailability.isEmpty()){
+              return  this.orderService.checkProductAvailabilityForCustomer(session, model,productUnavailability, order, user);
+        }
 
 //        Integer responseCode = mockPaymentService.doTransaction(System.currentTimeMillis() + "", paymentForm.getCardNumber(),
 //                paymentForm.getCardExpirationDate(), paymentForm.getCardHolderName(), paymentForm.getCvv(),
@@ -250,10 +259,7 @@ public class OrderController {
         }
 
 
-        order.setOrderDate(new Date());
-        order.setShippingDate(new Date());
         order = orderService.saveOrUpdate(order);
-        //Send Email!!!!!!
 
         session.removeAttribute("order");
         session.removeAttribute("shoppingcart");
@@ -293,16 +299,24 @@ public class OrderController {
     @PostMapping("guest/checkout/submit")
     public String guestOrderPayment(Model model, HttpSession session, @Valid PaymentForm paymentForm, BindingResult bindingResult,
                                     @RequestParam("month") String month, @RequestParam("year") String year) {
+        //clean up paymentForm
         paymentForm.setCardNumber(paymentForm.getCardNumber().replaceAll("\\s", ""));
         paymentForm.setCardExpirationDate(month + "/" + year);
         paymentForm.setLast4Digit(paymentForm.getCardNumber().substring(paymentForm.getCardNumber().length() - 4));
 
-        Order order = (Order) session.getAttribute("checkoutorder");
+        //check for paymentform validation error
         if (bindingResult.hasErrors()) {
             model.addAttribute("badcard", "Invalid Card details");
             return "order/guestsubmitorder";
         }
+        Order order = (Order) session.getAttribute("checkoutorder");
         order.receivePaymentFormAndEncrypt(paymentForm, this.aesConverter);
+
+        //check for product availability
+        Map<Product, Integer> productUnavailability = this.orderService.checkProduct(order.getOrderDetails());
+        if(!productUnavailability.isEmpty()){
+            return  this.orderService.checkProductAvailabilityForGuest(session, model,productUnavailability, order);
+        }
 
 //        Integer responseCode = mockPaymentService.doTransaction(System.currentTimeMillis() + "", paymentForm.getCardNumber(),
 //                paymentForm.getCardExpirationDate(), paymentForm.getCardHolderName(), paymentForm.getCvv(),
@@ -313,8 +327,7 @@ public class OrderController {
             model.addAttribute("badcard", "Creditcard Declined!");
             return "order/guestsubmitorder";
         }
-        order.setOrderDate(new Date());
-        order.setShippingDate(new Date());
+
         order = orderService.saveOrUpdate(order);
 
         //Send Email!!!!!!
@@ -340,14 +353,14 @@ public class OrderController {
     }
 
     //Testing stuff
-    @RequestMapping("yo")
-    @ResponseBody
-    public List<Order> getOrders() throws ParseException {
-        Date begin = new SimpleDateFormat("yyyy-MM-dd").parse("2018-04-01");
-        Date end = new SimpleDateFormat("yyyy-MM-dd").parse("2018-04-05");
-        System.out.println(begin.toString());
-        System.out.println(end.toString());
-        return this.orderService.findByVendor_idBetweenDate(2, begin, end);
-
-    }
+//    @RequestMapping("yo")
+//    @ResponseBody
+//    public List<Order> getOrders() throws ParseException {
+//        Date begin = new SimpleDateFormat("yyyy-MM-dd").parse("2018-04-01");
+//        Date end = new SimpleDateFormat("yyyy-MM-dd").parse("2018-04-05");
+//        System.out.println(begin.toString());
+//        System.out.println(end.toString());
+//        return this.orderService.findByVendor_idBetweenDate(2, begin, end);
+//
+//    }
 }

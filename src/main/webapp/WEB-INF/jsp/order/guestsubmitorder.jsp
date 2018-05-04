@@ -12,7 +12,16 @@
     <div class="container tpy">
         <div class="container">
             <h2 align="center">Review Order</h2>
-
+            <c:if test="${errorMessages != null}">
+                <div class="alert-danger">
+                    Order not in stock!<br/>
+                    <c:forEach var="errorMessage" items="${errorMessages}">
+                        ${errorMessage}<br/>
+                    </c:forEach>
+                    Please review your order. Go back to Shopping Cart if you want to update your order.<br/>
+                    <a href="/order/shoppingcart" class="btn btn-warning">Back to Cart</a>
+                </div>
+            </c:if>
             <div class="col-xs-8">
                 <h1 class="sub-header">Order Details</h1>
                 <div class="table-responsive">

@@ -9,10 +9,7 @@ import org.bouncycastle.jce.provider.symmetric.AES;
 
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Entity
 @Table(name="`order`", indexes = {@Index(columnList = "customer_id", name = "customer_idx")})
@@ -198,5 +195,29 @@ public class Order {
                     vendorPayment.getOrDefault(od.getProduct().getVendor().getId(), 0.0) +  (od.getQuantity() * od.getPrice() * 0.8));
         }
         return vendorPayment;
+    }
+
+    public List<String> getProductAvailabilityError(Map<Product,Integer> productUnavailability){
+        List<String> errorMessages = new ArrayList<>();
+        for(OrderDetail od : this.getOrderDetails()){
+            if(productUnavailability.containsKey(od.getProduct())){
+                errorMessages.add("Only " + productUnavailability.get(od.getProduct()) + " left for " + od.getProduct().getName() +
+                ", but you are purchasing " + od.getQuantity() + " previously.");
+            }
+
+        }
+        return errorMessages;
+    }
+
+    public void convergeProductAvailability(Map<Product,Integer> productUnavailability){
+        for(int i = 0 ; i < this.getOrderDetails().size() ; i++){
+            Product product = this.getOrderDetails().get(i).getProduct();
+            if(productUnavailability.containsKey(product)){
+                this.getOrderDetails().get(i).setQuantity(productUnavailability.get(product));
+                if(product.getQuantity() == 0){
+                    this.getOrderDetails().remove(i);
+                }
+            }
+        }
     }
 }

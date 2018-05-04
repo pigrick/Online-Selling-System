@@ -41,7 +41,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository, CardDetailRepository cardDetailRepository,
-                            PaymentService paymentService, AddressRepository addressRepository, ProductRepository productRepository){
+                            PaymentService paymentService, AddressRepository addressRepository, ProductRepository productRepository) {
         this.orderRespository = orderRepository;
         this.cardDetailRepository = cardDetailRepository;
         this.paymentService = paymentService;
@@ -66,7 +66,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-
     //Order Manipulation
     @Override
     public List<Order> findByCustomer_id(Integer customerId) {
@@ -85,7 +84,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Page<Order> findByCustomer_id(Integer customerId, int page) {
-        return this.orderRespository.findByCustomer_idOrderByOrderDateDesc(customerId, PageRequest.of(page-1, PAGE_SIZE));
+        return this.orderRespository.findByCustomer_idOrderByOrderDateDesc(customerId, PageRequest.of(page - 1, PAGE_SIZE));
     }
 
     @Override
@@ -106,11 +105,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Map<Product, Integer> checkProduct(List<OrderDetail> orderDetails) {
         Map<Product, Integer> productUnavailable = new HashMap<>();
-        for(OrderDetail od : orderDetails){
+        for (OrderDetail od : orderDetails) {
             Product p = this.productRepository.getOne(od.getProduct().getId());
-            if(p == null){
+            if (p == null) {
                 productUnavailable.put(od.getProduct(), 0);
-            } else if (p.getQuantity() < od.getQuantity()){
+            } else if (p.getQuantity() < od.getQuantity()) {
                 productUnavailable.put(od.getProduct(), p.getQuantity());
             }
         }
@@ -142,29 +141,42 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public String checkProductAvailabilityForCustomer(HttpSession session, Model model, Map<Product, Integer> productUnavailability,
-                                           Order order, User user) {
-        List<String> errorMessages= order.getProductAvailabilityError(productUnavailability);
-        ShoppingCart sc = (ShoppingCart)session.getAttribute("shoppingcart");
+                                                      Order order, User user) {
+        List<String> errorMessages = order.getProductAvailabilityError(productUnavailability);
+        ShoppingCart sc = (ShoppingCart) session.getAttribute("shoppingcart");
         sc.convergeProductAvailability(productUnavailability);
         order.convergeProductAvailability(productUnavailability);
         model.addAttribute("errorMessages", errorMessages);
         model.addAttribute("cards", this.findCardByUser_id(user.getId()));
         session.setAttribute("shoppingcart", sc);
         session.setAttribute("order", order);
+        if (sc.getOrderDetails().isEmpty()) {
+            return "/order/emptycart";
+        }
         return "/order/submitorder";
     }
 
     @Override
     public String checkProductAvailabilityForGuest(HttpSession session, Model model, Map<Product, Integer> productUnavailability,
-                                                      Order order) {
-        List<String> errorMessages= order.getProductAvailabilityError(productUnavailability);
-        ShoppingCart sc = (ShoppingCart)session.getAttribute("shoppingcart");
+                                                   Order order) {
+        List<String> errorMessages = order.getProductAvailabilityError(productUnavailability);
+        ShoppingCart sc = (ShoppingCart) session.getAttribute("shoppingcart");
         sc.convergeProductAvailability(productUnavailability);
         order.convergeProductAvailability(productUnavailability);
         model.addAttribute("errorMessages", errorMessages);
         session.setAttribute("shoppingcart", sc);
         session.setAttribute("order", order);
+        if (sc.getOrderDetails().isEmpty()) {
+            return "/order/emptycart";
+        }
         return "/order/guestsubmitorder";
+    }
+
+    @Override
+    public void deductProductQuantityAfterPurchase(Order order) {
+        for (OrderDetail od : order.getOrderDetails()) {
+            this.productRepository.deductProductAfterPurchase(od.getQuantity(), od.getProduct().getId());
+        }
     }
 
 

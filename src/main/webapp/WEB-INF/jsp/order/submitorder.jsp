@@ -1,24 +1,21 @@
-
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="/WEB-INF/include.jsp" %>
-
 <%@include file="/WEB-INF/jsp/template/header.jsp" %>
 
 <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="/static/css/order/order.css">
 <link rel="stylesheet" type="text/css" href="/static/paymentdetail/css/styles.css">
-
 <div>
     <div class="container tpy">
         <div class="container">
             <h1 align="center">Review Order</h1>
             <c:if test="${errorMessages != null}">
                 <div class="alert-danger">
-                    Order not in stock!<br/>
+                    Order not in stock!
+                    <br/>
                     <c:forEach var="errorMessage" items="${errorMessages}">
-                        ${errorMessage}<br/>
+                        <c:out value="${errorMessage}"/><br/>
                     </c:forEach>
-                    Please review your order. Go back to Shopping Cart if you want to update your order.<br/>
+                    Please review your order. Go back to Shopping Cart if you want to update your order.
+                    <br/>
                     <a href="/order/shoppingcart" class="btn btn-warning">Back to Cart</a>
                 </div>
             </c:if>
@@ -34,14 +31,13 @@
                             <th scope="col">Total Price</th>
                         </tr>
                         </thead>
-
                         <tbody>
                         <c:forEach var="orderdetail" items="${shoppingcart.orderDetails}">
                             <tr>
-                                <td><a href="">${orderdetail.product.name}</a></td>
+                                <td><a href=""><c:out value="${orderdetail.product.name}"/></a></td>
                                 <td><fmt:formatNumber value="${orderdetail.price}" type="currency"
                                                       currencySymbol="$"/></td>
-                                <td>${orderdetail.quantity}</td>
+                                <td><c:out value="${orderdetail.quantity}"/></td>
                                 <td><fmt:formatNumber value="${orderdetail.calculateTotalPrice()}"
                                                       type="currency" currencySymbol="$"/></td>
                             </tr>
@@ -72,27 +68,27 @@
                         <tbody>
                         <tr>
                             <td>Name:</td>
-                            <td>${checkoutorder.customer.firstName} ${checkoutorder.customer.lastName}</td>
+                            <td><c:out
+                                    value="${checkoutorder.customer.firstName} ${checkoutorder.customer.lastName}"/></td>
                         </tr>
                         <tr>
                             <td>Street:</td>
-                            <td>${checkoutorder.address.street}</td>
+                            <td><c:out value="${checkoutorder.address.street}"/></td>
                         </tr>
                         <tr>
                             <td>City:</td>
-                            <td>${checkoutorder.address.city}</td>
+                            <td><c:out value="${checkoutorder.address.city}"/></td>
                         </tr>
                         <tr>
                             <td>State:</td>
-                            <td>${checkoutorder.address.state}</td>
+                            <td><c:out value="${checkoutorder.address.state}"/></td>
                         </tr>
                         <tr>
                             <td>Zipcode:</td>
-                            <td>${checkoutorder.address.zipcode}</td>
+                            <td><c:out value="${checkoutorder.address.zipcode}"/></td>
                         </tr>
                         </tbody>
                     </table>
-
                 </div>
             </div>
         </div>
@@ -100,32 +96,35 @@
     <br/>
     <div class="container">
         <h2>Use existing Credit Card</h2>
-        <div class="alert-danger">${wrongcvv}</div>
+        <div class="alert-danger"><c:out value="${wrongcvv}"/></div>
         <c:forEach var="card" items="${cards}">
-
             <div class="col-sm-2 addborder" id="card${card.id}">
                 <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#remove${card.id}">
                     Remove
                 </button>
                 <br/>
-                <br/>${card.cardType} <br/> **** **** **** ${card.last4Digit} <br/><br/>
-                <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#${card.id}">Use this
-                    Card
+                <br/><c:out value="${card.cardType}"/> <br/> **** **** **** <c:out value="${card.last4Digit}"/>
+                <br/><br/>
+                <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#${card.id}">
+                    Use this Card
                 </button>
             </div>
             <div class="modal fade" id="remove${card.id}" role="dialog">
                 <div class="modal-dialog">
-
                     <!-- Modal content-->
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Are you sure you want to remove this card! <br/> Visa <br/> ****
-                                **** **** ${card.last4Digit}</h4>
+                            <h4 class="modal-title">Are you sure you want to remove this card!
+                                <br/>
+                                <c:out value="${card.cardType}"/>
+                                <br/>
+                                **** **** **** <c:out value="${card.last4Digit}"/>
+                            </h4>
                         </div>
                         <div class="modal-footer">
-                            <button class="btn btn-danger" onclick="removeCard(${card.id})" data-dismiss="modal">Remove
-                                Card
+                            <button class="btn btn-danger" onclick="removeCard(${card.id})" data-dismiss="modal">
+                                Remove Card
                             </button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
@@ -134,30 +133,35 @@
             </div>
             <div class="modal fade" id="${card.id}" role="dialog">
                 <div class="modal-dialog">
-
                     <!-- Modal content-->
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Using this Card <br/> Visa <br/> **** **** **** ${card.last4Digit}
+                            <h4 class="modal-title">
+                                Using this Card
+                                <br/>
+                                <c:out value="${card.cardType}"/>
+                                <br/>
+                                **** **** **** <c:out value="${card.last4Digit}"/>
                             </h4>
                         </div>
                         <form:form action="/order/checkout/submit" method="post">
                             <div class="modal-body">
-                                <p>Please verify your CVV<input type="text" name="cvv" class="form-control" autofocus/></p>
+                                <p>
+                                    Please verify your CVV
+                                    <input type="text" name="cvv" class="form-control" autofocus/>
+                                </p>
                             </div>
                             <div class="modal-footer">
                                 <input type="hidden" name="existing" value="existing"/>
                                 <input type="hidden" name="cardId" value="${card.id}"/>
-                                <input type="submit" class="btn btn-info btn-lg" value="Submit Payment"></input>
+                                <input type="submit" class="btn btn-info btn-lg" value="Submit Payment" />
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                             </div>
                         </form:form>
                     </div>
                 </div>
             </div>
-
-
         </c:forEach>
     </div>
     <br/>
@@ -167,7 +171,7 @@
             <div class="heading">
                 <h1>Confirm Purchase</h1>
             </div>
-            <div class="alert-danger">${badcard}</div>
+            <div class="alert-danger"><c:out value="${badcard}"/></div>
             <div class="payment">
                 <form:form id="submit-payment" modelAttribute="paymentForm" method="post"
                            action="/order/checkout/submit">
@@ -224,12 +228,8 @@
                 </form:form>
             </div>
         </div>
-
-
     </div>
 </div>
-
-
 <script src="/static/paymentdetail/js/script.js"></script>
 <script src="/static/js/order/order.js"></script>
 

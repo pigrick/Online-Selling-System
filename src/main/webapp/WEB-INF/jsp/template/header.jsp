@@ -87,9 +87,9 @@
                                         <sec:authorize access="hasRole('ADMIN')">
                                             <li><a href="#">Admin</a></li>
                                         </sec:authorize>
-                                        <sec:authorize access="hasRole('CUSTOMER')"></sec:authorize>
-                                        <li><a href="#" style="cursor: default">Customer </a>
-                                        </li>
+                                        <sec:authorize access="hasRole('CUSTOMER')">
+                                        <li><a href="#" style="cursor: default">Customer </a></li>
+                                        </sec:authorize>
                                         <li><a href="/logout">Logout</a></li>
                                     </sec:authorize>
 

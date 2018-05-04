@@ -12,7 +12,7 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
-@Table(name="`order`", indexes = {@Index(columnList = "customer_id", name = "customer_idx")})
+@Table(name = "`order`", indexes = {@Index(columnList = "customer_id", name = "customer_idx")})
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,38 +21,38 @@ public class Order {
     private Customer customer;
     @OneToOne
     private Guest guest;
-    @OneToOne(cascade={ CascadeType.MERGE})
+    @OneToOne(cascade = {CascadeType.MERGE})
     private CardDetail card;
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date orderDate;
     @Temporal(TemporalType.DATE)
     private Date shippingDate;
-    @OneToOne(cascade={CascadeType.MERGE})
+    @OneToOne(cascade = {CascadeType.MERGE})
     private Address address;
     @Enumerated(EnumType.STRING)
     private Status status = Status.ENABLED;
-    @OneToMany(mappedBy = "order", cascade={ CascadeType.PERSIST} )
+    @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST})
     private List<OrderDetail> orderDetails;
 
     public Order() {
     }
 
-    public void receiveCustomerShippingForm(User user, CustomerOrderShippingForm customerOrderShippingForm){
+    public void receiveCustomerShippingForm(User user, CustomerOrderShippingForm customerOrderShippingForm) {
         this.address = new Address(customerOrderShippingForm.getAddressId(), customerOrderShippingForm.getPhoneNumber(),
                 customerOrderShippingForm.getStreet(), customerOrderShippingForm.getCity(), customerOrderShippingForm.getState(),
                 customerOrderShippingForm.getZipcode(), user);
-        this.customer = (Customer)user;
+        this.customer = (Customer) user;
     }
 
-    public void receiveGuestShippingForm(GuestOrderShippingForm guestOrderShippingForm){
+    public void receiveGuestShippingForm(GuestOrderShippingForm guestOrderShippingForm) {
         this.address = new Address(null, guestOrderShippingForm.getPhoneNumber(), guestOrderShippingForm.getStreet(),
                 guestOrderShippingForm.getCity(), guestOrderShippingForm.getState(), guestOrderShippingForm.getZipcode(),
                 null);
-        this.guest = new Guest(guestOrderShippingForm.getFirstName(),guestOrderShippingForm.getLastName(), this.address,
+        this.guest = new Guest(guestOrderShippingForm.getFirstName(), guestOrderShippingForm.getLastName(), this.address,
                 guestOrderShippingForm.getEmail());
     }
 
-    public void receivePaymentFormAndEncrypt(PaymentForm paymentForm, AESConverter aesConverter){
+    public void receivePaymentFormAndEncrypt(PaymentForm paymentForm, AESConverter aesConverter) {
         this.card = new CardDetail();
         this.card.setStatus(Status.ENABLED);
         this.card.setCardNumber(aesConverter.encrypt(paymentForm.getCardNumber()));
@@ -63,7 +63,7 @@ public class Order {
         this.card.setCardType(paymentForm.getCardType());
         this.card.setLast4Digit(paymentForm.getLast4Digit());
         this.card.setId(paymentForm.getCardId());
-        if(this.customer == null){
+        if (this.customer == null) {
             this.card.setGuest(this.guest);
         } else {
             this.card.setOwner(this.customer);
@@ -157,64 +157,63 @@ public class Order {
         this.guest = guest;
     }
 
-    private void linkOrderDetailWithOrder(){
-        for(OrderDetail od : this.getOrderDetails()){
+    private void linkOrderDetailWithOrder() {
+        for (OrderDetail od : this.getOrderDetails()) {
             od.setOrder(this);
         }
     }
 
-    public double getTotalPriceWithoutTax(){
+    public double getTotalPriceWithoutTax() {
         double sum = 0;
-        for(OrderDetail od : this.orderDetails){
+        for (OrderDetail od : this.orderDetails) {
             sum = sum + (od.getPrice() * od.getQuantity());
         }
         return sum;
     }
 
-
-    public double getTax(){
+    public double getTax() {
         return getTotalPriceWithoutTax() * 0.07;
     }
 
-    public double getCompanyEarning(){
+    public double getCompanyEarning() {
         return getTotalPriceWithoutTax() * 0.2;
     }
 
-    public double getVendorEarning(){
+    public double getVendorEarning() {
         return getTotalPriceWithoutTax() * 0.8;
     }
 
-    public double getTotalPriceWithTax(){
+    public double getTotalPriceWithTax() {
         return getTotalPriceWithoutTax() * 1.07;
     }
 
-    public Map<Integer, Double> getVendorPayment(){
-        Map<Integer,Double> vendorPayment = new HashMap<>();
-        for(OrderDetail od : this.getOrderDetails()){
+    public Map<Integer, Double> getVendorPayment() {
+        Map<Integer, Double> vendorPayment = new HashMap<>();
+        for (OrderDetail od : this.getOrderDetails()) {
             vendorPayment.put(od.getProduct().getVendor().getId(),
-                    vendorPayment.getOrDefault(od.getProduct().getVendor().getId(), 0.0) +  (od.getQuantity() * od.getPrice() * 0.8));
+                    vendorPayment.getOrDefault(od.getProduct().getVendor().getId(), 0.0) + (od.getQuantity() * od.getPrice() * 0.8));
         }
         return vendorPayment;
     }
 
-    public List<String> getProductAvailabilityError(Map<Product,Integer> productUnavailability){
+    public List<String> getProductAvailabilityError(Map<Product, Integer> productUnavailability) {
         List<String> errorMessages = new ArrayList<>();
-        for(OrderDetail od : this.getOrderDetails()){
-            if(productUnavailability.containsKey(od.getProduct())){
+        for (OrderDetail od : this.getOrderDetails()) {
+            if (productUnavailability.containsKey(od.getProduct())) {
                 errorMessages.add("Only " + productUnavailability.get(od.getProduct()) + " left for " + od.getProduct().getName() +
-                ", but you are purchasing " + od.getQuantity() + " previously.");
+                        ", but you are purchasing " + od.getQuantity() + " previously.");
             }
 
         }
         return errorMessages;
     }
 
-    public void convergeProductAvailability(Map<Product,Integer> productUnavailability){
-        for(int i = 0 ; i < this.getOrderDetails().size() ; i++){
+    public void convergeProductAvailability(Map<Product, Integer> productUnavailability) {
+        for (int i = 0; i < this.getOrderDetails().size(); i++) {
             Product product = this.getOrderDetails().get(i).getProduct();
-            if(productUnavailability.containsKey(product)){
+            if (productUnavailability.containsKey(product)) {
                 this.getOrderDetails().get(i).setQuantity(productUnavailability.get(product));
-                if(product.getQuantity() == 0){
+                if (product.getQuantity() == 0) {
                     this.getOrderDetails().remove(i);
                 }
             }

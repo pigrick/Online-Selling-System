@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-@Transactional(readOnly = true)
+@Transactional
 public interface OrderService {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -52,5 +52,5 @@ public interface OrderService {
     String checkProductAvailabilityForGuest(HttpSession session, Model model, Map<Product, Integer> productUnavailability,
                                     Order order);
 
-
+    void deductProductQuantityAfterPurchase(Order order);
 }

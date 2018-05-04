@@ -32,6 +32,14 @@ public class CustomerOrderShippingForm implements Serializable {
         this.addressId = addressId;
     }
 
+    public CustomerOrderShippingForm(String phoneNumber, String street, String city, String state, String zipcode) {
+        this.phoneNumber = phoneNumber;
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.zipcode = zipcode;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }

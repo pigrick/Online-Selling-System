@@ -22,7 +22,7 @@ public interface CardDetailRepository extends JpaRepository<CardDetail, Integer>
 
     List<CardDetail> findByOwner_idAndStatus(Integer ownerId, Status status);
 
-    @Query("update CardDetail c set c.status = 'ENABLED' where c.id = :cardId")
+    @Query("update CardDetail c set c.status = 'DISABLED' where c.id = :cardId")
     @Modifying
     void disableCard(@Param("cardId") Integer cardId);
 

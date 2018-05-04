@@ -75,7 +75,7 @@
                                         <li><a href="#" style="cursor: default">Welcome: ${signedUser.username} </a>
                                         </li>
                                         <sec:authorize access="hasRole('VENDOR')">
-                                            <li><a href="#" style="cursor: default">Welcome: ${signedUser.username} </a>
+                                            <li><a href="#" style="cursor: default">Vendor</a>
                                             </li>
                                             <li><a href="#">${signedUser.companyName}</a></li>
                                         </sec:authorize>
@@ -83,9 +83,9 @@
                                             <li><a href="#">Admin</a></li>
                                         </sec:authorize>
                                         <sec:authorize access="hasRole('CUSTOMER')"></sec:authorize>
-                                        <li><a href="#" style="cursor: default">Welcome: ${signedUser.username} </a>
+                                        <li><a href="#" style="cursor: default">Customer </a>
                                         </li>
-
+                                        <li><a href="/logout">Logout</a></li>
                                     </sec:authorize>
 
 
@@ -160,25 +160,28 @@
 
                             <div class="aa-cartbox-summary">
                                 <ul>
-                                    <li>
-                                        <a class="aa-cartbox-img"><img src="/images/{{item.product.productId}}/0.png" alt="img"></a>
+                                    <c:forEach var="orderDetail" items="${shoppingcart.orderDetails}">
+                                        <li>
+                                            <a class="aa-cartbox-img"><img src="/resources/images/${orderDetail.product.id}/0.png" alt="img"></a>
+                                            <div class="aa-cartbox-info">
+                                                <h4><a href="#"></a></h4>
+                                                <fmt:formatNumber value="${orderDetail.price}" type="currency"
+                                                                  currencySymbol="$"/> x ${orderDetail.quantity}
+                                            </div>
+                                            <a class="aa-remove-product" href="#"
+                                               ng-click="removeFromCart(item.cartItemId,'${_csrf.parameterName}=${_csrf.token}')">
+                                                <span class="fa fa-times"></span>
+                                            </a>
+                                        </li>
 
-                                        <div class="aa-cartbox-info">
-                                            <h4><a href="#"></a></h4>
-                                            Item.quantity x productPrice
-
-                                        </div>
-                                        <a class="aa-remove-product" href="#"
-                                           ng-click="removeFromCart(item.cartItemId,'${_csrf.parameterName}=${_csrf.token}')">
-                                            <span class="fa fa-times"></span>
-                                        </a>
-                                    </li>
+                                    </c:forEach>
                                     <li>
                                         <span class="aa-cartbox-total-title">Total</span>
-                                        <span class="aa-cartbox-total-price"> </span>
+                                        <span class="aa-cartbox-total-price"><fmt:formatNumber value="${shoppingcart.calculateTotalPrice()}" type="currency"
+                                                                                               currencySymbol="$"/></span>
                                     </li>
                                 </ul>
-                                <a class="aa-cartbox-checkout aa-primary-btn" href="#">Checkout</a>
+                                <a class="aa-cartbox-checkout aa-primary-btn" href="/order/shoppingcart">Shopping Cart</a>
                             </div>
 
                         </div>

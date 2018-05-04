@@ -1,6 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/include.jsp"%>
 
@@ -13,10 +11,10 @@
 <div>
     <div class="container tpy">
         <div class="container">
-            <h1 align="center">Review Order</h1>
+            <h2 align="center">Review Order</h2>
 
             <div class="col-xs-8">
-                <h2 class="sub-header">Order Details</h2>
+                <h1 class="sub-header">Order Details</h1>
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>

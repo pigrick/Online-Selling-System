@@ -19,7 +19,7 @@
             <tbody>
             <c:forEach var="orderdetail" items="${shoppingcart.orderDetails}">
                 <tr>
-                    <td><a href="">${orderdetail.product.name}</a></td>
+                    <td>${orderdetail.product.name}</td>
                     <td><fmt:formatNumber value="${orderdetail.price}" type="currency" currencySymbol="$" /></td>
                     <td>${orderdetail.quantity}</td>
                     <td><fmt:formatNumber value="${orderdetail.calculateTotalPrice()}" type="currency" currencySymbol="$" /></td>

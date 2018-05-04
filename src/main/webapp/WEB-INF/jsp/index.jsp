@@ -116,7 +116,7 @@
                                                     <img style="width: 250px; height: 300px"
                                                          src="<c:url value="/resources/images/${product.id}/0.png" />"></a>
 
-                                                <a class="aa-add-card-btn" style="cursor: hand">
+                                                <a class="aa-add-card-btn" style="cursor: hand" href="/order/addToCart/${product.id}">
                                                     <span class="fa fa-shopping-cart"></span>Add To Cart
                                                 </a>
                                                 <figcaption>

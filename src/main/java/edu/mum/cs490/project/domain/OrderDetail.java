@@ -25,6 +25,12 @@ public class OrderDetail {
 
     public OrderDetail(){}
 
+    public OrderDetail(Product product, int quantity, double price) {
+        this.product = product;
+        this.quantity = quantity;
+        this.price = price;
+    }
+
     public Integer getId() {
         return id;
     }

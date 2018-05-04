@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
@@ -112,29 +113,53 @@ public class OrderController {
 
     }
 
-    @PostMapping("addToCart")
-    public String addToCart(HttpSession session) {
+    @GetMapping("addToCart/{productId}")
+    public String addToCart(HttpSession session, @PathVariable("productId") Integer productId) {
+        ShoppingCart sc = (ShoppingCart)session.getAttribute("shoppingcart");
+        Product product = this.productService.getOne(productId);
+        if(sc == null){
+            sc = new ShoppingCart();
+            sc.getOrderDetails().add(new OrderDetail(product, 1, product.getPrice()));
+        } else {
+            boolean found = false;
+            for(OrderDetail od : sc.getOrderDetails()){
+                if(od.getProduct().getId().equals(productId)){
+                    od.setQuantity(od.getQuantity()+1);
+                    found = true;
+                    break;
+                }
+            }
+            if(!found){
+                sc.getOrderDetails().add(new OrderDetail(product,1,product.getPrice()));
+            }
+        }
+        session.setAttribute("shoppingcart", sc);
         return "redirect:/order/shoppingcart";
     }
 
     @GetMapping("shoppingcart")
     public String getShoppingCart(Model model, HttpServletResponse response, HttpSession session) {
-        ShoppingCart sc = new ShoppingCart();
-        List<OrderDetail> od = new ArrayList<>();
-        OrderDetail aa = new OrderDetail();
-        Product p = productService.getOne(1);
-        aa.setProduct(p);
-        aa.setPrice(p.getPrice());
-        aa.setQuantity(3);
-        Product b = productService.getOne(3);
-        OrderDetail bb = new OrderDetail();
-        bb.setProduct(b);
-        bb.setQuantity(1);
-        bb.setPrice(b.getPrice());
-        od.add(aa);
-        od.add(bb);
-        sc.setOrderDetails(od);
-        session.setAttribute("shoppingcart", sc);
+//        ShoppingCart sc = new ShoppingCart();
+//        List<OrderDetail> od = new ArrayList<>();
+//        OrderDetail aa = new OrderDetail();
+//        Product p = productService.getOne(1);
+//        aa.setProduct(p);
+//        aa.setPrice(p.getPrice());
+//        aa.setQuantity(3);
+//        Product b = productService.getOne(3);
+//        OrderDetail bb = new OrderDetail();
+//        bb.setProduct(b);
+//        bb.setQuantity(1);
+//        bb.setPrice(b.getPrice());
+//        od.add(aa);
+//        od.add(bb);
+//        sc.setOrderDetails(od);
+//        session.setAttribute("shoppingcart", sc);
+        ShoppingCart sc = (ShoppingCart)session.getAttribute("shoppingcart");
+        if(sc == null || sc.getOrderDetails().isEmpty()){
+            return "order/emptycart";
+        }
+
         return "order/shoppingcart";
     }
 
@@ -180,7 +205,6 @@ public class OrderController {
         Order order = new Order();
         order.receiveCustomerShippingForm(user, customerOrderShippingForm);
         order.setOrderDetails(orderdetails);
-
         model.addAttribute("cards", this.orderService.findCardByUser_id(user.getId()));
         session.setAttribute("checkoutorder", order);
         return "order/submitorder";
@@ -190,12 +214,14 @@ public class OrderController {
     @PostMapping("checkout/submit")
     public String customerOrderPayment(Model model, HttpSession session, @Valid PaymentForm paymentForm, BindingResult bindingResult,
                                        HttpServletRequest request) {
-        System.out.println(bindingResult.toString());
         if (request.getParameter("existing") != null) {
             CardDetail cards = this.orderService.findCardById(Integer.parseInt(request.getParameter("cardId")));
             paymentForm.transferCardDetail(cards, this.aesConverter);
             if (!request.getParameter("cvv").equals(paymentForm.getCvv())) {
-                return "redirect:/order/checkout";
+                User user = SignedUser.getSignedUser();
+                model.addAttribute("cards", this.orderService.findCardByUser_id(user.getId()));
+                model.addAttribute("wrongcvv", "Unable to verify your CVV!");
+                return "/order/submitorder";
             }
         }
         paymentForm.setCardNumber(paymentForm.getCardNumber().replaceAll("\\s", ""));
@@ -238,8 +264,13 @@ public class OrderController {
 
 
     @GetMapping("guest/checkout")
-    public String guestCheckoutFromShoppingCart(Model model,
+    public String guestCheckoutFromShoppingCart(Model model, HttpSession session,
                                                 @ModelAttribute("guestOrderShippingForm") GuestOrderShippingForm guestOrderShippingForm) {
+        ShoppingCart sc = (ShoppingCart)session.getAttribute("shoppingcart");
+        if(sc == null || sc.getOrderDetails().isEmpty()){
+            return "order/emptycart";
+        }
+
         return "order/guestcheckoutcart";
     }
 
@@ -304,8 +335,7 @@ public class OrderController {
     @PostMapping("removeAddress")
     public @ResponseBody
     String removeAddress(@RequestParam("addressId") String addressId) {
-        System.out.println("hihihihihih");
-        this.customerService.findByUser_id(Integer.parseInt(addressId));
+        this.customerService.disableAddress(Integer.parseInt(addressId));
         return "success";
     }
 

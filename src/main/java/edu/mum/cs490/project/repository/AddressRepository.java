@@ -15,7 +15,7 @@ import java.util.List;
 public interface AddressRepository extends JpaRepository<Address, Integer> {
     List<Address> findByUser_idAndStatus(Integer userId, Status status);
 
+    @Query("update Address a set a.status = 'DISABLED' where a.id = :addressId")
     @Modifying
-    @Query("update Address a set a.status = 'ENABLED' where a.id = :addressId")
     void disableAddress(@Param("addressId") Integer addressId);
 }

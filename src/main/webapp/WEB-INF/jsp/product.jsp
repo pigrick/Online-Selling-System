@@ -51,7 +51,7 @@
                                                min="1" max="${product.quantity}" value="1">
                                     </div>
                                     <div class="aa-prod-view-bottom">
-                                        <a class="aa-add-to-cart-btn" style="cursor: hand">Add To Cart</a>
+                                        <a class="aa-add-to-cart-btn" style="cursor: hand" href="/order/addToCart/${product.id}">Add To Cart</a>
                                     </div>
                                 </div>
                             </div>

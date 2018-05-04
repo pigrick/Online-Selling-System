@@ -8,10 +8,11 @@
 
 <div class="container tpy">
 
-    <h1 align="center">Shopping cart</h1>
+    <h2 align="center">Shopping cart</h2>
     <table class="table table-hover">
         <thead>
         <tr>
+            <th scope="col"></th>
             <th scope="col">Product Name</th>
             <th scope="col">Price</th>
             <th scope="col">Quantity</th>
@@ -20,34 +21,33 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach var="orderdetail" items="${shoppingcart.orderDetails}">
-
-            <tr id="${orderdetail.product.id}" class='clickable-row' data-href="text">
-                <input type="hidden" id="productid" name="productid" value="${orderdetail.product.id}"/>
-                <td>${orderdetail.product.name}</td>
-                <td id="price"><fmt:formatNumber value="${orderdetail.price}" type="currency" currencySymbol="$" /></td>
-                <td id="quantity">${orderdetail.quantity}</td>
+        <c:forEach var="orderDetail" items="${shoppingcart.orderDetails}">
+            <tr id="${orderDetail.product.id}">
+                <input type="hidden" id="productid" name="productid" value="${orderDetail.product.id}"/>
+                <td><a href="/product/${orderDetail.product.id}"><img src="/resources/images/${orderDetail.product.id}/0.png" alt="img" height="100" width="100"></a></td>
+                <td><a href="/product/${orderDetail.product.id}">${orderDetail.product.name}</a></td>
+                <td id="price"><fmt:formatNumber value="${orderDetail.price}" type="currency" currencySymbol="$" /></td>
+                <td id="quantity">${orderDetail.quantity}</td>
                 <td>
-                    <input type="number" id="cartquantity2" onblur="updateQuantity(${orderdetail.product.id})" min="0" value="${orderdetail.quantity}"/>
+                    <input type="number" id="cartquantity2" onblur="updateQuantity(${orderDetail.product.id})" min="0" value="${orderDetail.quantity}"/>
                     <%--<button type="submit" class="btn btn-warning" onclick="updateQuantity(${orderdetail.product.id})">--%>
                         <%--Update--%>
                     <%--</button>--%>
                 </td>
-                <td id="totalprice"><fmt:formatNumber value="${orderdetail.calculateTotalPrice()}"
+                <td id="totalprice"><fmt:formatNumber value="${orderDetail.calculateTotalPrice()}"
                                                       type="currency" currencySymbol="$" /></td>
             </tr>
-
         </c:forEach>
         <tr>
-            <td colspan="5"></td>
+            <td colspan="6"></td>
         </tr>
         <tr>
-            <td colspan="3"></td>
+            <td colspan="4"></td>
             <td>Tax ( 7% )</td>
             <td id="tax"><fmt:formatNumber value="${shoppingcart.calculateTax()}" type="currency" currencySymbol="$" /></td>
         </tr>
         <tr class="border-dark">
-            <td colspan="4"></td>
+            <td colspan="5"></td>
             <td id="totalpricewithtax"><fmt:formatNumber value="${shoppingcart.calculateTotalPriceWithTax()}"
                                                          type="currency" currencySymbol="$" /></td>
         </tr>

@@ -1,6 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <%@include file="/WEB-INF/jsp/template/header.jsp" %>
 <link rel="stylesheet" type="text/css" href="/resources/css/order/order.css">
 
@@ -30,6 +28,7 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
+                        <th scope="col"></th>
                         <th scope="col">Product Name</th>
                         <th scope="col">Price</th>
                         <th scope="col">Quantity</th>
@@ -38,26 +37,27 @@
                     </thead>
 
                     <tbody>
-                    <c:forEach var="orderdetail" items="${order.orderDetails}">
+                    <c:forEach var="orderDetail" items="${order.orderDetails}">
                         <tr>
-                            <td><a href="">${orderdetail.product.name}</a></td>
-                            <td><fmt:formatNumber value="${orderdetail.price}" type="currency" currencySymbol="$"/></td>
-                            <td>${orderdetail.quantity}</td>
-                            <td><fmt:formatNumber value="${orderdetail.calculateTotalPrice()}" type="currency"
+                            <td><a href="/product/${orderDetail.product.id}"><img src="/resources/images/${orderDetail.product.id}/0.png" alt="img" height="100" width="100"></a></td>
+                            <td><a href="/product/${orderDetail.product.id}">${orderDetail.product.name}</a></td>
+                            <td><fmt:formatNumber value="${orderDetail.price}" type="currency" currencySymbol="$"/></td>
+                            <td>${orderDetail.quantity}</td>
+                            <td><fmt:formatNumber value="${orderDetail.calculateTotalPrice()}" type="currency"
                                                   currencySymbol="$"/></td>
                         </tr>
                     </c:forEach>
                     <tr>
-                        <td colspan="4"></td>
+                        <td colspan="5"></td>
                     </tr>
                     <tr>
-                        <td colspan="2"></td>
+                        <td colspan="3"></td>
                         <td>Tax ( 7% )</td>
                         <td id="tax"><fmt:formatNumber value="${order.tax}" type="currency"
                                                        currencySymbol="$"/></td>
                     </tr>
                     <tr class="border-dark">
-                        <td colspan="3"></td>
+                        <td colspan="4"></td>
                         <td id="totalpricewithtax"><fmt:formatNumber value="${order.totalPriceWithTax}"
                                                                      type="currency" currencySymbol="$"/></td>
                     </tr>

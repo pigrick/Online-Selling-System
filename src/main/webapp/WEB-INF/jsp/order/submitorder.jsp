@@ -1,6 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/include.jsp" %>
 
@@ -90,9 +88,10 @@
             </div>
         </div>
     </div>
-
+    <br/>
     <div class="container">
         <h2>Use existing Credit Card</h2>
+        <div class="alert-danger">${wrongcvv}</div>
         <c:forEach var="card" items="${cards}">
 
             <div class="col-sm-2 addborder" id="card${card.id}">
@@ -136,7 +135,7 @@
                         </div>
                         <form:form action="/order/checkout/submit" method="post">
                             <div class="modal-body">
-                                <p>Please verify your CVV<input type="text" name="cvv" class="form-control"/></p>
+                                <p>Please verify your CVV<input type="text" name="cvv" class="form-control" autofocus/></p>
                             </div>
                             <div class="modal-footer">
                                 <input type="hidden" name="existing" value="existing"/>
@@ -152,9 +151,9 @@
 
         </c:forEach>
     </div>
-
+    <br/>
     <div class="container">
-        <h2>Use A different Credit Card</h2>
+        <h2>Use a different Credit Card</h2>
         <div class="creditCardForm">
             <div class="heading">
                 <h1>Confirm Purchase</h1>

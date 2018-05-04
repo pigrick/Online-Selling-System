@@ -30,7 +30,7 @@ created by Pagmaa
     </c:if>
 
 <form:form modelAttribute="productForm" action="${pageContext.request.contextPath}/vendor/product/save" method="post" enctype="multipart/form-data">
-    <input type="file" name="file" /><br/>
+
     <table class="table table-hover">
         <tbody>
         <tr>
@@ -64,6 +64,11 @@ created by Pagmaa
         <tr>
             <td><label>Description:</label></td>
             <td><form:textarea path="description"/></td>
+        </tr>
+
+        <tr>
+            <td><label>Image:</label></td>
+            <td><input type="file" name="file" /><br/></td>
         </tr>
 
         <tr>

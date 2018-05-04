@@ -8,6 +8,7 @@ import edu.mum.cs490.project.model.form.ProductForm;
 import edu.mum.cs490.project.service.CategoryService;
 import edu.mum.cs490.project.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -32,7 +34,8 @@ public class VendorProductController {
     private ProductService productService;
 
     //Save the uploaded file to this folder
-    private static String UPLOADED_FOLDER = "D://temp//";
+    @Value("${product.upload.path}")
+    private String FILE_UPLOAD_PATH;
 
     @Autowired
     private CategoryService categoryService;
@@ -74,38 +77,33 @@ public class VendorProductController {
             return "vendor/saveProduct";
         }
 
-        try {
-            String url=file.getOriginalFilename();
-            Product product;
-            if (form.getId() == null) {
-                product = new Product();
-            }
-            else{
-                product = productService.getOne(form.getId());
-            }
-            product.setStatus(Status.ENABLED);
-            product.setCategory(categoryService.getCategoryById(form.getCategoryId()));
-            product.setDescription(form.getDescription());
-            product.setName(form.getName());
-            product.setPrice(form.getPrice());
-            product.setQuantity(form.getQuantity());
-            product.setVendor(vendor);
-            product.setImage(UPLOADED_FOLDER +url);
-            productService.saveOrUpdateProduct(product);
-
-
-            // Get the file and save it somewhere
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
-            Files.write(path, bytes);
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        String url = file.getOriginalFilename();
+        Product product;
+        if (form.getId() == null) {
+            product = new Product();
+        } else {
+            product = productService.getOne(form.getId());
         }
+        product.setStatus(Status.ENABLED);
+        product.setCategory(categoryService.getCategoryById(form.getCategoryId()));
+        product.setDescription(form.getDescription());
+        product.setName(form.getName());
+        product.setPrice(form.getPrice());
+        product.setQuantity(form.getQuantity());
+        product.setVendor(vendor);
+        productService.saveOrUpdateProduct(product);
 
+        if (file != null) {
+            String fileFullName = createFile(file, product.getId());
+
+            if (fileFullName != null) {
+                product.setImage(fileFullName);
+                productService.saveOrUpdateProduct(product);
+            }
+        }
         return "redirect:/vendor/product/all";
     }
+
     @GetMapping("/delete")
     public String deleteProduct(@RequestParam(required = true) Integer id) {
 
@@ -114,5 +112,25 @@ public class VendorProductController {
         return "redirect:/vendor/product/all";
     }
 
-
+    private String createFile(MultipartFile file, Integer productId) {
+        try {
+            String directoryPath = "";
+            if (FILE_UPLOAD_PATH != null) {
+                directoryPath = FILE_UPLOAD_PATH + File.separator + productId;
+                Path rootPath = Paths.get(directoryPath);
+                if (!Files.exists(rootPath)) {
+                    Files.createDirectories(rootPath);
+                }
+            }
+            String fileFullName = directoryPath + File.separator + (productId + "." + file.getOriginalFilename().split("\\.")[1]);
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get(fileFullName);
+            Files.write(path, bytes);
+            System.out.println("Successfully created file - " + fileFullName);
+            return fileFullName;
+        } catch (IOException ex) {
+            ex.getMessage();
+        }
+        return null;
+    }
 }

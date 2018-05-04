@@ -11,9 +11,9 @@
 <script>
     create = {
         init: function() {
-            $('#vendorForm').ajaxForm({
+            $('#categoryForm').ajaxForm({
                 target:'#edit-target',
-                url:'/admin/user/vendor/edit'
+                url:'/admin/category/create'
             });
         },
         success: function() {
@@ -21,33 +21,43 @@
             module.list();
         },
         submit: function() {
-            $('#vendorForm').submit();
+            $('#categoryForm').submit();
         }
     };
 </script>
 
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title">Edit <i>${vendorForm.username}</i> Vendor</h4>
+    <h4 class="modal-title">
+        <c:choose>
+            <c:when test="${categoryForm.id ne null}">
+                Edit <i>${categoryForm.name}</i> Category
+            </c:when>
+            <c:otherwise>
+                Create category
+            </c:otherwise>
+        </c:choose>
+    </h4>
 </div>
 <div class="modal-body">
-    <form:form modelAttribute="vendorForm" method="post">
+    <form:form modelAttribute="categoryForm" method="post">
         <form:hidden path="id"/>
         <div class="form-group">
-            <form:errors path="companyName" cssStyle="color: red" />
-            <label for="companyName">Company Name</label>
-            <form:input path="companyName" class="form-Control" />
+            <form:errors path="name" cssStyle="color: red" />
+            <label for="name">Name</label>
+            <form:input path="name" class="form-control" />
         </div>
-        <div class="form-group">
-            <form:errors path="username" cssStyle="color: red" />
-            <label for="username">username</label>
-            <form:input path="username" class="form-Control" />
-        </div>
-        <div class="form-group">
-            <form:errors path="email" cssStyle="color: red" />
-            <label for="email">email</label>
-            <form:input path="email" type="email" class="form-Control" />
-        </div>
+        <form:select path="parentId" cssClass="form-control">
+            <form:option value="">Select Category</form:option>
+            <c:forEach items="${categories}" var="row">
+                <form:option value="${row.id}">${row.name}</form:option>
+                <c:if test="${row.childCategories ne null}">
+                    <c:forEach items="${row.childCategories}" var="cRow">
+                        <form:option value="${cRow.id}">---${cRow.name}</form:option>
+                    </c:forEach>
+                </c:if>
+            </c:forEach>
+        </form:select>
     </form:form>
 </div>
 <div class="modal-footer">

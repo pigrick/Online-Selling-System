@@ -1,7 +1,6 @@
 package edu.mum.cs490.project.controller.admin;
 
 
-import edu.mum.cs490.project.domain.Category;
 import edu.mum.cs490.project.domain.Product;
 import edu.mum.cs490.project.domain.Status;
 import edu.mum.cs490.project.domain.Vendor;
@@ -66,7 +65,7 @@ public class AdminProductController {
         model.addAttribute("categories", categoryService.find(null, null, Status.ENABLED));
 
         if (result.hasErrors()) {
-            model.addAttribute("message", new Message(Message.Type.FAILED, "Check your forms!!!"));
+            model.addAttribute("message", new Message(Message.Type.ERROR, "Check your forms!!!"));
             return "admin/saveProduct";
         }
 

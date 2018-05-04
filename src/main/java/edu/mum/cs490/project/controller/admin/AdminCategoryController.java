@@ -2,10 +2,10 @@ package edu.mum.cs490.project.controller.admin;
 
 import edu.mum.cs490.project.domain.Category;
 import edu.mum.cs490.project.domain.Status;
+import edu.mum.cs490.project.model.Message;
 import edu.mum.cs490.project.model.form.CategoryForm;
 import edu.mum.cs490.project.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,9 +27,8 @@ public class AdminCategoryController {
 
     @GetMapping
     public String index(Model model) {
-        List<Category> list = categoryService.find(null, null, Status.ENABLED);
         model.addAttribute("statuses", Status.values());
-        model.addAttribute("list", list);
+        model.addAttribute("categories", categoryService.find(null, null, Status.ENABLED));
         return "admin/category/index";
     }
 
@@ -39,13 +38,14 @@ public class AdminCategoryController {
                        @RequestParam(required = false, defaultValue = "ENABLED") Status status,
                        Model model) {
         List<Category> categoryList = categoryService.find(name, parentId, status);
-        model.addAttribute("categoryList", categoryList);
+        model.addAttribute("list", categoryList);
         return "admin/category/list";
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String addCategory(@RequestParam(value = "id", required = false) Integer categoryId, Model model) {
         // edit category
+        model.addAttribute("categories", categoryService.find(null, null, Status.ENABLED));
         CategoryForm categoryForm;
         if (categoryId != null) {
             model.addAttribute("title", "Edit Category");
@@ -60,33 +60,39 @@ public class AdminCategoryController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String addCategoryPost(@Valid @ModelAttribute("categoryForm") CategoryForm categoryForm, BindingResult result) {
-
+    public String addCategoryPost(@Valid @ModelAttribute("categoryForm") CategoryForm categoryForm, BindingResult result, Model model) {
+        model.addAttribute("categories", categoryService.find(null, null, Status.ENABLED));
         if (result.hasErrors()) {
+            model.addAttribute("message", Message.errorOccurred);
             return "admin/category/create";
         }
         Category category;
         if (categoryForm.getId() != null)
-            category = categoryService.getCategoryById(categoryForm.getCategoryId());
+            category = categoryService.getCategoryById(categoryForm.getId());
         else
             category = new Category();
         category.setName(categoryForm.getName());
-//        category.setParentCategory();
+        category.setParentCategory(categoryForm.getParentId() != null ? categoryService.getCategoryById(categoryForm.getParentId()) : null);
         categoryService.save(category);
-        return " redirect:/admin/category/m";
+
+        model.addAttribute("message", Message.successfullySaved);
+        return "admin/category/create";
     }
 
-    @RequestMapping("/delete")
-    public String deleteProductById(@RequestParam(value = "id", required = true) Integer categoryId) {
-
-        categoryService.delete(categoryId);
-
-        return "redirect:/admin/category/m";
+    @RequestMapping(value = {"d", "delete"})
+    @ResponseBody
+    public Message delete(@RequestParam Integer id,
+                          Model model) {
+        categoryService.delete(id);
+        return new Message(Message.Type.SUCCESS, "successfully.deleted");
     }
 
-    @ModelAttribute("categories")
-    public List<Category> modelCategories() {
-        return categoryService.find(null, null, Status.ENABLED);
+    @RequestMapping(value = {"changeStatus"})
+    @ResponseBody
+    public Message changeStatus(@RequestParam Integer id, @RequestParam Status status,
+                                Model model) {
+        categoryService.changeStatus(id, status);
+        return new Message(Message.Type.SUCCESS, "successfully.changed.status");
     }
 
 

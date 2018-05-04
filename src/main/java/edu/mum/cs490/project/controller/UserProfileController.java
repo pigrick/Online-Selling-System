@@ -56,7 +56,7 @@ public class UserProfileController {
         }
 
         if (userService.existByIdNotAndUsername(user.getId(), editForm.getUsername())){
-            model.put("message", new Message(Message.Type.FAILED, "username.duplicate"));
+            model.put("message", new Message(Message.Type.ERROR, "username.duplicate"));
             result.rejectValue("username", "username.duplicate");
             return "profile/editVendor";
         }
@@ -88,7 +88,7 @@ public class UserProfileController {
         }
 
         if (userService.existByIdNotAndUsername(editForm.getId(), editForm.getUsername())){
-            model.put("message", new Message(Message.Type.FAILED, "username.duplicate"));
+            model.put("message", new Message(Message.Type.ERROR, "username.duplicate"));
             result.rejectValue("username", "username.duplicate");
             return "profile/editVendor";
         }

@@ -19,7 +19,7 @@
                                     <c:when test="${message.type eq 'SUCCESS'}">
                                         <div class="panel-success">${messaage.message}</div>
                                     </c:when>
-                                    <c:when test="${message.type eq 'FAILED'}">
+                                    <c:when test="${message.type eq 'ERROR'}">
                                         <div class="panel-danger">${messaage.message}</div>
                                     </c:when>
                                 </c:choose>

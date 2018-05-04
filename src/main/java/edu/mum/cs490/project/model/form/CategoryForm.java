@@ -13,7 +13,7 @@ public class CategoryForm implements Serializable {
     private Integer id;
     @NotBlank(message = "Can not be empty")
     private String name;
-    private Integer categoryId;
+    private Integer parentId;
 
     public CategoryForm() {
     }
@@ -21,7 +21,7 @@ public class CategoryForm implements Serializable {
     public CategoryForm(Category category) {
         this.id = category.getId();
         this.name = category.getName();
-        this.categoryId = category.getParentCategory() != null ? category.getParentCategory().getId() : null;
+        this.parentId = category.getParentCategory() != null ? category.getParentCategory().getId() : null;
     }
 
     public Integer getId() {
@@ -40,11 +40,11 @@ public class CategoryForm implements Serializable {
         this.name = name;
     }
 
-    public Integer getCategoryId() {
-        return categoryId;
+    public Integer getParentId() {
+        return parentId;
     }
 
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
     }
 }

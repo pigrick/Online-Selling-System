@@ -11,7 +11,7 @@ import java.io.Serializable;
 public class CustomerOrderShippingForm implements Serializable {
 
     private Integer addressId;
-    @Pattern(regexp = "\\d{10}", message = "Pleasee enter your Phone number without symbols and space")
+    @Pattern(regexp = "\\d{10}", message = "Please enter your Phone number without symbols and space")
     private String phoneNumber;
     @NotBlank(message = "Please fill in your shipping street address!")
     private String street;

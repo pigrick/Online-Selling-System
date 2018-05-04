@@ -24,8 +24,31 @@ function updateQuantity(productid) {
             if(updatedquantity == 0){
                 jquerytr.remove();
             }
-
         }
     })
+}
 
+function removeCard(cardId){
+    var temp = "#card" + cardId;
+
+    $.ajax({
+        type : "post",
+        url: "/order/removeCard",
+        data : {"cardId" : cardId},
+        success : function(){
+            $(temp).remove();
+        }
+    })
+}
+
+function removeAddress(addressId){
+    var temp = "#address" + addressId;
+    $.ajax({
+        type : "post",
+        url : "/order/removeAddress",
+        data : {"addressId" : addressId},
+        success : function(){
+            $(temp).remove();
+        }
+    })
 }

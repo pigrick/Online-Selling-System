@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+//4929127657563699
 @Controller
 @RequestMapping("order")
 public class OrderController {
@@ -52,7 +53,7 @@ public class OrderController {
         this.orderService = orderService;
         this.mockPaymentService = mockPaymentService;
         this.productService = productService;
-        this.aesConverter  = aesConverter;
+        this.aesConverter = aesConverter;
         this.customerService = customerService;
     }
 
@@ -68,11 +69,19 @@ public class OrderController {
         }
         return "order/orderlist";
     }
-    @GetMapping("customer/all/{page}")
-    public String getAllCustomerOrderByPage(Model model, @PathVariable("page") int page){
-        Customer customer = (Customer)SignedUser.getSignedUser();
-        Page<Order> orders = orderService.findByCustomer_id(customer.getId(), page);
 
+    @GetMapping("customer/all")
+    public String redirectCustomerOrderPage() {
+        return "redirect:/order/customer/all/1";
+    }
+
+    @GetMapping("customer/all/{page}")
+    public String getAllCustomerOrderByPage(Model model, @PathVariable("page") int page) {
+        Customer customer = (Customer) SignedUser.getSignedUser();
+        if (customer == null || customer.getId() == null) {
+            return "redirect:/login";
+        }
+        Page<Order> orders = orderService.findByCustomer_id(customer.getId(), page);
         int current = orders.getNumber() + 1;
         int begin = Math.max(1, current - 5);
         int end = Math.min(begin + 10, orders.getTotalPages());
@@ -86,31 +95,38 @@ public class OrderController {
     }
 
     @GetMapping("customer/{orderId}")
-    public String getCustomerOrder(Model model, @PathVariable("orderId") Integer orderId){
+    public String getCustomerOrder(Model model, @PathVariable("orderId") Integer orderId) {
         Order order = orderService.findById(orderId);
-        Customer customer = (Customer)SignedUser.getSignedUser();
-        if(order == null){
+        Customer customer = (Customer) SignedUser.getSignedUser();
+        if (customer == null || customer.getId() == null) {
+            return "redirect:/login";
+        }
+        if (order == null) {
             return "redirect:/order/customer/all";
-        } else if(order.getCustomer().getId().equals(customer.getId())){
-            model.addAttribute("order",order);
+        } else if (order.getCustomer().getId().equals(customer.getId())) {
+            model.addAttribute("order", order);
             return "order/orderreceipt";
         } else {
-            return "redirect:/order/customer/all";
+            return "redirect:/order/customer/all/1";
         }
 
     }
 
+    @PostMapping("addToCart")
+    public String addToCart(HttpSession session) {
+        return "redirect:/order/shoppingcart";
+    }
 
     @GetMapping("shoppingcart")
     public String getShoppingCart(Model model, HttpServletResponse response, HttpSession session) {
         ShoppingCart sc = new ShoppingCart();
         List<OrderDetail> od = new ArrayList<>();
         OrderDetail aa = new OrderDetail();
-        Product p = productService.getOne(new Integer(1));
+        Product p = productService.getOne(1);
         aa.setProduct(p);
         aa.setPrice(p.getPrice());
         aa.setQuantity(3);
-        Product b = productService.getOne(new Integer(3));
+        Product b = productService.getOne(3);
         OrderDetail bb = new OrderDetail();
         bb.setProduct(b);
         bb.setQuantity(1);
@@ -126,7 +142,7 @@ public class OrderController {
     public @ResponseBody
     String updateCart(HttpSession session, @RequestParam("productid") String productid, @RequestParam("updatedquantity") String quantity) {
         ShoppingCart sc = (ShoppingCart) session.getAttribute("shoppingcart");
-        sc.update(Integer.parseInt(productid),Integer.parseInt(quantity)) ;
+        sc.update(Integer.parseInt(productid), Integer.parseInt(quantity));
 
 
         session.setAttribute("shoppingcart", sc);
@@ -141,42 +157,58 @@ public class OrderController {
         if (sc == null || sc.getOrderDetails().isEmpty()) {
             return "order/emptycart";
         }
-        User user = SignedUser.getSignedUser();
-        model.addAttribute("addresses", customerService.findByUser_id(user.getId()));
+        Customer customer = (Customer) SignedUser.getSignedUser();
+        if (customer == null || customer.getId() == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("addresses", customerService.findByUser_id(customer.getId()));
         return "order/checkoutcart";
     }
 
     @PostMapping("checkout")
     public String customerCheckout(@Valid CustomerOrderShippingForm customerOrderShippingForm, BindingResult bindingResult,
-                                   @ModelAttribute("paymentForm") PaymentForm paymentForm, HttpSession session) {
-        if (bindingResult.hasErrors()) {
+                                   @ModelAttribute("paymentForm") PaymentForm paymentForm, HttpSession session, Model model,
+                                   HttpServletRequest request) {
+        if(request.getParameter("addressId") != null){
+            Address address = this.customerService.findAddressById(Integer.parseInt(request.getParameter("addressId")));
+            customerOrderShippingForm.transferAddress(address);
+        } else if(bindingResult.hasErrors()) {
             return "order/checkoutcart";
-        } else {
-            User user = SignedUser.getSignedUser();
-            List<OrderDetail> orderdetails = ((ShoppingCart) session.getAttribute("shoppingcart")).getOrderDetails();
-            Order order = new Order();
-            order.receiveCustomerShippingForm(user, customerOrderShippingForm);
-            order.setOrderDetails(orderdetails);
-
-            session.setAttribute("checkoutorder", order);
-            return "order/submitorder";
         }
+        User user = SignedUser.getSignedUser();
+        List<OrderDetail> orderdetails = ((ShoppingCart) session.getAttribute("shoppingcart")).getOrderDetails();
+        Order order = new Order();
+        order.receiveCustomerShippingForm(user, customerOrderShippingForm);
+        order.setOrderDetails(orderdetails);
+
+        model.addAttribute("cards", this.orderService.findCardByUser_id(user.getId()));
+        session.setAttribute("checkoutorder", order);
+        return "order/submitorder";
+
     }
 
     @PostMapping("checkout/submit")
     public String customerOrderPayment(Model model, HttpSession session, @Valid PaymentForm paymentForm, BindingResult bindingResult,
-                                       @RequestParam("month") String month, @RequestParam("year") String year) {
+                                       HttpServletRequest request) {
         System.out.println(bindingResult.toString());
-
-        paymentForm.setCardNumber(paymentForm.getCardNumber().replaceAll("\\s",""));
-        paymentForm.setCardExpirationDate(month + "/" + year);
+        if (request.getParameter("existing") != null) {
+            CardDetail cards = this.orderService.findCardById(Integer.parseInt(request.getParameter("cardId")));
+            paymentForm.transferCardDetail(cards, this.aesConverter);
+            if (!request.getParameter("cvv").equals(paymentForm.getCvv())) {
+                return "redirect:/order/checkout";
+            }
+        }
+        paymentForm.setCardNumber(paymentForm.getCardNumber().replaceAll("\\s", ""));
+        if (request.getParameter("month") != null && request.getParameter("year") != null) {
+            paymentForm.setCardExpirationDate(request.getParameter("month") + "/" + request.getParameter("year"));
+            if (bindingResult.hasErrors()) {
+                model.addAttribute("badcard", "Invalid Card details");
+                return "order/submitorder";
+            }
+        }
         paymentForm.setLast4Digit(paymentForm.getCardNumber().substring(paymentForm.getCardNumber().length() - 4));
 
         Order order = (Order) session.getAttribute("checkoutorder");
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("badcard", "Invalid Card details");
-            return "order/submitorder";
-        }
         User user = SignedUser.getSignedUser();
         order.receivePaymentFormAndEncrypt(paymentForm, this.aesConverter);
 
@@ -199,6 +231,7 @@ public class OrderController {
 
         session.removeAttribute("order");
         session.removeAttribute("shoppingcart");
+        model.addAttribute("cards", this.orderService.findCardByUser_id(user.getId()));
         model.addAttribute("order", order);
         return "order/ordersuccess";
     }
@@ -229,7 +262,7 @@ public class OrderController {
     @PostMapping("guest/checkout/submit")
     public String guestOrderPayment(Model model, HttpSession session, @Valid PaymentForm paymentForm, BindingResult bindingResult,
                                     @RequestParam("month") String month, @RequestParam("year") String year) {
-        paymentForm.setCardNumber(paymentForm.getCardNumber().replaceAll("\\s",""));
+        paymentForm.setCardNumber(paymentForm.getCardNumber().replaceAll("\\s", ""));
         paymentForm.setCardExpirationDate(month + "/" + year);
         paymentForm.setLast4Digit(paymentForm.getCardNumber().substring(paymentForm.getCardNumber().length() - 4));
 
@@ -256,9 +289,24 @@ public class OrderController {
         //Send Email!!!!!!
 
         session.removeAttribute("order");
-        session.removeAttribute("shoppingcart");
+        session.setAttribute("shoppingcart", new ShoppingCart());
         model.addAttribute("order", order);
         return "order/ordersuccess";
+    }
+
+    @PostMapping("removeCard")
+    public @ResponseBody
+    String removeCard(@RequestParam("cardId") String cardId) {
+        this.orderService.disableCard(Integer.parseInt(cardId));
+        return "success";
+    }
+
+    @PostMapping("removeAddress")
+    public @ResponseBody
+    String removeAddress(@RequestParam("addressId") String addressId) {
+        System.out.println("hihihihihih");
+        this.customerService.findByUser_id(Integer.parseInt(addressId));
+        return "success";
     }
 
     //Testing stuff

@@ -24,7 +24,7 @@ public class Order {
     private Customer customer;
     @OneToOne
     private Guest guest;
-    @OneToOne(cascade={ CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToOne(cascade={ CascadeType.MERGE})
     private CardDetail card;
     @Temporal(TemporalType.DATE)
     private Date orderDate;
@@ -38,7 +38,6 @@ public class Order {
     private List<OrderDetail> orderDetails;
 
     public Order() {
-        this.status = Status.ENABLED;
     }
 
     public void receiveCustomerShippingForm(User user, CustomerOrderShippingForm customerOrderShippingForm){
@@ -64,7 +63,7 @@ public class Order {
         this.card.setCvv(aesConverter.encrypt(paymentForm.getCvv()));
         this.card.setCardExpirationDate(aesConverter.encrypt(paymentForm.getCardExpirationDate()));
         this.card.setZipcode(aesConverter.encrypt(paymentForm.getCardZipcode()));
-        this.card.setCardType(aesConverter.encrypt(paymentForm.getCardType()));
+        this.card.setCardType(paymentForm.getCardType());
         this.card.setLast4Digit(paymentForm.getLast4Digit());
         this.card.setId(paymentForm.getCardId());
         if(this.customer == null){
@@ -161,7 +160,7 @@ public class Order {
         this.guest = guest;
     }
 
-    public void linkOrderDetailWithOrder(){
+    private void linkOrderDetailWithOrder(){
         for(OrderDetail od : this.getOrderDetails()){
             od.setOrder(this);
         }

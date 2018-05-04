@@ -25,5 +25,5 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     @Query("select distinct o from Order o join o.orderDetails od WHERE od.product.vendor.id = :vendorId AND o.orderDate between :begindate AND :enddate")
     List<Order> findByVendor_idBetweenDate(@Param("vendorId") Integer id, @Param("begindate") Date begin, @Param("enddate") Date end);
 
-    Page<Order> findByCustomer_id(Integer customerId, Pageable pageable);
+    Page<Order> findByCustomer_idOrderByOrderDateDesc(Integer customerId, Pageable pageable);
 }

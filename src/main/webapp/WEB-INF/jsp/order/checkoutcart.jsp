@@ -56,23 +56,59 @@
         <div class="container">
             <div class="row">
                 <c:forEach var="address" items="${addresses}">
-                    <form:form modelAttribute="customerOrderShippingForm" method="post" cssClass="inlineForm">
-                        <div class="col-sm-2 addborder">
-                                ${address.street} <br/>
-                                ${address.city}, ${address.state} ${address.zipcode} <br/>
-                            Phone: ${address.phoneNumber} <br />
-                            <form:hidden path="addressId" value="${address.id}" />
-                            <form:hidden path="phoneNumber" value="${address.phoneNumber}"/>
-                            <form:hidden path="street" value="${address.street}"/>
-                            <form:hidden path="city" value="${address.city}"/>
-                            <form:hidden path="state" value="${address.state}"/>
-                            <form:hidden path="zipcode" value="${address.zipcode}"/>
-                            <input class="btn btn-primary" type="submit" value="Deliver to this address"/>
+                    <div class="col-sm-2 addborder" id="address${address.id}">
+                        <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#removeAddress${address.id}">
+                            Remove
+                        </button>
+                        <br/>
+                        <br/>${address.street} <br/>
+                            ${address.city}, ${address.state} ${address.zipcode} <br/>
+                        Phone: ${address.phoneNumber} <br/><br/>
+
+                        <form:form cssClass="inlineForm" method="post">
+                            <input type="hidden" name="addressId" value="${address.id}" />
+                            <input type="submit" class="btn btn-primary" value="Deliver to this address"/>
+                        </form:form>
+                    </div>
+                    <div class="modal fade" id="removeAddress${address.id}" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Are you sure you want to remove this address! <br/><br/> ${address.street} <br/>
+                                            ${address.city}, ${address.state} ${address.zipcode} <br/>
+                                        Phone: ${address.phoneNumber} </h4>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-danger" onclick="removeAddress(${address.id})" data-dismiss="modal">Remove
+                                        Address
+                                    </button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
                         </div>
-                    </form:form>
+                    </div>
+                    <%--<form:form modelAttribute="customerOrderShippingForm" method="post" cssClass="inlineForm">--%>
+                        <%--<div class="col-sm-2 addborder">--%>
+                                <%--${address.street} <br/>--%>
+                                <%--${address.city}, ${address.state} ${address.zipcode} <br/>--%>
+                            <%--Phone: ${address.phoneNumber} <br />--%>
+                            <%--<form:hidden path="addressId" value="${address.id}" />--%>
+                            <%--<form:hidden path="phoneNumber" value="${address.phoneNumber}"/>--%>
+                            <%--<form:hidden path="street" value="${address.street}"/>--%>
+                            <%--<form:hidden path="city" value="${address.city}"/>--%>
+                            <%--<form:hidden path="state" value="${address.state}"/>--%>
+                            <%--<form:hidden path="zipcode" value="${address.zipcode}"/>--%>
+                            <%--<input class="btn btn-primary" type="submit" value="Deliver to this address"/>--%>
+                        <%--</div>--%>
+                    <%--</form:form>--%>
                 </c:forEach>
             </div>
         </div>
+        <br/>
+        <h2>Ship to Another Address</h2>
         <form:form modelAttribute="customerOrderShippingForm" method="post">
             <br/>
             <div class="container">
@@ -154,5 +190,5 @@
     </div>
 </div>
 
-
+<script src="/resources/js/order/order.js"></script>
 <%@include file="/WEB-INF/jsp/template/footer.jsp" %>

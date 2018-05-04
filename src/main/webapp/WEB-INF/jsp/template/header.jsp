@@ -254,6 +254,10 @@
                                 <li><a href="#">All Products</a></li>
                             </ul>
                         </li>
+                        <sec:authorize access="hasRole('CUSTOMER')">
+                            <li><a href="/order/customer/all/1">Orders</a></li>
+
+                        </sec:authorize>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>

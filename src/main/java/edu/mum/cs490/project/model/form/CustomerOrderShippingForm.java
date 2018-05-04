@@ -1,5 +1,6 @@
 package edu.mum.cs490.project.model.form;
 
+import edu.mum.cs490.project.domain.Address;
 import org.hibernate.validator.constraints.CreditCardNumber;
 
 import javax.validation.constraints.NotBlank;
@@ -29,14 +30,6 @@ public class CustomerOrderShippingForm implements Serializable {
 
     public void setAddressId(Integer addressId) {
         this.addressId = addressId;
-    }
-
-    public CustomerOrderShippingForm(String phoneNumber, String street, String city, String state, String zipcode) {
-        this.phoneNumber = phoneNumber;
-        this.street = street;
-        this.city = city;
-        this.state = state;
-        this.zipcode = zipcode;
     }
 
     public String getPhoneNumber() {
@@ -77,5 +70,14 @@ public class CustomerOrderShippingForm implements Serializable {
 
     public void setZipcode(String zipcode) {
         this.zipcode = zipcode;
+    }
+
+    public void transferAddress(Address address){
+        this.addressId = address.getId();
+        this.street = address.getStreet();
+        this.city = address.getCity();
+        this.phoneNumber = address.getPhoneNumber();
+        this.zipcode = address.getZipcode();
+        this.state = address.getState();
     }
 }

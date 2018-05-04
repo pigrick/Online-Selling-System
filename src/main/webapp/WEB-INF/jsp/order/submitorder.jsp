@@ -2,7 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="/WEB-INF/include.jsp"%>
+<%@include file="/WEB-INF/include.jsp" %>
 
 <%@include file="/WEB-INF/jsp/template/header.jsp" %>
 
@@ -32,10 +32,11 @@
                         <c:forEach var="orderdetail" items="${shoppingcart.orderDetails}">
                             <tr>
                                 <td><a href="">${orderdetail.product.name}</a></td>
-                                <td><fmt:formatNumber value="${orderdetail.price}" type="currency" currencySymbol="$" /></td>
+                                <td><fmt:formatNumber value="${orderdetail.price}" type="currency"
+                                                      currencySymbol="$"/></td>
                                 <td>${orderdetail.quantity}</td>
                                 <td><fmt:formatNumber value="${orderdetail.calculateTotalPrice()}"
-                                                      type="currency" currencySymbol="$" /></td>
+                                                      type="currency" currencySymbol="$"/></td>
                             </tr>
                         </c:forEach>
                         <tr>
@@ -44,13 +45,14 @@
                         <tr>
                             <td colspan="2"></td>
                             <td>Tax ( 7% )</td>
-                            <td id="tax"><fmt:formatNumber value="${shoppingcart.calculateTax()}" type="currency" currencySymbol="$" /></td>
+                            <td id="tax"><fmt:formatNumber value="${shoppingcart.calculateTax()}" type="currency"
+                                                           currencySymbol="$"/></td>
                         </tr>
                         <tr class="border-dark">
                             <td colspan="3"></td>
                             <td id="totalpricewithtax"><fmt:formatNumber
                                     value="${shoppingcart.calculateTotalPriceWithTax()}"
-                                    type="currency" currencySymbol="$" /></td>
+                                    type="currency" currencySymbol="$"/></td>
                         </tr>
                         </tbody>
                     </table>
@@ -89,16 +91,78 @@
         </div>
     </div>
 
+    <div class="container">
+        <h2>Use existing Credit Card</h2>
+        <c:forEach var="card" items="${cards}">
+
+            <div class="col-sm-2 addborder" id="card${card.id}">
+                <button class="btn btn-danger" type="button" data-toggle="modal" data-target="#remove${card.id}">
+                    Remove
+                </button>
+                <br/>
+                <br/>${card.cardType} <br/> **** **** **** ${card.last4Digit} <br/><br/>
+                <button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#${card.id}">Use this
+                    Card
+                </button>
+            </div>
+            <div class="modal fade" id="remove${card.id}" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Are you sure you want to remove this card! <br/> Visa <br/> ****
+                                **** **** ${card.last4Digit}</h4>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-danger" onclick="removeCard(${card.id})" data-dismiss="modal">Remove
+                                Card
+                            </button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="${card.id}" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Using this Card <br/> Visa <br/> **** **** **** ${card.last4Digit}
+                            </h4>
+                        </div>
+                        <form:form action="/order/checkout/submit" method="post">
+                            <div class="modal-body">
+                                <p>Please verify your CVV<input type="text" name="cvv" class="form-control"/></p>
+                            </div>
+                            <div class="modal-footer">
+                                <input type="hidden" name="existing" value="existing"/>
+                                <input type="hidden" name="cardId" value="${card.id}"/>
+                                <input type="submit" class="btn btn-info btn-lg" value="Submit Payment"></input>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </form:form>
+                    </div>
+                </div>
+            </div>
+
+
+        </c:forEach>
+    </div>
 
     <div class="container">
-
-            <div class="creditCardForm">
-                <div class="heading">
-                    <h1>Confirm Purchase</h1>
-                </div>
-                <div class="alert-danger">${badcard}</div>
-                <div class="payment">
-            <form:form id="submit-payment" modelAttribute="paymentForm" method="post" action="/order/checkout/submit">
+        <h2>Use A different Credit Card</h2>
+        <div class="creditCardForm">
+            <div class="heading">
+                <h1>Confirm Purchase</h1>
+            </div>
+            <div class="alert-danger">${badcard}</div>
+            <div class="payment">
+                <form:form id="submit-payment" modelAttribute="paymentForm" method="post"
+                           action="/order/checkout/submit">
                     <form:hidden path="cardType" id="card-type"/>
                     <div class="form-group owner">
                         <label for="owner">Card Holder</label>
@@ -140,7 +204,7 @@
                     </div>
                     <div class="form-group">
                         <label>Zipcode</label>
-                        <form:input path="cardZipcode" class="form-control" />
+                        <form:input path="cardZipcode" class="form-control"/>
                     </div>
                     <div class="form-group" id="credit_cards">
                         <img src="/resources/paymentdetail/images/visa.jpg" id="visa">
@@ -149,9 +213,9 @@
                     <div class="form-group" id="pay-now">
                         <button type="submit" class="btn btn-default" id="confirm-purchase">Confirm</button>
                     </div>
-            </form:form>
-                </div>
+                </form:form>
             </div>
+        </div>
 
 
     </div>
@@ -159,7 +223,7 @@
 
 
 <script src="/resources/paymentdetail/js/script.js"></script>
-
+<script src="/resources/js/order/order.js"></script>
 
 <%@include file="/WEB-INF/jsp/template/footer.jsp" %>
 

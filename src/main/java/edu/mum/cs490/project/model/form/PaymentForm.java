@@ -1,5 +1,7 @@
 package edu.mum.cs490.project.model.form;
 
+import edu.mum.cs490.project.domain.CardDetail;
+import edu.mum.cs490.project.utils.AESConverter;
 import org.hibernate.validator.constraints.CreditCardNumber;
 
 import javax.validation.constraints.NotBlank;
@@ -87,4 +89,16 @@ public class PaymentForm implements Serializable {
     public void setCardZipcode(String cardZipcode) {
         this.cardZipcode = cardZipcode;
     }
+
+    public void transferCardDetail(CardDetail cardDetail, AESConverter aesConverter){
+        this.cardId = cardDetail.getId();
+        this.cardType = cardDetail.getCardType();
+        this.cardHolderName = aesConverter.decrypt(cardDetail.getCardHolderName());
+        this.cardNumber = aesConverter.decrypt(cardDetail.getCardNumber());
+        this.cardExpirationDate = aesConverter.decrypt(cardDetail.getCardExpirationDate());
+        this.cvv = aesConverter.decrypt(cardDetail.getCvv());
+        this.cardZipcode = aesConverter.decrypt(cardDetail.getZipcode());
+    }
+
+
 }

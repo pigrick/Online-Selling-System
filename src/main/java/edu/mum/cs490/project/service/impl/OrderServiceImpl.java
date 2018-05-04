@@ -24,10 +24,10 @@ import java.util.List;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    public final OrderRepository orderRespository;
-    public final CardDetailRepository cardDetailRepository;
-    public final PaymentService paymentService;
-    public final AddressRepository addressRepository;
+    private final OrderRepository orderRespository;
+    private final CardDetailRepository cardDetailRepository;
+    private final PaymentService paymentService;
+    private final AddressRepository addressRepository;
 
     private static final int PAGE_SIZE = 5;
 
@@ -76,7 +76,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Page<Order> findByCustomer_id(Integer customerId, int page) {
-        return this.orderRespository.findByCustomer_id(customerId, PageRequest.of(page-1, PAGE_SIZE));
+        return this.orderRespository.findByCustomer_idOrderByOrderDateDesc(customerId, PageRequest.of(page-1, PAGE_SIZE));
     }
 
     @Override
@@ -85,7 +85,23 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<CardDetail> findCardByUser_id(Integer userId) {
+        return this.cardDetailRepository.findByOwner_idAndStatus(userId, Status.ENABLED);
+    }
+
+    @Override
+    public CardDetail findCardById(Integer cardId) {
+        return this.cardDetailRepository.findById(cardId).orElse(null);
+    }
+
+    @Override
+    public void disableCard(Integer cardId) {
+        this.cardDetailRepository.disableCard(cardId);
+    }
+
+    @Override
     public Order saveOrUpdate(Order order) {
+        this.cardDetailRepository.save(order.getCard());
         this.addressRepository.save(order.getAddress());
         return this.orderRespository.save(order);
     }

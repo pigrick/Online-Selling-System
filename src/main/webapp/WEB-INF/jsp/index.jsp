@@ -22,7 +22,7 @@
                         <div class="col-md-5 no-padding">
                             <div class="aa-promo-left">
                                 <div class="aa-promo-banner">
-                                    <img style="object-fit: cover;" src="/resources/img/for-women-450x450.jpg" alt="img">
+                                    <img style="object-fit: cover;" src="${resourcePath}5/5.jpg" alt="img">
                                     <div class="aa-prom-content">
                                         <span>75% Off</span>
                                         <h4><a href="#">For Women</a></h4>
@@ -35,7 +35,7 @@
                             <div class="aa-promo-right">
                                 <div class="aa-single-promo-right">
                                     <div class="aa-promo-banner">
-                                        <img style="object-fit: cover;" src="/resources/img/for-men-300x220.jpg" alt="img">
+                                        <img style="object-fit: cover;" src="/static/img/for-men-300x220.jpg" alt="img">
                                         <div class="aa-prom-content">
                                             <span>Exclusive Item</span>
                                             <h4><a href="#">For Men</a></h4>
@@ -44,7 +44,7 @@
                                 </div>
                                 <div class="aa-single-promo-right">
                                     <div class="aa-promo-banner">
-                                        <img src="/resources/img/for-shoes.jpg" alt="img">
+                                        <img src="/static/img/for-shoes.jpg" alt="img">
                                         <div class="aa-prom-content">
                                             <span>On Sale</span>
                                             <h4><a href="#">On Shoes</a></h4>
@@ -53,7 +53,7 @@
                                 </div>
                                 <div class="aa-single-promo-right">
                                     <div class="aa-promo-banner">
-                                        <img src="/resources/img/for-kids.jpg" alt="img">
+                                        <img src="/static/img/for-kids.jpg" alt="img">
                                         <div class="aa-prom-content">
                                             <span>New Arrivals</span>
                                             <h4><a href="#">For Kids</a></h4>
@@ -62,7 +62,7 @@
                                 </div>
                                 <div class="aa-single-promo-right">
                                     <div class="aa-promo-banner">
-                                        <img style="object-fit: cover;" src="/resources/img/for-bags.jpg" alt="img">
+                                        <img style="object-fit: cover;" src="/static/img/for-bags.jpg" alt="img">
                                         <div class="aa-prom-content">
                                             <span>25% Off</span>
                                             <h4><a href="#">For Bags</a></h4>
@@ -95,10 +95,10 @@
                                 <c:forEach items="${mainCategories}" var="category">
                                     <c:set var="counter" value="${counter + 1}" scope="page"/>
                                     <c:if test="${counter eq 1}">
-                                        <li><a href="#${category}" data-toggle="tab">${category}</a></li>
+                                        <li><a href="#${category}" data-toggle="tab">${category.name}</a></li>
                                     </c:if>
                                     <c:if test="${counter ne 1}">
-                                        <li><a href="#${category}" data-toggle="tab">${category}</a></li>
+                                        <li><a href="#${category}" data-toggle="tab">${category.name}</a></li>
                                     </c:if>
                                 </c:forEach>
                             </ul>
@@ -114,7 +114,7 @@
                                                 <a class="aa-product-img"
                                                    href="<c:url value="/product/${product.id}" />">
                                                     <img style="width: 250px; height: 300px"
-                                                         src="<c:url value="/resources/images/${product.id}/0.png" />"></a>
+                                                         src="<c:url value="/static/images/${product.id}/0.png" />"></a>
 
                                                 <a class="aa-add-card-btn" style="cursor: hand" href="/order/addToCart/${product.id}">
                                                     <span class="fa fa-shopping-cart"></span>Add To Cart
@@ -152,11 +152,11 @@
             <div class="col-md-12">
                 <div class="aa-client-brand-area">
                     <ul class="aa-client-brand-slider">
-                        <li><a href="#"><img src="<c:url value="/resources/img/client-brand-ak.png" />" alt="ak img"></a></li>
-                        <li><a href="#"><img src="<c:url value="/resources/img/client-brand-bart.png" />" alt="bart img"></a></li>
-                        <li><a href="#"><img src="<c:url value="/resources/img/client-brand-gamet.png" />" alt="gamet img"></a></li>
-                        <li><a href="#"><img src="<c:url value="/resources/img/client-brand-panasonic.png" />" alt="panasonic img"></a></li>
-                        <li><a href="#"><img src="<c:url value="/resources/img/client-brand-redible.png" />" alt="redible img"></a></li>
+                        <li><a href="#"><img src="<c:url value="/static/img/client-brand-ak.png" />" alt="ak img"></a></li>
+                        <li><a href="#"><img src="<c:url value="/static/img/client-brand-bart.png" />" alt="bart img"></a></li>
+                        <li><a href="#"><img src="<c:url value="/static/img/client-brand-gamet.png" />" alt="gamet img"></a></li>
+                        <li><a href="#"><img src="<c:url value="/static/img/client-brand-panasonic.png" />" alt="panasonic img"></a></li>
+                        <li><a href="#"><img src="<c:url value="/static/img/client-brand-redible.png" />" alt="redible img"></a></li>
 
 
 

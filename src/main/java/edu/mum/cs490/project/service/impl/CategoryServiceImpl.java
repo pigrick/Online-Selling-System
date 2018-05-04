@@ -22,25 +22,9 @@ public class CategoryServiceImpl implements CategoryService {
         this.categoryRepostitory = categoryRepostitory;
     }
 
-
     @Override
-    public List<Category> getAllCategory() {
-        return categoryRepostitory.findAll();
-    }
-
-    @Override
-    public Category getOne(Integer id) {
-        return null;
-    }
-
-    @Override
-    public List<Category> getAllMainCategory() {
-        return categoryRepostitory.findAllByParentCategoryIsNull();
-    }
-
-    @Override
-    public List<Category> getAllSubCategory(Integer parentId) {
-        return categoryRepostitory.findAllByParentCategoryId(parentId);
+    public List<Category> find(String name, Integer parentId, Status status) {
+        return categoryRepostitory.find(name, parentId, status);
     }
 
     @Override
@@ -50,7 +34,14 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void delete(Integer categoryId) {
-        Category category = getOne(categoryId);
+        Category category = getCategoryById(categoryId);
+        category.setStatus(Status.DELETED);
+        categoryRepostitory.save(category);
+    }
+
+    @Override
+    public void changeStatus(Integer id, Status status) {
+        Category category = getCategoryById(id);
         category.setStatus(Status.DELETED);
         categoryRepostitory.save(category);
     }

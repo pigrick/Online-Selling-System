@@ -7,6 +7,7 @@ import edu.mum.cs490.project.model.Message;
 import edu.mum.cs490.project.model.form.ProductForm;
 import edu.mum.cs490.project.service.CategoryService;
 import edu.mum.cs490.project.service.ProductService;
+import edu.mum.cs490.project.utils.SaveToFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -28,14 +29,9 @@ import java.util.List;
 @Controller
 @RequestMapping("/vendor/product")
 public class VendorProductController {
-    private Path path;
 
     @Autowired
     private ProductService productService;
-
-    //Save the uploaded file to this folder
-    @Value("${product.upload.path}")
-    private String FILE_UPLOAD_PATH;
 
     @Autowired
     private CategoryService categoryService;
@@ -58,7 +54,7 @@ public class VendorProductController {
         } else {
             model.addAttribute("productForm", new ProductForm());
         }
-        model.addAttribute("categories", categoryService.getAllMainCategory());
+        model.addAttribute("categories", categoryService.find(null, null, Status.ENABLED));
 
         return "vendor/saveProduct";
     }
@@ -70,7 +66,7 @@ public class VendorProductController {
                                       RedirectAttributes model) {
 
         model.addFlashAttribute("title", "Product");
-        model.addFlashAttribute("categories", categoryService.getAllMainCategory());
+        model.addFlashAttribute("categories", categoryService.find(null, null, Status.ENABLED));
 
         if (file.isEmpty() || result.hasErrors()) {
             model.addFlashAttribute("message", "Please select a file to upload or check fields!!!");
@@ -94,7 +90,7 @@ public class VendorProductController {
         productService.saveOrUpdateProduct(product);
 
         if (file != null) {
-            String fileFullName = createFile(file, product.getId());
+            String fileFullName = SaveToFile.createFile(file, "product", product.getId());
 
             if (fileFullName != null) {
                 product.setImage(fileFullName);
@@ -110,27 +106,5 @@ public class VendorProductController {
         productService.delete(id);
 
         return "redirect:/vendor/product/all";
-    }
-
-    private String createFile(MultipartFile file, Integer productId) {
-        try {
-            String directoryPath = "";
-            if (FILE_UPLOAD_PATH != null) {
-                directoryPath = FILE_UPLOAD_PATH + File.separator + productId;
-                Path rootPath = Paths.get(directoryPath);
-                if (!Files.exists(rootPath)) {
-                    Files.createDirectories(rootPath);
-                }
-            }
-            String fileFullName = directoryPath + File.separator + (productId + "." + file.getOriginalFilename().split("\\.")[1]);
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get(fileFullName);
-            Files.write(path, bytes);
-            System.out.println("Successfully created file - " + fileFullName);
-            return fileFullName;
-        } catch (IOException ex) {
-            ex.getMessage();
-        }
-        return null;
     }
 }

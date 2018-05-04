@@ -2,7 +2,7 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/jsp/template/header.jsp" %>
-<link rel="stylesheet" type="text/css" href="/resources/css/order/order.css">
+<link rel="stylesheet" type="text/css" href="/static/css/order/order.css">
 <div class="container tpy">
     <h1 align="center">Order</h1>
     <div class="container">
@@ -190,5 +190,5 @@
     </div>
 </div>
 
-<script src="/resources/js/order/order.js"></script>
+<script src="/static/js/order/order.js"></script>
 <%@include file="/WEB-INF/jsp/template/footer.jsp" %>

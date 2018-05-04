@@ -2,6 +2,7 @@ package edu.mum.cs490.project.controller;
 
 import edu.mum.cs490.project.domain.Category;
 import edu.mum.cs490.project.domain.Product;
+import edu.mum.cs490.project.domain.Status;
 import edu.mum.cs490.project.service.CategoryService;
 import edu.mum.cs490.project.service.ProductService;
 import edu.mum.cs490.project.service.UserService;
@@ -33,7 +34,7 @@ public class HomeController {
 
 
         List<Product> productList = productService.getAllProduct();
-        List<Category> mainCategories = categoryService.getAllMainCategory();
+        List<Category> mainCategories = categoryService.find(null, null, Status.ENABLED);
 
         model.addAttribute("products", productList);
         model.addAttribute("mainCategories", mainCategories);

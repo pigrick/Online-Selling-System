@@ -1,6 +1,6 @@
 
 <%@include file="/WEB-INF/jsp/template/header.jsp" %>
-<link rel="stylesheet" type="text/css" href="/resources/css/order/order.css">
+<link rel="stylesheet" type="text/css" href="/static/css/order/order.css">
 
 <div class="container tpy">
     <div class="container">
@@ -39,7 +39,7 @@
                     <tbody>
                     <c:forEach var="orderDetail" items="${order.orderDetails}">
                         <tr>
-                            <td><a href="/product/${orderDetail.product.id}"><img src="/resources/images/${orderDetail.product.id}/0.png" alt="img" height="100" width="100"></a></td>
+                            <td><a href="/product/${orderDetail.product.id}"><img src="/static/images/${orderDetail.product.id}/0.png" alt="img" height="100" width="100"></a></td>
                             <td><a href="/product/${orderDetail.product.id}">${orderDetail.product.name}</a></td>
                             <td><fmt:formatNumber value="${orderDetail.price}" type="currency" currencySymbol="$"/></td>
                             <td>${orderDetail.quantity}</td>

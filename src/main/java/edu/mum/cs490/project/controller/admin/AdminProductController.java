@@ -54,7 +54,7 @@ public class AdminProductController {
         } else {
             model.addAttribute("productForm", new ProductForm());
         }
-        model.addAttribute("categories", categoryService.getAllMainCategory());
+        model.addAttribute("categories", categoryService.find(null, null, Status.ENABLED));
 
         return "admin/saveProduct";
     }
@@ -63,7 +63,7 @@ public class AdminProductController {
     public String updateProduct(@Valid @ModelAttribute("productForm") ProductForm form, BindingResult result,
                                       @AuthenticationPrincipal Vendor vendor, Model model) {
 
-        model.addAttribute("categories", categoryService.getAllMainCategory());
+        model.addAttribute("categories", categoryService.find(null, null, Status.ENABLED));
 
         if (result.hasErrors()) {
             model.addAttribute("message", new Message(Message.Type.FAILED, "Check your forms!!!"));

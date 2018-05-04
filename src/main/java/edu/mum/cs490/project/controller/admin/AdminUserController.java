@@ -58,27 +58,8 @@ public class AdminUserController {
                             @RequestParam(required = false) String lastName,
                             @RequestParam(required = false, defaultValue = "ENABLED") Status status,
                             Model model) {
-        model.addAttribute("statuses", Status.values());
         model.addAttribute("list", adminService.find(username, firstName, lastName, status));
         return "admin/user/admin/list";
-    }
-
-    @RequestMapping(value = {"d", "delete"})
-    @ResponseBody
-    public Message delete(@RequestParam Integer id,
-                          Model model) {
-        userService.delete(id);
-//        model.addAttribute("message", new Message(Message.Type.SUCCESS, "successfully.deleted"));
-        return new Message(Message.Type.SUCCESS, "successfully.deleted");
-    }
-
-    @RequestMapping(value = {"changeStatus"})
-    @ResponseBody
-    public Message changeStatus(@RequestParam Integer id, @RequestParam Status status,
-                                Model model) {
-        userService.changeStatus(id, status);
-//        model.addAttribute("message", new Message(Message.Type.SUCCESS, "successfully.deleted"));
-        return new Message(Message.Type.SUCCESS, "successfully.changed.status");
     }
 
     @GetMapping(value = {"a/e", "admin/edit"})
@@ -232,6 +213,24 @@ public class AdminUserController {
         customerService.saveOrUpdate(customer);
         model.addAttribute("message", Message.successfullySaved);
         return "admin/user/customer/edit";
+    }
+
+    @RequestMapping(value = {"d", "delete"})
+    @ResponseBody
+    public Message delete(@RequestParam Integer id,
+                          Model model) {
+        userService.delete(id);
+//        model.addAttribute("message", new Message(Message.Type.SUCCESS, "successfully.deleted"));
+        return new Message(Message.Type.SUCCESS, "successfully.deleted");
+    }
+
+    @RequestMapping(value = {"changeStatus"})
+    @ResponseBody
+    public Message changeStatus(@RequestParam Integer id, @RequestParam Status status,
+                                Model model) {
+        userService.changeStatus(id, status);
+//        model.addAttribute("message", new Message(Message.Type.SUCCESS, "successfully.deleted"));
+        return new Message(Message.Type.SUCCESS, "successfully.changed.status");
     }
 
 }

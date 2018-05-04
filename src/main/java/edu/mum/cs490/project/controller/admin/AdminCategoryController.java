@@ -1,15 +1,15 @@
 package edu.mum.cs490.project.controller.admin;
 
 import edu.mum.cs490.project.domain.Category;
+import edu.mum.cs490.project.domain.Status;
+import edu.mum.cs490.project.model.form.CategoryForm;
 import edu.mum.cs490.project.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -19,49 +19,65 @@ import java.util.List;
  */
 
 @Controller
-@RequestMapping(value= "/admin/category")
+@RequestMapping(value = "/admin/category")
 public class AdminCategoryController {
 
     @Autowired
     private CategoryService categoryService;
 
-    @RequestMapping(value = "/m", method = RequestMethod.GET)
-    public String categoryManagement(Model model) {
-        List<Category> categoryList = categoryService.getAllCategory();
-        model.addAttribute("categoryList", categoryList);
-
-        return "admin/categoryManagement";
+    @GetMapping
+    public String index(Model model) {
+        List<Category> list = categoryService.find(null, null, Status.ENABLED);
+        model.addAttribute("statuses", Status.values());
+        model.addAttribute("list", list);
+        return "admin/category/index";
     }
 
-    @RequestMapping(value = "/save", method = RequestMethod.GET)
+    @GetMapping("list")
+    public String list(@RequestParam(required = false) String name,
+                       @RequestParam(required = false) Integer parentId,
+                       @RequestParam(required = false, defaultValue = "ENABLED") Status status,
+                       Model model) {
+        List<Category> categoryList = categoryService.find(name, parentId, status);
+        model.addAttribute("categoryList", categoryList);
+        return "admin/category/list";
+    }
+
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String addCategory(@RequestParam(value = "id", required = false) Integer categoryId, Model model) {
         // edit category
-        if(categoryId != null){
-            Category category = categoryService.getCategoryById(categoryId);
+        CategoryForm categoryForm;
+        if (categoryId != null) {
             model.addAttribute("title", "Edit Category");
-            model.addAttribute("category", category);
-        }else{
+            categoryForm = new CategoryForm(categoryService.getCategoryById(categoryId));
+        } else {
             // create category
-            Category category = new Category();
             model.addAttribute("title", "Add Category");
-            model.addAttribute("category", category);
+            categoryForm = new CategoryForm();
         }
-
-        return "admin/saveCategory";
+        model.addAttribute("categoryForm", categoryForm);
+        return "admin/category/create";
     }
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String addCategoryPost(@Valid @ModelAttribute("category") Category category, BindingResult result){
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public String addCategoryPost(@Valid @ModelAttribute("categoryForm") CategoryForm categoryForm, BindingResult result) {
 
         if (result.hasErrors()) {
-            return "admin/saveCategory";
+            return "admin/category/create";
         }
+        Category category;
+        if (categoryForm.getId() != null)
+            category = categoryService.getCategoryById(categoryForm.getCategoryId());
+        else
+            category = new Category();
+        category.setName(categoryForm.getName());
+//        category.setParentCategory();
         categoryService.save(category);
         return " redirect:/admin/category/m";
     }
 
     @RequestMapping("/delete")
-    public String deleteProductById(@RequestParam(value="id", required=true) Integer categoryId) {
+    public String deleteProductById(@RequestParam(value = "id", required = true) Integer categoryId) {
 
         categoryService.delete(categoryId);
 
@@ -70,9 +86,8 @@ public class AdminCategoryController {
 
     @ModelAttribute("categories")
     public List<Category> modelCategories() {
-        return categoryService.getAllCategory();
+        return categoryService.find(null, null, Status.ENABLED);
     }
-
 
 
 }

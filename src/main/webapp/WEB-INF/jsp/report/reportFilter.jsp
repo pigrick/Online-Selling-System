@@ -75,5 +75,5 @@
         </div>
     </div>
 </section>
-<script src="/resources/js/report/report.js"/>
+<script src="/static/js/report/report.js"/>
 <%@include file="/WEB-INF/jsp/template/footer.jsp" %>

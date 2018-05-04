@@ -5,8 +5,8 @@
 <%@include file="/WEB-INF/jsp/template/header.jsp" %>
 
 <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="/resources/css/order/order.css">
-<link rel="stylesheet" type="text/css" href="/resources/paymentdetail/css/styles.css">
+<link rel="stylesheet" type="text/css" href="/static/css/order/order.css">
+<link rel="stylesheet" type="text/css" href="/static/paymentdetail/css/styles.css">
 
 <div>
     <div class="container tpy">
@@ -206,8 +206,8 @@
                         <form:input path="cardZipcode" class="form-control"/>
                     </div>
                     <div class="form-group" id="credit_cards">
-                        <img src="/resources/paymentdetail/images/visa.jpg" id="visa">
-                        <img src="/resources/paymentdetail/images/mastercard.jpg" id="mastercard">
+                        <img src="/static/paymentdetail/images/visa.jpg" id="visa">
+                        <img src="/static/paymentdetail/images/mastercard.jpg" id="mastercard">
                     </div>
                     <div class="form-group" id="pay-now">
                         <button type="submit" class="btn btn-default" id="confirm-purchase">Confirm</button>
@@ -221,8 +221,8 @@
 </div>
 
 
-<script src="/resources/paymentdetail/js/script.js"></script>
-<script src="/resources/js/order/order.js"></script>
+<script src="/static/paymentdetail/js/script.js"></script>
+<script src="/static/js/order/order.js"></script>
 
 <%@include file="/WEB-INF/jsp/template/footer.jsp" %>
 

@@ -10,7 +10,7 @@
 <%@include file="/WEB-INF/jsp/template/header.jsp"%>
 
 <section id="aa-catg-head-banner">
-    <img src="<spring:url value="/resources/img/fashion/fashion-header-bg-8.jpg" />" alt="fashion img">
+    <img src="<spring:url value="/static/img/fashion/fashion-header-bg-8.jpg" />" alt="fashion img">
     <div class="aa-catg-head-banner-area">
         <div class="container">
             <div class="aa-catg-head-banner-content">
@@ -47,7 +47,7 @@
                                 <li id="product-li-number-${counter}">
                                     <figure>
                                         <a class="aa-product-img" href="/admin//product=${product.id}">
-                                            <img style="width: 250px; height: 300px" src="/resources/images/${product.id}/0.png"></a>
+                                            <img style="width: 250px; height: 300px" src="/static/images/${product.id}/0.png"></a>
                                         <a class="aa-add-card-btn" style="cursor: hand" href="/order/addToCart/${product.id}"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                                             <%--<a class="aa-add-card-btn" style="cursor: hand" ng-click="addToCart('${product.id}','${_csrf.parameterName}=${_csrf.token}')">--%>
                                             <%--<span class="fa fa-shopping-cart"></span>Add To Cart--%>

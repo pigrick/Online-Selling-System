@@ -1,7 +1,7 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/jsp/template/header.jsp" %>
-<link rel='stylesheet' type='text/css' href='/resources/paymentdetail/css/receipt.css'/>
+<link rel='stylesheet' type='text/css' href='/static/paymentdetail/css/receipt.css'/>
 <div class="container tpy">
     <h1>Order Details Receipt</h1>
 </div>
@@ -25,7 +25,7 @@
                 <div id="logohelp">
                     <input id="imageloc" type="text" size="50" value=""/><br/>
                 </div>
-                <img id="image" src="/resources/paymentdetail/images/OnlineShoppingLogo.jpg" alt="logo" height="88"
+                <img id="image" src="/static/paymentdetail/images/OnlineShoppingLogo.jpg" alt="logo" height="88"
                      width="300"/>
             </div>
 

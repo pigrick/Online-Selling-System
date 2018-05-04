@@ -29,8 +29,8 @@
                                     <div id="demo-1" class="simpleLens-gallery-container">
                                         <div class="simpleLens-container">
                                             <div class="simpleLens-big-image-container">
-                                                <a data-lens-image="/resources/images/${product.id}/0.png" class="simpleLens-lens-image">
-                                                    <img src="/resources/images/${product.id}/0.png" class="simpleLens-big-image" >
+                                                <a data-lens-image="/static/images/${product.id}/0.png" class="simpleLens-lens-image">
+                                                    <img src="/static/images/${product.id}/0.png" class="simpleLens-big-image" >
                                                 </a>
                                             </div>
                                         </div>

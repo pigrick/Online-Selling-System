@@ -1,16 +1,18 @@
 package edu.mum.cs490.project.service;
 
-import edu.mum.cs490.project.domain.CardDetail;
-import edu.mum.cs490.project.domain.Order;
+import edu.mum.cs490.project.domain.*;
 import edu.mum.cs490.project.repository.OrderRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Transactional(readOnly = true)
 public interface OrderService {
@@ -34,6 +36,8 @@ public interface OrderService {
 
     CardDetail findCardById(Integer cardId);
 
+    Map<Product, Integer> checkProduct(List<OrderDetail> orderDetails);
+
     @Transactional
     void disableCard(Integer cardId);
 
@@ -43,6 +47,10 @@ public interface OrderService {
     @Transactional
     Integer purchase(Order order);
 
+    String checkProductAvailabilityForCustomer(HttpSession session, Model model, Map<Product, Integer> productUnavailability,
+                                    Order order, User user);
+    String checkProductAvailabilityForGuest(HttpSession session, Model model, Map<Product, Integer> productUnavailability,
+                                    Order order);
 
 
 }

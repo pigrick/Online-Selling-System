@@ -54,7 +54,7 @@
         </tbody>
     </table>
     <div class="container centered">
-        <a href="/order/guest/checkout" class="btn btn-warning">Guest Checkout</a>
+        <sec:authorize access="!isAuthenticated()"><a href="/order/guest/checkout" class="btn btn-warning">Guest Checkout</a></sec:authorize>
         <a href="/order/checkout" class="btn btn-warning">Checkout</a>
     </div>
 </div>

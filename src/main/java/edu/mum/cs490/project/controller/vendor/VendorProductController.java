@@ -37,17 +37,17 @@ public class VendorProductController {
     public String productManagement(@AuthenticationPrincipal Vendor vendor, Model model) {
         List<Product> productsList = productService.find(null, null, vendor.getId(), Status.ENABLED, null);
         model.addAttribute("productList", productsList);
-        model.addAttribute("categories", categoryService.getAllMainCategory());
+        model.addAttribute("categories", categoryService.find(null, null, Status.ENABLED));
 
         return "/vendor/index";
     }
 
     @RequestMapping(value = "/list")
     public String getProduct(@AuthenticationPrincipal Vendor vendor,
-                             @RequestParam(required=false) String name,
-                             @RequestParam(required = false) String category, Model model) {
+                             @RequestParam(required = false) String name,
+                             @RequestParam(required = false) Integer categoryId, Model model) {
 
-        List<Product> productsList = productService.find(name, category);
+        List<Product> productsList = productService.find(name, categoryId, vendor.getId(), Status.ENABLED, null);
         model.addAttribute("productList", productsList);
 
         return "/vendor/list";
@@ -80,7 +80,7 @@ public class VendorProductController {
         if (file.isEmpty() || result.hasErrors()) {
             model.addAttribute("message", new Message(Message.Type.ERROR, "Please fill out the form!"));
             return "vendor/saveProduct";
-        } else if (!file.isEmpty() && !fileManagementService.checkImageExtension(file.getOriginalFilename())){
+        } else if (!file.isEmpty() && !fileManagementService.checkImageExtension(file.getOriginalFilename())) {
             model.addAttribute("message", new Message(Message.Type.ERROR, "File extension must be .jpg or .png!"));
             return "vendor/saveProduct";
         }

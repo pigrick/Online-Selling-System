@@ -21,11 +21,13 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Query("SELECT a FROM Product a WHERE " +
             "((:name IS NULL OR a.name like %:name%) OR (:name IS NULL OR a.vendor.companyName like %:name%)) AND " +
-            "(:categoryId IS NULL OR a.category.id =:categoryId) AND " +
+            "(:categoryId IS NULL OR a.category.id = :categoryId) AND " +
+//            "(:categoryId IS NULL OR :categoryId member a.parentIds) AND " +
             "(:vendorId IS NULL OR a.vendor.id =:vendorId) AND " +
             "(:status IS NULL OR a.status =:status)")
     List<Product> find(@Param("name") String name, @Param("categoryId") Integer categoryId, @Param("vendorId") Integer vendorId, @Param("status") Status status, Sort sort);
 
-    @Query("SELECT a FROM Product a WHERE (:name IS NULL OR a.name like %:name%) AND (:category IS NULL OR a.category.name=:category) AND (status = 'ENABLED')")
-    List<Product> find(@Param("name") String name, @Param("category") String category);
+    @Modifying
+    @Query("update Product p set p.quantity = p.quantity - :pquantity where p.id = :productId")
+    void deductProductAfterPurchase(@Param("pquantity") int pquantity, @Param("productId") Integer productId);
 }

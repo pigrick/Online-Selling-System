@@ -1,8 +1,10 @@
 package edu.mum.cs490.project.controller;
 
 import edu.mum.cs490.project.domain.Status;
+import edu.mum.cs490.project.service.CategoryService;
 import edu.mum.cs490.project.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,19 +14,31 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
 
     private final ProductService productService;
+    private final CategoryService categoryService;
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, CategoryService categoryService) {
         this.productService = productService;
+        this.categoryService = categoryService;
     }
 
-    @GetMapping(value = {"all", "search"})
+    @GetMapping
+    public String index(Model model) {
+        return "product/index";
+    }
+
+    @GetMapping(value = {"list", "search"})
     public String getAllProduct(@RequestParam(required = false) String name,
                                 @RequestParam(required = false) Integer categoryId,
-                                @RequestParam(required = false) String vendorName,
-                                @RequestParam(required = false) Integer vendorId, Model theModel) {
-        theModel.addAttribute("products", this.productService.find(name, categoryId, vendorId, Status.ENABLED, null));
-        theModel.addAttribute("title", "Products:");
+                                @RequestParam(required = false) Integer vendorId,
+                                @RequestParam(required = false) Boolean orderByPrice, Model model) {
+        Sort orders = null;
+        if (orderByPrice != null) {
+            orders = orderByPrice ? Sort.by("price").ascending() : Sort.by("price").descending();
+        }
+        model.addAttribute("products", this.productService.find(name, categoryId, vendorId, Status.ENABLED, orders));
+        model.addAttribute("categories", categoryService.find(null, null, Status.ENABLED));
+        model.addAttribute("title", "Products:");
         return "product/products";
     }
 

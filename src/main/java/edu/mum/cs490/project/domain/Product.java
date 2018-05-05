@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Product {
@@ -20,13 +22,15 @@ public class Product {
     private double price;
     private String description;
     private String image;
-
-
     @Enumerated(EnumType.STRING)
     private Status status = Status.ENABLED;
 
+//    @Transient
+//    private Set<Integer> parentIds = new HashSet<>();
 
-    public Product(){}
+
+    public Product() {
+    }
 
     public Integer getId() {
         return id;
@@ -99,4 +103,19 @@ public class Product {
     public void setImage(String image) {
         this.image = image;
     }
+
+   /* public Set<Integer> getParentIds() {
+        this.parentIds.add(category.getId());
+        if (category.getParentCategory() != null) {
+            this.parentIds.add(category.getParentCategory().getId());
+            if (category.getParentCategory().getParentCategory() != null) {
+                this.parentIds.add(category.getParentCategory().getParentCategory().getId());
+            }
+        }
+        return parentIds;
+    }
+
+    public void setParentIds(Set<Integer> parentIds) {
+        this.parentIds = parentIds;
+    }*/
 }

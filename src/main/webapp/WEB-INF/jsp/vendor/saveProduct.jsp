@@ -9,6 +9,24 @@ created by Pagmaa
 
 <%@include file="/WEB-INF/jsp/template/header.jsp"%>
 
+<script>
+    create = {
+        init: function() {
+            $('#productForm').ajaxForm({
+                target:'#edit-target',
+                url:'/vendor/product/save'
+            });
+        },
+        success: function() {
+            $('#edit-modal').modal('hide');
+            module.list();
+        },
+        submit: function() {
+            $('#productForm').submit();
+        }
+    };
+</script>
+
 <body>
 
 <div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 main">

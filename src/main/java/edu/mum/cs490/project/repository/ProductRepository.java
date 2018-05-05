@@ -26,7 +26,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "(:status IS NULL OR a.status =:status)")
     List<Product> find(@Param("name") String name, @Param("categoryId") Integer categoryId, @Param("vendorId") Integer vendorId, @Param("status") Status status, Sort sort);
 
-    @Modifying
-    @Query("update Product p set p.quantity = p.quantity - :pquantity where p.id = :productId")
-    void deductProductAfterPurchase(@Param("pquantity") int pquantity, @Param("productId") Integer productId);
+    @Query("SELECT a FROM Product a WHERE (:name IS NULL OR a.name like %:name%) AND (:category IS NULL OR a.category.name=:category) AND (status = 'ENABLED')")
+    List<Product> find(@Param("name") String name, @Param("category") String category);
 }

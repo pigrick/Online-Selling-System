@@ -13,7 +13,7 @@
         init: function() {
             $('#vendorForm').ajaxForm({
                 target:'#edit-target',
-                url:'/admin/user/vendor/edit'
+                url:'/vendor/edit'
             });
         },
         success: function() {
@@ -21,7 +21,7 @@
             module.list();
         },
         submit: function() {
-            $('#vendorForm').submit();
+            $('#productForm').submit();
         }
     };
 </script>
@@ -31,42 +31,47 @@
     <h4 class="modal-title">Edit <i>${vendorForm.username}</i> Vendor</h4>
 </div>
 <div class="modal-body">
-    <form:form modelAttribute="vendorForm" method="post">
+    <form:form modelAttribute="productForm" method="post">
         <form:hidden path="id"/>
         <div class="form-group">
-            <form:errors path="companyName" cssStyle="color: red" />
-            <label for="companyName">Company Name</label>
+            <form:errors path="name" cssStyle="color: red" />
+            <label for="name">Name</label>
             <form:input path="companyName" class="form-Control" />
         </div>
         <div class="form-group">
-            <form:errors path="username" cssStyle="color: red" />
-            <label for="username">username</label>
-            <form:input path="username" class="form-Control" />
+            <form:errors path="quantity" cssStyle="color: red" />
+            <label for="quantity">Quantity</label>
+            <form:input path="quantity" class="form-Control" />
         </div>
         <div class="form-group">
-            <form:errors path="email" cssStyle="color: red" />
-            <label for="email">email</label>
-            <form:input path="email" type="email" class="form-Control" />
+            <form:errors path="price" cssStyle="color: red" />
+            <label for="price">Price</label>
+            <form:input path="price" type="email" class="form-Control" />
+        </div>
+        <div class="form-group">
+            <form:errors path="description" cssStyle="color: red" />
+            <label for="description">Description</label>
+            <form:input path="description" type="email" class="form-Control" />
         </div>
     </form:form>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    <button type="button" class="btn btn-primary" onclick="create.submit()">Save changes</button>
+    <button type="button" class="btn btn-primary" onclick="module.submit()">Save changes</button>
 </div>
 
 <script type="text/javascript">
     $(function () {
-        create.init();
+        module.init();
     });
 </script>
 
 <c:if test="${!empty message}">
     <script>
-        $.sticky('<spring:message code="${message.message}"/>', {autoclose : 5000, position: "top-right", type: "st-${fn:toLowerCase(message.type)}" });
+        $.sticky('<spring:message code="${message.message}"/>', {autoclose : 5000, position: "top-right", type: "${fn:toLowerCase(message.type)}" });
 
         <c:if test="${message.type eq 'SUCCESS'}">
-        create.success();
+        module.success();
         </c:if>
     </script>
 </c:if>

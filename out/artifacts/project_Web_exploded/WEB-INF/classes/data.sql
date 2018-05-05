@@ -33,7 +33,9 @@ INSERT INTO card_detail VALUES(1, 'QraOsmY1Vm/D/pQN6BuLhw==', 'hiE+wqyvnTqJkKbp/
 INSERT INTO card_detail VALUES(2, 'QraOsmY1Vm/D/pQN6BuLhw==', 'SCyf4mtAPdUbXAUeuJXTZg==', 'ZsI1f6td8VkuQmP2o7zrsvgzFwyz9ICwGILHUe1Ku8c=', 'vSi7w/I1S+ABSrUo+vlbIQ==', 'E+xQ7+d1sHpp+x5e9vK7UA==', '2000', 'ENABLED', 'VV8Po+pw3CYRaB151M9MdQ==', NULL, NULL);
 INSERT INTO card_detail VALUES(3, 'QraOsmY1Vm/D/pQN6BuLhw==', 'U20GoH1QCTVt89PhV9iiBQ==', 'CyIxvjmUDvX8d3MAODdv+PgzFwyz9ICwGILHUe1Ku8c=', 'vSi7w/I1S+ABSrUo+vlbIQ==', 'iU6EhOP10yd+6m1+7hxHgg==', '3001', 'ENABLED', 'PM0IK0uDDL5hne6fEhSiQg==', NULL, 2);
 INSERT INTO card_detail VALUES(4, 'QraOsmY1Vm/D/pQN6BuLhw==', 'ZJENHTyNg0q7K2Nj4j5E0g==', 'xljjdxpBdvEfFMGJtIhCx/gzFwyz9ICwGILHUe1Ku8c=', 'vSi7w/I1S+ABSrUo+vlbIQ==', 'qut4mUwppXC4xP3Sbj782w==', '3002', 'ENABLED', 'PM0IK0uDDL5hne6fEhSiQg==', NULL, 4);
-INSERT INTO card_detail VALUES(5, 'WiHDur8q3aeQmyi87fjwaw==', '5wM9IyibGkIBralK1Lb6vA==', 'gMJ7svtpR5YGu5UiYXg0G/gzFwyz9ICwGILHUe1Ku8c=', 'vSi7w/I1S+ABSrUo+vlbIQ==', 'AIZ9VtyuXwhp/Wj+Cz4yug==', '3699', 'ENABLED', 'PM0IK0uDDL5hne6fEhSiQg==', NULL, 3);
+INSERT INTO card_detail VALUES(5, 'WiHDur8q3aeQmyi87fjwaw==', '5wM9IyibGkIBralK1Lb6vA==', 'gMJ7svtpR5YGu5UiYXg0G/gzFwyz9ICwGILHUe1Ku8c=', 'Visa', 'AIZ9VtyuXwhp/Wj+Cz4yug==', '3699', 'ENABLED', 'PM0IK0uDDL5hne6fEhSiQg==', NULL, 3);
+
+INSERT INTO card_detail VALUES(6, 'QraOsmY1Vm/D/pQN6BuLhw==', 'hiE+wqyvnTqJkKbp/OsjdA==', 'wCs2kVuyP/Wl1r1z25CSLvgzFwyz9ICwGILHUe1Ku8c=', 'Visa', 'PDxRRthWgxfXXzrhUr4D1w==', '1000', 'ENABLED', 'PM0IK0uDDL5hne6fEhSiQg==', NULL, 3);
 INSERT INTO address VALUES (1, 'Fairfield', '2058871599', 'Iowa', 'ENABLED', '1000 N 4th St', '52557', 3);
 INSERT INTO address VALUES (2, 'Fairfield', '2058871599', 'Iowa', 'ENABLED', '52 E. Golden Lane', '52556', 3);
 

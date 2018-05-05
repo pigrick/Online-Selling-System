@@ -37,8 +37,20 @@ public class VendorProductController {
     public String productManagement(@AuthenticationPrincipal Vendor vendor, Model model) {
         List<Product> productsList = productService.find(null, null, vendor.getId(), Status.ENABLED, null);
         model.addAttribute("productList", productsList);
+        model.addAttribute("categories", categoryService.getAllMainCategory());
 
-        return "vendor/productManagement";
+        return "/vendor/index";
+    }
+
+    @RequestMapping(value = "/list")
+    public String getProduct(@AuthenticationPrincipal Vendor vendor,
+                             @RequestParam(required=false) String name,
+                             @RequestParam(required = false) String category, Model model) {
+
+        List<Product> productsList = productService.find(name, category);
+        model.addAttribute("productList", productsList);
+
+        return "/vendor/list";
     }
 
     @GetMapping("/save")

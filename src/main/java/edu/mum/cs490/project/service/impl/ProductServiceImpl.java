@@ -48,7 +48,30 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> find(String name, Integer categoryId, Integer vendorId, Status status, Sort sort) {
-        return productRepository.find(name, categoryId, vendorId, status, sort);
+    public List<Product> findByName(String productName) {
+        return this.productRepository.findByNameIsContaining(productName);
+    }
+
+    @Override
+    public List<Product> findByVendor(Integer vendorId) {
+        return this.productRepository.findByVendor_Id(vendorId);
+    }
+    @Override
+    public void saveOrUpdateProduct(Product product) {
+        this.productRepository.save(product);
+    }
+
+    @Override
+    public void deleteProduct(Product product) {
+        this.productRepository.delete(product);
+    }
+
+    @Override
+    public List<Product> findByCategory(Integer categoryId) {
+        return this.productRepository.findByCategory_Id(categoryId);
+    }
+    @Override
+    public List<Product> findByStatusIsTrue() {
+        return this.productRepository.findByStatusIsTrue();
     }
 }

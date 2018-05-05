@@ -14,7 +14,6 @@ import edu.mum.cs490.project.service.CustomerService;
 import edu.mum.cs490.project.service.UserService;
 import edu.mum.cs490.project.service.VendorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,34 +57,15 @@ public class AdminUserController {
                             @RequestParam(required = false) String lastName,
                             @RequestParam(required = false, defaultValue = "ENABLED") Status status,
                             Model model) {
-        model.addAttribute("statuses", Status.values());
         model.addAttribute("list", adminService.find(username, firstName, lastName, status));
         return "admin/user/admin/list";
-    }
-
-    @RequestMapping(value = {"d", "delete"})
-    @ResponseBody
-    public Message delete(@RequestParam Integer id,
-                          Model model) {
-        userService.delete(id);
-//        model.addAttribute("message", new Message(Message.Type.SUCCESS, "successfully.deleted"));
-        return new Message(Message.Type.SUCCESS, "successfully.deleted");
-    }
-
-    @RequestMapping(value = {"changeStatus"})
-    @ResponseBody
-    public Message changeStatus(@RequestParam Integer id, @RequestParam Status status,
-                                Model model) {
-        userService.changeStatus(id, status);
-//        model.addAttribute("message", new Message(Message.Type.SUCCESS, "successfully.deleted"));
-        return new Message(Message.Type.SUCCESS, "successfully.changed.status");
     }
 
     @GetMapping(value = {"a/e", "admin/edit"})
     public String editAdmin(@RequestParam Integer id, Model model) {
         Admin admin = adminService.getById(id);
         if (admin == null) {
-            model.addAttribute("message", new Message(Message.Type.FAILED, "user.not.found"));
+            model.addAttribute("message", new Message(Message.Type.ERROR, "user.not.found"));
         }
         model.addAttribute("adminForm", new AdminForm(admin));
         return "admin/user/admin/edit";
@@ -98,7 +78,7 @@ public class AdminUserController {
             return "admin/user/admin/edit";
         }
         if (adminService.existByIdNotAndUsername(adminForm.getId(), adminForm.getUsername())) {
-            model.addAttribute("message", new Message(Message.Type.FAILED, "username.duplicate"));
+            model.addAttribute("message", new Message(Message.Type.ERROR, "username.duplicate"));
             result.rejectValue("username", "username.duplicate");
             return "admin/user/admin/edit";
         }
@@ -125,7 +105,7 @@ public class AdminUserController {
             return "admin/user/admin/create";
         }
         if (adminService.getByUsername(adminForm.getUsername()) != null) {
-            model.addAttribute("message", new Message(Message.Type.FAILED, "username.duplicate"));
+            model.addAttribute("message", new Message(Message.Type.ERROR, "username.duplicate"));
             result.rejectValue("username", "username.duplicate");
             return "admin/user/admin/create";
         }
@@ -160,7 +140,7 @@ public class AdminUserController {
     public String editVendor(@RequestParam Integer id, Model model) {
         Vendor vendor = vendorService.getById(id);
         if (vendor == null) {
-            model.addAttribute("message", new Message(Message.Type.FAILED, "user.not.found"));
+            model.addAttribute("message", new Message(Message.Type.ERROR, "user.not.found"));
         }
         model.addAttribute("vendorForm", new VendorForm(vendor));
         return "admin/user/vendor/edit";
@@ -173,7 +153,7 @@ public class AdminUserController {
             return "admin/user/vendor/edit";
         }
         if (vendorService.existByIdNotAndUsername(vendorForm.getId(), vendorForm.getUsername())) {
-            model.addAttribute("message", new Message(Message.Type.FAILED, "username.duplicate"));
+            model.addAttribute("message", new Message(Message.Type.ERROR, "username.duplicate"));
             result.rejectValue("username", "username.duplicate");
             return "admin/user/vendor/edit";
         }
@@ -207,7 +187,7 @@ public class AdminUserController {
     public String editCustomer(@RequestParam Integer id, Model model) {
         Customer customer = customerService.getById(id);
         if (customer == null) {
-            model.addAttribute("message", new Message(Message.Type.FAILED, "user.not.found"));
+            model.addAttribute("message", new Message(Message.Type.ERROR, "user.not.found"));
         }
         model.addAttribute("customerForm", new CustomerForm(customer));
         return "admin/user/customer/edit";
@@ -220,7 +200,7 @@ public class AdminUserController {
             return "admin/user/customer/edit";
         }
         if (customerService.existByIdNotAndUsername(customerForm.getId(), customerForm.getUsername())) {
-            model.addAttribute("message", new Message(Message.Type.FAILED, "username.duplicate"));
+            model.addAttribute("message", new Message(Message.Type.ERROR, "username.duplicate"));
             result.rejectValue("username", "username.duplicate");
             return "admin/user/customer/edit";
         }
@@ -232,6 +212,24 @@ public class AdminUserController {
         customerService.saveOrUpdate(customer);
         model.addAttribute("message", Message.successfullySaved);
         return "admin/user/customer/edit";
+    }
+
+    @RequestMapping(value = {"d", "delete"})
+    @ResponseBody
+    public Message delete(@RequestParam Integer id,
+                          Model model) {
+        userService.delete(id);
+//        model.addAttribute("message", new Message(Message.Type.SUCCESS, "successfully.deleted"));
+        return new Message(Message.Type.SUCCESS, "successfully.deleted");
+    }
+
+    @RequestMapping(value = {"changeStatus"})
+    @ResponseBody
+    public Message changeStatus(@RequestParam Integer id, @RequestParam Status status,
+                                Model model) {
+        userService.changeStatus(id, status);
+//        model.addAttribute("message", new Message(Message.Type.SUCCESS, "successfully.deleted"));
+        return new Message(Message.Type.SUCCESS, "successfully.changed.status");
     }
 
 }

@@ -137,34 +137,33 @@
 </div><!-- /.modal -->
 
 
-<script src="/resources/js/jquery.min.js"></script>
-<script src="/resources/js/jquery.simpleLens.js"></script>
-<script src="/resources/js/sequence.js"></script>
+<script src="/static/js/jquery.min.js"></script>
+<script src="/static/js/jquery.simpleLens.js"></script>
+<script src="/static/js/sequence.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="/resources/js/bootstrap.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
 <!-- SmartMenus jQuery plugin -->
-<script type="text/javascript" src="/resources/js/jquery.smartmenus.js"></script>
+<script type="text/javascript" src="/static/js/jquery.smartmenus.js"></script>
 <!-- SmartMenus jQuery Bootstrap Addon -->
-<script type="text/javascript" src="/resources/js/jquery.smartmenus.bootstrap.js" ></script>
+<script type="text/javascript" src="/static/js/jquery.smartmenus.bootstrap.js" ></script>
 <!-- To Slider JS -->
-<script src="/resources/js/sequence.js" ></script>
-<script src="/resources/js/jquery.simpleGallery.js" ></script>
-<script src="/resources/js/sequence-theme.modern-slide-in.js"  ></script>
+<script src="/static/js/sequence.js" ></script>
+<script src="/static/js/jquery.simpleGallery.js" ></script>
+<script src="/static/js/sequence-theme.modern-slide-in.js"  ></script>
 <!-- prduct view slider -->
-<script  type="text/javascript" src="/resources/js/jquery.simpleGallery.js"   ></script>
+<script  type="text/javascript" src="/static/js/jquery.simpleGallery.js"   ></script>
 <!-- slick slider -->
-<script  type="text/javascript" src="/resources/js/slick.js"  ></script>
+<script  type="text/javascript" src="/static/js/slick.js"  ></script>
 <!-- Price picker slider -->
-<script  type="text/javascript" src="/resources/js/nouislider.min.js" ></script>
+<script  type="text/javascript" src="/static/js/nouislider.min.js" ></script>
 <!-- Custom js -->
-<script src="/resources/js/custom.js" ></script>
-<script  src="/resources/js/controller.js" ></script>
+<script src="/static/js/custom.js" ></script>
+<script  src="/static/js/controller.js" ></script>
 <!--payment js-->
-<script src="/resources/paymentdetail/js/jquery.payform.min.js" charset="utf-8"></script>
+<script src="/static/paymentdetail/js/jquery.payform.min.js" charset="utf-8"></script>
 <%--Form--%>
-<script src="/resources/js/jquery.form.js" charset="utf-8"></script>
-<script src="/resources/js/smoke/smoke.min.js" charset="utf-8"></script>
-<script src="/resources/js/sticky/sticky.min.js" charset="utf-8"></script>
-
+<script src="/static/js/jquery.form.js" charset="utf-8"></script>
+<script src="/static/js/smoke/smoke.min.js" charset="utf-8"></script>
+<script src="/static/js/sticky/sticky.min.js" charset="utf-8"></script>
 </body>
 </html>

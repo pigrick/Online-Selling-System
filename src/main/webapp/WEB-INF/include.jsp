@@ -13,3 +13,4 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <c:set var="signedUser" value="<%=edu.mum.cs490.project.utils.SignedUser.getSignedUser()%>"/>
+<spring:eval var="resourcePath" expression="@environment.getProperty('resource.path')" scope="application"/>

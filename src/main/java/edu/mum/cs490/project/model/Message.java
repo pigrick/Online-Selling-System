@@ -6,11 +6,11 @@ package edu.mum.cs490.project.model;
 public class Message {
 
     public enum Type {
-        SUCCESS, FAILED, INFO
+        SUCCESS, ERROR, INFO
     }
 
     public static Message successfullySaved = new Message(Type.SUCCESS, "successfully.saved");
-    public static Message errorOccurred = new Message(Type.FAILED, "error.occurred");
+    public static Message errorOccurred = new Message(Type.ERROR, "error.occurred");
 
     public Message(Type type, String message) {
         this.type = type;

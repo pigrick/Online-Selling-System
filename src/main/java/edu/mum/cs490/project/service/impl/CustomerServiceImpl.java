@@ -30,7 +30,17 @@ public class CustomerServiceImpl extends UserServiceImpl<Customer> implements Cu
 
     @Override
     public List<Address> findByUser_id(Integer userId) {
-        return this.addressRepository.findByUser_id(userId);
+        return this.addressRepository.findByUser_idAndStatus(userId, Status.ENABLED);
+    }
+
+    @Override
+    public Address findAddressById(Integer addressId) {
+        return this.addressRepository.findById(addressId).orElse(null);
+    }
+
+    @Override
+    public void disableAddress(Integer addressId) {
+        this.addressRepository.disableAddress(addressId);
     }
 
     @Override

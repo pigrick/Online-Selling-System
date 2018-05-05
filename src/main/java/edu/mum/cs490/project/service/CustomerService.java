@@ -6,6 +6,7 @@ import edu.mum.cs490.project.domain.Status;
 
 import java.util.List;
 import edu.mum.cs490.project.domain.User;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,4 +15,9 @@ public interface CustomerService extends UserService<Customer>{
     public List<Customer> find(String username, String firstName, String lastName, Status status);
 
     public List<Address> findByUser_id(Integer userId);
+
+    public Address findAddressById(Integer addressId);
+
+    @Transactional
+    public void disableAddress(Integer addressId);
 }

@@ -1,22 +1,24 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="/WEB-INF/include.jsp"%>
-
 <%@include file="/WEB-INF/jsp/template/header.jsp" %>
 
 <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="/resources/css/order/order.css">
-<link rel="stylesheet" type="text/css" href="/resources/paymentdetail/css/styles.css">
-
+<link rel="stylesheet" type="text/css" href="/static/css/order/order.css">
+<link rel="stylesheet" type="text/css" href="/static/paymentdetail/css/styles.css">
 <div>
     <div class="container tpy">
         <div class="container">
-            <h1 align="center">Review Order</h1>
-
+            <h2 align="center">Review Order</h2>
+            <c:if test="${errorMessages != null}">
+                <div class="alert-danger">
+                    Order not in stock!<br/>
+                    <c:forEach var="errorMessage" items="${errorMessages}">
+                    <c:out value="${errorMessage}"/><br/>
+                    </c:forEach>
+                    Please review your order. Go back to Shopping Cart if you want to update your order.<br/>
+                    <a href="/order/shoppingcart" class="btn btn-warning">Back to Cart</a>
+                </div>
+            </c:if>
             <div class="col-xs-8">
-                <h2 class="sub-header">Order Details</h2>
+                <h1 class="sub-header">Order Details</h1>
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
@@ -31,9 +33,9 @@
                         <tbody>
                         <c:forEach var="orderdetail" items="${shoppingcart.orderDetails}">
                             <tr>
-                                <td><a href="">${orderdetail.product.name}</a></td>
+                                <td><a href=""><c:out value="${orderdetail.product.name}"/></a></td>
                                 <td><fmt:formatNumber value="${orderdetail.price}" type="currency" currencySymbol="$" /></td>
-                                <td>${orderdetail.quantity}</td>
+                                <td><c:out value="${orderdetail.quantity}"/></td>
                                 <td><fmt:formatNumber value="${orderdetail.calculateTotalPrice()}"
                                                       type="currency" currencySymbol="$" /></td>
                             </tr>
@@ -63,23 +65,23 @@
                         <tbody>
                         <tr>
                             <td>Name:</td>
-                            <td>${checkoutorder.guest.firstName} ${checkoutorder.guest.lastName}</td>
+                            <td><c:out value="${checkoutorder.guest.firstName} ${checkoutorder.guest.lastName}"/></td>
                         </tr>
                         <tr>
                             <td>Street:</td>
-                            <td>${checkoutorder.address.street}</td>
+                            <td><c:out value="${checkoutorder.address.street}"/></td>
                         </tr>
                         <tr>
                             <td>City:</td>
-                            <td>${checkoutorder.address.city}</td>
+                            <td><c:out value="${checkoutorder.address.city}"/></td>
                         </tr>
                         <tr>
                             <td>State:</td>
-                            <td>${checkoutorder.address.state}</td>
+                            <td><c:out value="${checkoutorder.address.state}"/></td>
                         </tr>
                         <tr>
                             <td>Zipcode:</td>
-                            <td>${checkoutorder.address.zipcode}</td>
+                            <td><c:out value="${checkoutorder.address.zipcode}"/></td>
                         </tr>
                         </tbody>
                     </table>
@@ -96,7 +98,7 @@
             <div class="heading">
                 <h1>Confirm Purchase</h1>
             </div>
-            <div class="alert-danger">${badcard}</div>
+            <div class="alert-danger"><c:out value="${badcard}"/></div>
             <div class="payment">
                 <form:form id="submit-payment" modelAttribute="paymentForm" method="post" action="/order/guest/checkout/submit">
                     <form:hidden path="cardType" id="card-type"/>
@@ -143,8 +145,8 @@
                         <form:input path="cardZipcode" class="form-control" />
                     </div>
                     <div class="form-group" id="credit_cards">
-                        <img src="/resources/paymentdetail/images/visa.jpg" id="visa">
-                        <img src="/resources/paymentdetail/images/mastercard.jpg" id="mastercard">
+                        <img src="/static/paymentdetail/images/visa.jpg" id="visa">
+                        <img src="/static/paymentdetail/images/mastercard.jpg" id="mastercard">
                     </div>
                     <div class="form-group" id="pay-now">
                         <button type="submit" class="btn btn-default" id="confirm-purchase">Confirm</button>
@@ -158,7 +160,7 @@
 </div>
 
 
-<script src="/resources/paymentdetail/js/script.js"></script>
+<script src="/static/paymentdetail/js/script.js"></script>
 
 
 <%@include file="/WEB-INF/jsp/template/footer.jsp" %>

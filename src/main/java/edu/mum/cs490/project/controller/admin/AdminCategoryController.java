@@ -1,15 +1,15 @@
 package edu.mum.cs490.project.controller.admin;
 
 import edu.mum.cs490.project.domain.Category;
+import edu.mum.cs490.project.domain.Status;
+import edu.mum.cs490.project.model.Message;
+import edu.mum.cs490.project.model.form.CategoryForm;
 import edu.mum.cs490.project.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -19,60 +19,81 @@ import java.util.List;
  */
 
 @Controller
-@RequestMapping(value= "/admin/category")
+@RequestMapping(value = "/admin/category")
 public class AdminCategoryController {
 
     @Autowired
     private CategoryService categoryService;
 
-    @RequestMapping(value = "/m", method = RequestMethod.GET)
-    public String categoryManagement(Model model) {
-        List<Category> categoryList = categoryService.getAllCategory();
-        model.addAttribute("categoryList", categoryList);
-
-        return "admin/categoryManagement";
+    @GetMapping
+    public String index(Model model) {
+        model.addAttribute("statuses", Status.values());
+        model.addAttribute("categories", categoryService.find(null, null, Status.ENABLED));
+        return "admin/category/index";
     }
 
-    @RequestMapping(value = "/save", method = RequestMethod.GET)
+    @GetMapping("list")
+    public String list(@RequestParam(required = false) String name,
+                       @RequestParam(required = false) Integer parentId,
+                       @RequestParam(required = false, defaultValue = "ENABLED") Status status,
+                       Model model) {
+        List<Category> categoryList = categoryService.find(name, parentId, status);
+        model.addAttribute("list", categoryList);
+        return "admin/category/list";
+    }
+
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String addCategory(@RequestParam(value = "id", required = false) Integer categoryId, Model model) {
         // edit category
-        if(categoryId != null){
-            Category category = categoryService.getCategoryById(categoryId);
+        model.addAttribute("categories", categoryService.find(null, null, Status.ENABLED));
+        CategoryForm categoryForm;
+        if (categoryId != null) {
             model.addAttribute("title", "Edit Category");
-            model.addAttribute("category", category);
-        }else{
+            categoryForm = new CategoryForm(categoryService.getCategoryById(categoryId));
+        } else {
             // create category
-            Category category = new Category();
             model.addAttribute("title", "Add Category");
-            model.addAttribute("category", category);
+            categoryForm = new CategoryForm();
         }
-
-        return "admin/saveCategory";
+        model.addAttribute("categoryForm", categoryForm);
+        return "admin/category/create";
     }
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public String addCategoryPost(@Valid @ModelAttribute("category") Category category, BindingResult result){
-
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public String addCategoryPost(@Valid @ModelAttribute("categoryForm") CategoryForm categoryForm, BindingResult result, Model model) {
+        model.addAttribute("categories", categoryService.find(null, null, Status.ENABLED));
         if (result.hasErrors()) {
-            return "admin/saveCategory";
+            model.addAttribute("message", Message.errorOccurred);
+            return "admin/category/create";
         }
+        Category category;
+        if (categoryForm.getId() != null)
+            category = categoryService.getCategoryById(categoryForm.getId());
+        else
+            category = new Category();
+        category.setName(categoryForm.getName());
+        category.setParentCategory(categoryForm.getParentId() != null ? categoryService.getCategoryById(categoryForm.getParentId()) : null);
         categoryService.save(category);
-        return " redirect:/admin/category/m";
+
+        model.addAttribute("message", Message.successfullySaved);
+        return "admin/category/create";
     }
 
-    @RequestMapping("/delete")
-    public String deleteProductById(@RequestParam(value="id", required=true) Integer categoryId) {
-
-        categoryService.delete(categoryId);
-
-        return "redirect:/admin/category/m";
+    @RequestMapping(value = {"d", "delete"})
+    @ResponseBody
+    public Message delete(@RequestParam Integer id,
+                          Model model) {
+        categoryService.delete(id);
+        return new Message(Message.Type.SUCCESS, "successfully.deleted");
     }
 
-    @ModelAttribute("categories")
-    public List<Category> modelCategories() {
-        return categoryService.getAllCategory();
+    @RequestMapping(value = {"changeStatus"})
+    @ResponseBody
+    public Message changeStatus(@RequestParam Integer id, @RequestParam Status status,
+                                Model model) {
+        categoryService.changeStatus(id, status);
+        return new Message(Message.Type.SUCCESS, "successfully.changed.status");
     }
-
 
 
 }

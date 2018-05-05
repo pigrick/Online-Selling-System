@@ -6,6 +6,8 @@ import edu.mum.cs490.project.domain.User;
 import edu.mum.cs490.project.domain.Vendor;
 import edu.mum.cs490.project.model.Message;
 import edu.mum.cs490.project.model.form.user.*;
+import edu.mum.cs490.project.service.AdminService;
+import edu.mum.cs490.project.service.MailService;
 import edu.mum.cs490.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -27,13 +29,16 @@ import javax.validation.Valid;
 public class SignController {
 
     private final UserService userService;
-
     private final PasswordEncoder passwordEncoder;
+    private final MailService mailService;
+    private final AdminService adminService;
 
     @Autowired
-    public SignController(UserService userService, PasswordEncoder passwordEncoder) {
+    public SignController(UserService userService, PasswordEncoder passwordEncoder, MailService mailService, AdminService adminService) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
+        this.mailService = mailService;
+        this.adminService = adminService;
     }
 
     @RequestMapping(value = "login")
@@ -69,7 +74,7 @@ public class SignController {
         customer.setLastName(userForm.getLastName());
 
         userService.saveOrUpdate(customer);
-//        ToDo Send registration Email
+        mailService.sendEmailToCustomer(userForm.getEmail(), customer.getFirstName() + " " + customer.getLastName());
         model.put("message", Message.successfullySaved);
         return "signUp";
     }
@@ -101,7 +106,7 @@ public class SignController {
         vendor.setCompanyName(userForm.getCompanyName());
 
         userService.saveOrUpdate(vendor);
-//        ToDo Send registration Email
+        mailService.sendEmailToVendorAndAdmin(userForm.getEmail(), adminService.find(null, null, null, Status.ENABLED), vendor.getCompanyName());
         model.put("message", Message.successfullySaved);
         return "vendor/signUp";
     }

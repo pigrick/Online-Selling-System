@@ -1,29 +1,34 @@
 package edu.mum.cs490.project.service;
 
 import edu.mum.cs490.project.domain.Category;
+import edu.mum.cs490.project.domain.Status;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 
 /**
  * Created by ChanPiseth on 4/20/2018
  */
-
+@Transactional(readOnly = true)
 public interface CategoryService {
 
-    List<Category> getAllCategory();
+    Category getCategoryById(Integer categoryId);
+
+    List<Category> find(String name, Integer parentId, Status status);
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Transactional
-    Category getOne(Integer id);
-
-    List<Category> getAllMainCategory();
-
-    List<Category> getAllSubCategory(Integer parentId);
-
     void save(Category category);
 
+    @Transactional
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     void delete(Integer categoryId);
 
-    Category getCategoryById(Integer categoryId);
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @Transactional
+    void changeStatus(Integer id, Status status);
 
 }

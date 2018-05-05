@@ -1,8 +1,6 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="/WEB-INF/include.jsp"%>
-
 <%@include file="/WEB-INF/jsp/template/header.jsp" %>
-<link rel="stylesheet" type="text/css" href="/resources/css/order/order.css">
+
+<link rel="stylesheet" type="text/css" href="/static/css/order/order.css">
 <div class="container tpy">
     <h1 align="center">Order</h1>
     <div class="container">
@@ -15,14 +13,14 @@
                 <th scope="col">Total Price</th>
             </tr>
             </thead>
-
             <tbody>
             <c:forEach var="orderdetail" items="${shoppingcart.orderDetails}">
                 <tr>
-                    <td><a href="">${orderdetail.product.name}</a></td>
-                    <td><fmt:formatNumber value="${orderdetail.price}" type="currency" currencySymbol="$" /></td>
-                    <td>${orderdetail.quantity}</td>
-                    <td><fmt:formatNumber value="${orderdetail.calculateTotalPrice()}" type="currency" currencySymbol="$" /></td>
+                    <td><c:out value="${orderdetail.product.name}"/></td>
+                    <td><fmt:formatNumber value="${orderdetail.price}" type="currency" currencySymbol="$"/></td>
+                    <td><c:out value="${orderdetail.quantity}"/></td>
+                    <td><fmt:formatNumber value="${orderdetail.calculateTotalPrice()}" type="currency"
+                                          currencySymbol="$"/></td>
                 </tr>
             </c:forEach>
             <tr>
@@ -31,21 +29,20 @@
             <tr>
                 <td colspan="2"></td>
                 <td>Tax ( 7% )</td>
-                <td><fmt:formatNumber value="${shoppingcart.calculateTax()}" type="currency" currencySymbol="$" /></td>
+                <td><fmt:formatNumber value="${shoppingcart.calculateTax()}" type="currency" currencySymbol="$"/></td>
             </tr>
             <tr class="border-dark">
                 <td colspan="3"></td>
-                <td><fmt:formatNumber value="${shoppingcart.calculateTotalPriceWithTax()}" type="currency" currencySymbol="$" /></td>
+                <td><fmt:formatNumber value="${shoppingcart.calculateTotalPriceWithTax()}" type="currency"
+                                      currencySymbol="$"/></td>
             </tr>
             </tbody>
         </table>
-
         <div class="container pull-right">
             <a href="/order/shoppingcart">
                 <button class="btn btn-warning">Back to cart</button>
             </a>
         </div>
-
     </div>
     <form:form modelAttribute="guestOrderShippingForm" method="post">
         <br/>
@@ -57,13 +54,12 @@
             <form:input path="lastName" class="form-control"/>
             <label>Email: <form:errors path="email" cssClass="alert-danger"/></label>
             <form:input path="email" class="form-control"/>
-            <label>Phone Number: <form:errors path="phoneNumber" cssClass="alert-danger" /> </label>
-            <form:input path="phoneNumber" class="form-control" />
+            <label>Phone Number: <form:errors path="phoneNumber" cssClass="alert-danger"/> </label>
+            <form:input path="phoneNumber" class="form-control"/>
             <label>Street: <form:errors path="street" cssClass="alert-danger"/></label>
             <form:input path="street" class="form-control"/>
             <label>City: <form:errors path="city" cssClass="alert-danger"/></label>
             <form:input path="city" class="form-control"/>
-
             <label>State: <form:errors path="state" cssClass="alert-danger"/></label>
             <form:select path="state" class="form-control">
                 <option value="AL">Alabama</option>
@@ -117,18 +113,14 @@
                 <option value="WV">West Virginia</option>
                 <option value="WI">Wisconsin</option>
                 <option value="WY">Wyoming</option>
-
             </form:select>
-
             <label>Zipcode: <form:errors path="zipcode" cssClass="alert-danger"/></label>
             <br/>
             <form:input path="zipcode" class="form-control"/>
         </div>
-        <br />
-
+        <br/>
         <input type="submit" class="btn btn-primary" value="Review Order"/>
     </form:form>
 </div>
-
 
 <%@include file="/WEB-INF/jsp/template/footer.jsp" %>

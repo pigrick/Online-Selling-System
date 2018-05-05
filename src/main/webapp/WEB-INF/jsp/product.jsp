@@ -29,8 +29,8 @@
                                     <div id="demo-1" class="simpleLens-gallery-container">
                                         <div class="simpleLens-container">
                                             <div class="simpleLens-big-image-container">
-                                                <a data-lens-image="/resources/images/${product.id}/0.png" class="simpleLens-lens-image">
-                                                    <img src="/resources/images/${product.id}/0.png" class="simpleLens-big-image" >
+                                                <a data-lens-image="/static/images/${product.id}/0.png" class="simpleLens-lens-image">
+                                                    <img src="/static/images/${product.id}/0.png" class="simpleLens-big-image" >
                                                 </a>
                                             </div>
                                         </div>
@@ -51,7 +51,7 @@
                                                min="1" max="${product.quantity}" value="1">
                                     </div>
                                     <div class="aa-prod-view-bottom">
-                                        <a class="aa-add-to-cart-btn" style="cursor: hand">Add To Cart</a>
+                                        <a class="aa-add-to-cart-btn" style="cursor: hand" href="/order/addToCart/${product.id}">Add To Cart</a>
                                     </div>
                                 </div>
                             </div>

@@ -1,8 +1,6 @@
-<%@include file="/WEB-INF/include.jsp" %>
-
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/jsp/template/header.jsp" %>
-<link rel="stylesheet" type="text/css" href="/resources/css/order/order.css">
+
+<link rel="stylesheet" type="text/css" href="/static/css/order/order.css">
 <div class="container tpy">
     <h1 align="center">Order</h1>
     <div class="container">
@@ -15,13 +13,12 @@
                 <th scope="col">Total Price</th>
             </tr>
             </thead>
-
             <tbody>
             <c:forEach var="orderdetail" items="${shoppingcart.orderDetails}">
                 <tr>
-                    <td><a href="">${orderdetail.product.name}</a></td>
+                    <td><c:out value="${orderdetail.product.name}"/></td>
                     <td><fmt:formatNumber value="${orderdetail.price}" type="currency" currencySymbol="$"/></td>
-                    <td>${orderdetail.quantity}</td>
+                    <td><c:out value="${orderdetail.quantity}"/></td>
                     <td><fmt:formatNumber value="${orderdetail.calculateTotalPrice()}" type="currency"
                                           currencySymbol="$"/></td>
                 </tr>
@@ -42,50 +39,72 @@
             </tr>
             </tbody>
         </table>
-
         <div class="container pull-right">
             <a href="/order/shoppingcart">
                 <button class="btn btn-warning">Back to cart</button>
             </a>
         </div>
-
     </div>
     <div class="container">
         <h1>Shipping Address Detail</h1>
-
         <div class="container">
             <div class="row">
                 <c:forEach var="address" items="${addresses}">
-                    <form:form modelAttribute="customerOrderShippingForm" method="post" cssClass="inlineForm">
-                        <div class="col-sm-2 addborder">
-                                ${address.street} <br/>
-                                ${address.city}, ${address.state} ${address.zipcode} <br/>
-                            Phone: ${address.phoneNumber} <br />
-                            <form:hidden path="addressId" value="${address.id}" />
-                            <form:hidden path="phoneNumber" value="${address.phoneNumber}"/>
-                            <form:hidden path="street" value="${address.street}"/>
-                            <form:hidden path="city" value="${address.city}"/>
-                            <form:hidden path="state" value="${address.state}"/>
-                            <form:hidden path="zipcode" value="${address.zipcode}"/>
-                            <input class="btn btn-primary" type="submit" value="Deliver to this address"/>
+                    <div class="col-sm-2 addborder" id="address${address.id}">
+                        <button class="btn btn-danger" type="button" data-toggle="modal"
+                                data-target="#removeAddress${address.id}">
+                            Remove
+                        </button>
+                        <br/><br/>
+                        <c:out value="${address.street}"/>
+                        <br/>
+                        <c:out value="${address.city}, ${address.state} ${address.zipcode}"/>
+                        <br/>
+                        Phone: <c:out value="${address.phoneNumber}"/>
+                        <br/><br/>
+                        <form:form cssClass="inlineForm" method="post">
+                            <input type="hidden" name="addressId" value="${address.id}"/>
+                            <input type="submit" class="btn btn-primary" value="Deliver to this address"/>
+                        </form:form>
+                    </div>
+                    <div class="modal fade" id="removeAddress${address.id}" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Are you sure you want to remove this address!
+                                        <br/><br/>
+                                        <c:out value="${address.street}"/>
+                                        <br/>
+                                        <c:out value="${address.city}, ${address.state} ${address.zipcode}"/>
+                                        <br/>
+                                        Phone: <c:out value="${address.phoneNumber}"/>
+                                    </h4>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-danger" onclick="removeAddress(${address.id})"
+                                            data-dismiss="modal">Remove Address
+                                    </button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
                         </div>
-                    </form:form>
+                    </div>
                 </c:forEach>
             </div>
         </div>
+        <br/>
+        <h2>Ship to Another Address</h2>
         <form:form modelAttribute="customerOrderShippingForm" method="post">
             <br/>
             <div class="container">
-
-
                 <label>Phone Number: <form:errors path="phoneNumber" cssClass="alert-danger"/> </label>
                 <form:input path="phoneNumber" class="form-control"/>
                 <label>Street: <form:errors path="street" cssClass="alert-danger"/></label>
                 <form:input path="street" class="form-control"/>
-
                 <label>City: <form:errors path="city" cssClass="alert-danger"/></label>
                 <form:input path="city" class="form-control"/>
-
                 <label>State: <form:errors path="state" cssClass="alert-danger"/></label>
                 <form:select path="state" class="form-control">
                     <option value="AL">Alabama</option>
@@ -140,19 +159,15 @@
                     <option value="WI">Wisconsin</option>
                     <option value="WY">Wyoming</option>
                 </form:select>
-
                 <label>Zipcode: <form:errors path="zipcode" cssClass="alert-danger"/></label>
                 <br/>
                 <form:input path="zipcode" class="form-control"/>
             </div>
-
-
             <br/>
-
             <input type="submit" class="btn btn-primary" value="Review Order"/>
         </form:form>
     </div>
 </div>
-
+<script src="/static/js/order/order.js"></script>
 
 <%@include file="/WEB-INF/jsp/template/footer.jsp" %>

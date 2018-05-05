@@ -68,7 +68,7 @@
 
 <c:if test="${!empty message}">
     <script>
-        $.sticky('<spring:message code="${message.message}"/>', {autoclose : 5000, position: "top-right", type: "${fn:toLowerCase(message.type)}" });
+        $.sticky('<spring:message code="${message.message}"/>', {autoclose : 5000, position: "top-right", type: "st-${fn:toLowerCase(message.type)}" });
 
         <c:if test="${message.type eq 'SUCCESS'}">
         create.success();

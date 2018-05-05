@@ -4,6 +4,7 @@ import edu.mum.cs490.project.domain.Category;
 import edu.mum.cs490.project.domain.Status;
 import edu.mum.cs490.project.domain.Vendor;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -26,4 +27,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     List<Product> findByStatusIsTrue();
 
     List<Product> findByVendorAndStatus(Vendor vendor, Status status);
+
+    @Modifying
+    @Query("update Product p set p.quantity = p.quantity - :pquantity where p.id = :productId")
+    void deductProductAfterPurchase(@Param("pquantity") int pquantity, @Param("productId") Integer productId);
 }

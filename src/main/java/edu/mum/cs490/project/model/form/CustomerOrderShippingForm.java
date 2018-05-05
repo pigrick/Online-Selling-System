@@ -1,5 +1,6 @@
 package edu.mum.cs490.project.model.form;
 
+import edu.mum.cs490.project.domain.Address;
 import org.hibernate.validator.constraints.CreditCardNumber;
 
 import javax.validation.constraints.NotBlank;
@@ -10,7 +11,7 @@ import java.io.Serializable;
 public class CustomerOrderShippingForm implements Serializable {
 
     private Integer addressId;
-    @Pattern(regexp = "\\d{10}", message = "Pleasee enter your Phone number without symbols and space")
+    @Pattern(regexp = "\\d{10}", message = "Please enter your Phone number without symbols and space")
     private String phoneNumber;
     @NotBlank(message = "Please fill in your shipping street address!")
     private String street;
@@ -77,5 +78,14 @@ public class CustomerOrderShippingForm implements Serializable {
 
     public void setZipcode(String zipcode) {
         this.zipcode = zipcode;
+    }
+
+    public void transferAddress(Address address){
+        this.addressId = address.getId();
+        this.street = address.getStreet();
+        this.city = address.getCity();
+        this.phoneNumber = address.getPhoneNumber();
+        this.zipcode = address.getZipcode();
+        this.state = address.getState();
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @Import({
         WebSecurityConfig.class,
+        WebConfig.class
 })
 @ComponentScan({
         "edu.mum.cs490.project.repository",

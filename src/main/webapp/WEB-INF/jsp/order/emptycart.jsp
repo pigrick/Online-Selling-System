@@ -1,12 +1,19 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/jsp/template/header.jsp" %>
-
-<link rel="stylesheet" type="text/css" href="/resources/css/order/order.css">
+<link rel="stylesheet" type="text/css" href="/static/css/order/order.css">
 
 <div class="container tpy">
     <h1>No items in shopping cart to checkout!</h1>
+    <c:if test="${errorMessages != null}">
+        <div class="alert-danger">
+            Sorry, your order not in stock!
+            <br/>
+            <c:forEach var="errorMessage" items="${errorMessages}">
+                <c:out value="${errorMessage}"/>
+                <br/>
+            </c:forEach>
+            Please checkout our other products. Thank you.
+        </div>
+    </c:if>
 </div>
+
 <%@include file="/WEB-INF/jsp/template/footer.jsp" %>

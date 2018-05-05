@@ -7,30 +7,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Online Shop | Home</title>
     <!-- Font awesome -->
-    <link href="/resources/css/font-awesome.css" rel="stylesheet">
+    <link href="/static/css/font-awesome.css" rel="stylesheet">
     <!-- Bootstrap -->
-    <link href="/resources/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
     <!-- SmartMenus jQuery Bootstrap Addon CSS -->
-    <link href="/resources/css/jquery.smartmenus.bootstrap.css" rel="stylesheet">
+    <link href="/static/css/jquery.smartmenus.bootstrap.css" rel="stylesheet">
     <!-- product view slider -->
-    <link rel="stylesheet" type="text/css" href="/resources/css/jquery.simpleLens.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/jquery.simpleLens.css">
     <!-- slick slider -->
-    <link rel="stylesheet" type="text/css" href="/resources/css/slick.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/slick.css">
     <!-- price picker slider -->
-    <link rel="stylesheet" type="text/css" href="/resources/css/nouislider.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/nouislider.css">
     <!-- Theme color -->
-    <link id="switcher" href="/resources/css/theme-color/default-theme.css" rel="stylesheet">
+    <link id="switcher" href="/static/css/theme-color/default-theme.css" rel="stylesheet">
     <!-- Top Slider CSS -->
-    <link href="/resources/css/sequence-theme.modern-slide-in.css" rel="stylesheet" media="all">
+    <link href="/static/css/sequence-theme.modern-slide-in.css" rel="stylesheet" media="all">
     <!-- Main style sheet -->
-    <link href="/resources/css/style.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
     <!-- Google Font -->
     <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
 
-    <link href="/resources/css/custom.css" rel="stylesheet">
+    <link href="/static/css/custom.css" rel="stylesheet">
     <!-- jQuery library -->
-    <script src="/resources/js/jquery.min.js"></script>
+    <script src="/static/js/jquery.min.js"></script>
+
+    <link href="/static/js/smoke/themes/gebo.css" rel="stylesheet">
+    <link href="/static/js/smoke/smoke.css" rel="stylesheet">
+    <link href="/static/js/sticky/sticky.css" rel="stylesheet">
+
 </head>
 <body>
 <!-- SCROLL TOP BUTTON -->
@@ -52,11 +57,11 @@
                                 <div class="dropdown">
                                     <a class="btn dropdown-toggle" href="#" type="button" id="dropdownMenu1"
                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                        <img src="/resources/img/flag/english.jpg" alt="english flag">ENGLISH
+                                        <img src="/static/img/flag/english.jpg" alt="english flag">ENGLISH
                                         <span class="caret"></span>
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                        <li><a href="#"><img src="/resources/img/flag/english.jpg" alt="">ENGLISH</a>
+                                        <li><a href="#"><img src="/static/img/flag/english.jpg" alt="">ENGLISH</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -65,37 +70,67 @@
                             <a class="btn dropdown-toggle" href="#" style="margin-top: -1px">Daily Deals</a>
                         </div>
                         <!-- / header top left -->
+
+                        <!--  header top right -->
                         <div class="aa-header-top-right">
-                            <ul class="aa-head-top-nav-right">
-                                <sec:authorize access="isAuthenticated()">
-                                    <li><a href="#" style="cursor: default">Welcome: ${signedUser.username} </a></li>
-                                    <sec:authorize access="hasRole('VENDOR')">
-                                        <li><a href="#">${signedUser.companyName}</a></li>
+                            <div class="navbar-collapse collapse">
+                                <!-- Left nav -->
+                                <ul class="nav navbar-nav">
+
+                                    <sec:authorize access="isAuthenticated()">
+                                        <li><a href="#" style="cursor: default">Welcome: ${signedUser.username} </a>
+                                        </li>
+                                        <sec:authorize access="hasRole('VENDOR')">
+                                            <li><a href="#" style="cursor: default">Vendor</a>
+                                            </li>
+                                            <li><a href="#">${signedUser.companyName}</a></li>
+                                        </sec:authorize>
+                                        <sec:authorize access="hasRole('ADMIN')">
+                                            <li><a href="#">Admin</a></li>
+                                        </sec:authorize>
+                                        <sec:authorize access="hasRole('CUSTOMER')">
+                                            <li><a href="#" style="cursor: default">Customer </a></li>
+                                        </sec:authorize>
+                                        <li><a href="/logout">Logout</a></li>
                                     </sec:authorize>
+
+
+                                    <sec:authorize access="!isAuthenticated()">
+                                        <li><a href="#">SignUp <span class="caret"></span></a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="/signup">Customer SignUp</a></li>
+                                                <li><a href="/vendor/signup">Vendor SignUp</a></li>
+                                                    <%--<li><a href="/signup">Customer SignUp </a>
+                                                    </li>--%>
+                                                    <%--<li><a href="/vendor/signup">Vendor SignUp </a>
+                                                    </li>--%>
+                                                <sec:authorize access="hasRole('ADMIN')">
+                                                    <li><a href="#">Product <span class="caret"></span></a>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a href="/admin/product/m">Product Management</a></li>
+                                                            <li><a href="/admin/category/m">Category Management</a></li>
+                                                        </ul>
+                                                    </li>
+                                                </sec:authorize>
+                                            </ul>
+                                        </li>
+                                        <li><a href="/login">Login</a></li>
+
+                                    </sec:authorize>
+
+
                                     <sec:authorize access="hasRole('ADMIN')">
-                                        <li><a href="#">Admin</a></li>
+                                        <li><a href="#">Profile <span class="caret"></span></a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="/profile/edit/">Edit Customer</a></li>
+                                                <li><a href="/profile/vendor/edit">Edit Vendor</a></li>
+                                                <li><a href="/profile/edit/password">Edit Password</a></li>
+                                                <li><a href="/logout">LogOut</a></li>
+                                            </ul>
+                                        </li>
                                     </sec:authorize>
-                                    <sec:authorize access="hasRole('CUSTOMER')"></sec:authorize>
-                                    <li><a href="#">My Account</a></li>
-                                    <li>
-                                        <form id="logoutForm" action="/logout">
-                                            <a href="#logout" onclick="$('#logoutForm').submit()">Logout</a>
-                                            <sec:csrfInput/>
-                                        </form>
-                                    </li>
-                                </sec:authorize>
-                                <sec:authorize access="!isAuthenticated()">
-                                    <li>
-                                        <a href="/login">Login</a>
-                                    </li>
-                                    <li>
-                                        <a href="/signup">signUp</a>
-                                    </li>
-                                    <li>
-                                        <a href="/vendor/signup">vendor signUp</a>
-                                    </li>
-                                </sec:authorize>
-                            </ul>
+                                </ul>
+                            </div><!--/.nav-collapse -->
                         </div>
                         <!-- / header top right -->
                     </div>
@@ -127,15 +162,13 @@
                             <a class="aa-cart-link" href="/order/shoppingcart">
                                 <span class="fa fa-shopping-basket"></span>
                                 <span class="aa-cart-title">CART</span>
-
-
                             </a>
 
                             <div class="aa-cartbox-summary">
                                 <ul>
                                     <c:forEach var="orderDetail" items="${shoppingcart.orderDetails}">
                                         <li>
-                                            <a class="aa-cartbox-img"><img src="/resources/images/${orderDetail.product.id}/0.png" alt="img"></a>
+                                            <a class="aa-cartbox-img"><img src="/static/images/${orderDetail.product.id}/0.png" alt="img"></a>
                                             <div class="aa-cartbox-info">
                                                 <h4><a href="#"></a></h4>
                                                 <fmt:formatNumber value="${orderDetail.price}" type="currency"
@@ -194,12 +227,6 @@
                     <!-- Left nav -->
                     <ul class="nav navbar-nav">
                         <li><a href="/">Home</a></li>
-                        <sec:authorize access="hasRole('ROLE_ADMIN')">
-                            <li><a href="/admin/product/all">Product</a></li>
-                        </sec:authorize>
-                        <sec:authorize access="hasRole('ROLE_VENDOR')">
-                            <li><a href="/vendor/product/all">Product</a></li>
-                        </sec:authorize>
                         <li><a href="#">Men <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="#">Trousers</a></li>

@@ -6,6 +6,7 @@ import edu.mum.cs490.project.model.form.CustomerOrderShippingForm;
 import edu.mum.cs490.project.model.form.GuestOrderShippingForm;
 import edu.mum.cs490.project.model.form.PaymentForm;
 import edu.mum.cs490.project.service.CustomerService;
+import edu.mum.cs490.project.service.MailService;
 import edu.mum.cs490.project.service.OrderService;
 import edu.mum.cs490.project.service.ProductService;
 import edu.mum.cs490.project.service.impl.MockPaymentServiceImpl;

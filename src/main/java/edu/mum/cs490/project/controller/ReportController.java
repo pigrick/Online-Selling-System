@@ -3,6 +3,7 @@ package edu.mum.cs490.project.controller;
 import edu.mum.cs490.project.domain.*;
 import edu.mum.cs490.project.model.form.ReportFilterForm;
 import edu.mum.cs490.project.service.CategoryService;
+import edu.mum.cs490.project.service.MailService;
 import edu.mum.cs490.project.service.OrderDetailService;
 import edu.mum.cs490.project.service.VendorService;
 import net.sf.jasperreports.engine.*;
@@ -37,12 +38,14 @@ public class ReportController {
     private final OrderDetailService orderDetailService;
     private final VendorService vendorService;
     private final CategoryService categoryService;
+    private final MailService mailService;
 
     @Autowired
-    public ReportController(OrderDetailService orderDetailService, VendorService vendorService, CategoryService categoryService) {
+    public ReportController(OrderDetailService orderDetailService, VendorService vendorService, CategoryService categoryService, MailService mailService) {
         this.orderDetailService = orderDetailService;
         this.vendorService = vendorService;
         this.categoryService = categoryService;
+        this.mailService = mailService;
     }
 
     @GetMapping(value = "/reportFilter")
@@ -70,7 +73,7 @@ public class ReportController {
             model.addAttribute("error", "Please choose a date after From date.");
             return "report/reportFilter";
         }
-//        report(reportFilterForm, user, response);
+        report(reportFilterForm, user, response);
         return "report/reportFilter";
     }
 
@@ -91,7 +94,7 @@ public class ReportController {
         } else if (user instanceof Admin) {
             reportName = "report";
         }
-        //  List<OrderDetail> list = collectData(reportFilterForm.getLstVendor_Id(), reportFilterForm.getLstCategory_Id(), reportFilterForm.getBegin_Date(), reportFilterForm.getEnd_Date());
+        List<OrderDetail> list = collectData(reportFilterForm.getLstVendor_Id(), reportFilterForm.getLstCategory_Id(), reportFilterForm.getBegin_Date(), reportFilterForm.getEnd_Date());
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         // Initialize response
@@ -101,12 +104,13 @@ public class ReportController {
         // if you want to download instead of opening inlines
         // response.addHeader("Content-Disposition", "attachment; filename=" + fileName);
         try {
-            byte[] bytes = generateJasperReportPDF(reportName, outputStream, null);
+            byte[] bytes = generateJasperReportPDF(reportName, outputStream, list);
             // write the content to the output stream
             BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
             bos.write(bytes);
             bos.flush();
             bos.close();
+            outputStream.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             System.out.println("<<<<File Not Fount Exception>>>>");
@@ -117,6 +121,35 @@ public class ReportController {
             e.printStackTrace();
             System.out.println("<<<<JRException Stream Exception>>>>");
         } finally {
+        }
+    }
+
+    public void sendReportToVendor() {
+
+        try {
+            List<Vendor> lstVendor = vendorService.find(null, null, Status.ENABLED);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            List<OrderDetail> list = new ArrayList<>();
+            List<Integer> lstVendorId = new ArrayList<>();
+            Date endDate = new Date();
+            Date beginDate = new Date(endDate.getYear(), endDate.getMonth() == 0 ? 11 : endDate.getMonth() - 1, endDate.getDay());
+            String nameOfAttachment = "Selling report - " + (beginDate.getMonth() + 1);
+            for(Vendor vendor : lstVendor){
+                lstVendorId.add(vendor.getId());
+                list = collectData(lstVendorId, new ArrayList<>(), beginDate, endDate);
+                if(list != null && !list.isEmpty())
+                {
+                    byte[] bytes = generateJasperReportPDF("reportForVendor", outputStream, list);
+                    mailService.sendReportToVendor(vendor.getEmail(), bytes, nameOfAttachment);
+                }
+                list.clear();
+                lstVendorId.clear();
+            }
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }
+        catch (JRException ex){
+            ex.printStackTrace();
         }
     }
 

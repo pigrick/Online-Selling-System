@@ -2,7 +2,6 @@
 <%@include file="/WEB-INF/include.jsp"%>
 <%@include file="/WEB-INF/jsp/template/header.jsp"%>
 
-<!--<h1>Product Inventory</h1> -->
 
 <div class="container">
     <div class="main">

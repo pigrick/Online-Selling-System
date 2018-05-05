@@ -3,14 +3,17 @@ package edu.mum.cs490.project.domain;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.util.Collection;
 
 @Entity
-public class Vendor extends User{
+public class Vendor extends User {
+
+    @Column(unique = true)
     private String companyName;
 
-    public Vendor(){
+    public Vendor() {
         super();
         this.setStatus(Status.DISABLED);
     }

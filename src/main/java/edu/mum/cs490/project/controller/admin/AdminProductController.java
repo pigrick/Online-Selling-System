@@ -37,7 +37,7 @@ public class AdminProductController {
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public String productManagement(Model model) {
-        List<Product> productsList = productService.getAllProduct();
+        List<Product> productsList = productService.find(null, null, null, Status.ENABLED, null);
         model.addAttribute("productList", productsList);
 
         return "admin/productManagement";
@@ -78,7 +78,7 @@ public class AdminProductController {
         product.setPrice(form.getPrice());
         product.setQuantity(form.getQuantity());
         product.setVendor(vendor);
-        productService.saveOrUpdateProduct(product);
+        productService.saveOrUpdate(product);
         model.addAttribute("message", new Message(Message.Type.SUCCESS, "successfully.saved"));
 
         return "redirect:admin/product/all";

@@ -17,4 +17,5 @@ public interface VendorRepository extends UserRepository<Vendor> {
     @Query("SELECT a FROM Vendor a WHERE (:username IS NULL OR a.username like %:username%) AND (:companyName IS NULL OR a.companyName like %:companyName%) AND (:status IS NULL OR a.status =:status)")
     List<Vendor> find(@Param("username") String username, @Param("companyName") String companyName, @Param("status") Status status);
 
+    Vendor getByCompanyName(String name);
 }

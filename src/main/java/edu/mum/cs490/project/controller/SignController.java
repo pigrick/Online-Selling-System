@@ -9,6 +9,7 @@ import edu.mum.cs490.project.model.form.user.*;
 import edu.mum.cs490.project.service.AdminService;
 import edu.mum.cs490.project.service.MailService;
 import edu.mum.cs490.project.service.UserService;
+import edu.mum.cs490.project.service.VendorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,13 +33,15 @@ public class SignController {
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
     private final AdminService adminService;
+    private final VendorService vendorService;
 
     @Autowired
-    public SignController(UserService userService, PasswordEncoder passwordEncoder, MailService mailService, AdminService adminService) {
+    public SignController(UserService userService, PasswordEncoder passwordEncoder, MailService mailService, AdminService adminService, VendorService vendorService) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.mailService = mailService;
         this.adminService = adminService;
+        this.vendorService = vendorService;
     }
 
     @RequestMapping(value = "login")
@@ -97,6 +100,11 @@ public class SignController {
 
         if (userService.getByUsername(userForm.getUsername()) != null) {
             error.rejectValue("username", "username.duplicate");
+            return "vendor/signUp";
+        }
+
+        if (vendorService.getByCompanyName(userForm.getCompanyName()) != null) {
+            error.rejectValue("companyName", null, "Company name exists");
             return "vendor/signUp";
         }
 

@@ -27,4 +27,9 @@ public class VendorServiceImpl extends UserServiceImpl<Vendor> implements Vendor
     public List<Vendor> find(String username, String companyName, Status status) {
         return repository.find(username, companyName, status);
     }
+
+    @Override
+    public Vendor getByCompanyName(String companyName) {
+        return null;
+    }
 }

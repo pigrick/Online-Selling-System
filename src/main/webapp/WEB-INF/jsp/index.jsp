@@ -22,10 +22,10 @@
                         <div class="col-md-5 no-padding">
                             <div class="aa-promo-left">
                                 <div class="aa-promo-banner">
-                                    <img style="object-fit: cover;" src="${resourcePath}5/5.jpg" alt="img">
+                                    <img style="object-fit: cover;" src="${resourcePath}${products.get(0).image}" alt="img">
                                     <div class="aa-prom-content">
-                                        <span>75% Off</span>
-                                        <h4><a href="#">For Women</a></h4>
+                                        <span>${products.get(0).name}</span>
+                                        <h4><a href="#">${products.get(0).category.name}</a></h4>
                                     </div>
                                 </div>
                             </div>
@@ -33,42 +33,17 @@
                         <!-- promo right -->
                         <div class="col-md-7 no-padding">
                             <div class="aa-promo-right">
+                                <c:forEach items="${topProducts}" var="product" begin="4">
                                 <div class="aa-single-promo-right">
                                     <div class="aa-promo-banner">
-                                        <img style="object-fit: cover;" src="/static/img/for-men-300x220.jpg" alt="img">
+                                        <img style="object-fit: cover;" src="${resourcePath}${product.image}" alt="img">
                                         <div class="aa-prom-content">
-                                            <span>Exclusive Item</span>
-                                            <h4><a href="#">For Men</a></h4>
+                                            <span>${product.name}</span>
+                                            <h4><a href="#">${product.category.name}</a></h4>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="aa-single-promo-right">
-                                    <div class="aa-promo-banner">
-                                        <img src="/static/img/for-shoes.jpg" alt="img">
-                                        <div class="aa-prom-content">
-                                            <span>On Sale</span>
-                                            <h4><a href="#">On Shoes</a></h4>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="aa-single-promo-right">
-                                    <div class="aa-promo-banner">
-                                        <img src="/static/img/for-kids.jpg" alt="img">
-                                        <div class="aa-prom-content">
-                                            <span>New Arrivals</span>
-                                            <h4><a href="#">For Kids</a></h4>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="aa-single-promo-right">
-                                    <div class="aa-promo-banner">
-                                        <img style="object-fit: cover;" src="/static/img/for-bags.jpg" alt="img">
-                                        <div class="aa-prom-content">
-                                            <span>25% Off</span>
-                                            <h4><a href="#">For Bags</a></h4>
-                                        </div>
-                                    </div>
-                                </div>
+                                </c:forEach>
                             </div>
                         </div>
                     </div>
@@ -107,14 +82,14 @@
                             <div class="tab-pane fade in active">
                                 <ul class="aa-product-catg aa-popular-slider">
                                     <!-- start single product item -->
-                                    <c:forEach items="${products}" var="product">
+                                    <c:forEach items="${products}" var="product" begin="4">
                                         <%--<c:if test="${category eq product.category.name}">--%>
                                         <li>
                                             <figure>
                                                 <a class="aa-product-img"
                                                    href="<c:url value="/product/${product.id}" />">
                                                     <img style="width: 250px; height: 300px"
-                                                         src="<c:url value="/static/images/${product.id}/0.png" />"></a>
+                                                         src="<c:url value="${resourcePath}${product.image}" />"></a>
 
                                                 <a class="aa-add-card-btn" style="cursor: hand" href="/order/addToCart/${product.id}">
                                                     <span class="fa fa-shopping-cart"></span>Add To Cart
@@ -124,7 +99,6 @@
                                                             href="<c:url value="/product/${product.id}" />">${product.name}</a>
                                                     </h4>
                                                     <span class="aa-product-price">$${product.price}</span><span
-                                                        class="aa-product-price"><del>$333</del></span>
                                                 </figcaption>
                                             </figure>
 

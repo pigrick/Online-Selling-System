@@ -47,6 +47,10 @@
 </div>
 </div>
 
-
-
 <%@include file="/WEB-INF/jsp/template/footer.jsp"%>
+
+<c:if test="${!empty message}">
+    <script>
+        $.sticky('<spring:message code="${message.message}"/>', {autoclose : 5000, position: "top-right", type: "st-${fn:toLowerCase(message.type)}" });
+    </script>
+</c:if>

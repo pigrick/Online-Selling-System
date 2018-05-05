@@ -47,7 +47,8 @@ public class TransactionServiceImpl implements TransactionService {
             tr = mapper.readValue(requestStr, TransactionRequest.class);
         } catch (IOException | NullPointerException ex) {
             logger.error("", ex);
-            return "Invalid request";
+            logger.error("Invalid request");
+            return "400";
         }
         Account account = new Account(tr.getSrcCardNo(), tr.getExpirationDate(), tr.getNameOnCard().toUpperCase(), tr.getCVV(), tr.getZipCode());
 

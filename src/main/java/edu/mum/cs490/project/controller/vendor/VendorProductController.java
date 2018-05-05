@@ -7,9 +7,8 @@ import edu.mum.cs490.project.model.Message;
 import edu.mum.cs490.project.model.form.ProductForm;
 import edu.mum.cs490.project.service.CategoryService;
 import edu.mum.cs490.project.service.ProductService;
-import edu.mum.cs490.project.utils.SaveToFile;
+import edu.mum.cs490.project.service.impl.FileManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,11 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 @Controller
@@ -35,6 +29,9 @@ public class VendorProductController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private FileManagementService fileManagementService;
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public String productManagement(@AuthenticationPrincipal Vendor vendor, Model model) {
@@ -63,13 +60,16 @@ public class VendorProductController {
     public String saveOrUpdateProduct(@Valid @ModelAttribute("productForm") ProductForm form, BindingResult result,
                                       @AuthenticationPrincipal Vendor vendor,
                                       @RequestParam("file") MultipartFile file,
-                                      RedirectAttributes model) {
+                                      Model model) {
 
-        model.addFlashAttribute("title", "Product");
-        model.addFlashAttribute("categories", categoryService.find(null, null, Status.ENABLED));
+        model.addAttribute("title", "Product");
+        model.addAttribute("categories", categoryService.find(null, null, Status.ENABLED));
 
         if (file.isEmpty() || result.hasErrors()) {
-            model.addFlashAttribute("message", "Please select a file to upload or check fields!!!");
+            model.addAttribute("message", new Message(Message.Type.ERROR, "Please fill out the form!"));
+            return "vendor/saveProduct";
+        } else if (!file.isEmpty() && !fileManagementService.checkImageExtension(file.getOriginalFilename())){
+            model.addAttribute("message", new Message(Message.Type.ERROR, "File extension must be .jpg or .png!"));
             return "vendor/saveProduct";
         }
 
@@ -90,11 +90,12 @@ public class VendorProductController {
         productService.saveOrUpdateProduct(product);
 
         if (file != null) {
-            String fileFullName = SaveToFile.createFile(file, "product", product.getId());
+            String fileFullName = fileManagementService.createFile(file, "product", product.getId());
 
             if (fileFullName != null) {
                 product.setImage(fileFullName);
                 productService.saveOrUpdateProduct(product);
+                model.addAttribute("message", new Message(Message.Type.SUCCESS, "successfully.uploaded"));
             }
         }
         return "redirect:/vendor/product/all";

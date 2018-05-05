@@ -36,8 +36,10 @@ public class HomeController {
         List<Product> productList = productService.getAllProduct();
         List<Category> mainCategories = categoryService.find(null, null, Status.ENABLED);
 
+        productList.addAll(productList);
         model.addAttribute("products", productList);
         model.addAttribute("mainCategories", mainCategories);
+        model.addAttribute("topProducts", productList);
 
         return "index";
     }

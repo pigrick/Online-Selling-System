@@ -21,31 +21,45 @@ created by Pagmaa
     <c:if test="${!empty message}">
         <c:choose>
             <c:when test="${message.type eq 'SUCCESS'}">
-                <div class="panel-success">${message.message}</div>
+                <div class="alert alert-success alert-dismissible">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>${message.message}</strong>
+                </div>
             </c:when>
             <c:when test="${message.type eq 'ERROR'}">
-                <div class="panel-danger" style="border: 2px solid red; margin: 10px;">${message.message}</div>
+                <div class="alert alert-danger alert-dismissible">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>${message.message}</strong>
+                </div>
             </c:when>
         </c:choose>
     </c:if>
 
 <form:form modelAttribute="productForm" action="${pageContext.request.contextPath}/vendor/product/save" method="post" enctype="multipart/form-data">
-
+    <form:hidden path="id"/>
     <table class="table table-hover">
         <tbody>
         <tr>
             <td scope="col"><label>Category:</label></td>
             <td scope="col">
-    <form:hidden path="id"/>
-    <form:select path="parentId">
-        <form:option value="">Select Category</form:option>
-        <c:forEach items="${categories}" var="row">
-            <form:option value="${row.id}">${row.name}</form:option>
-        </c:forEach>
-    </form:select>
+                <select name="categoryId">
+                    <option value="">Select Category</option>
+                    <c:forEach items="${categories}" var="row">
+                        <option value="${row.id}">${row.name}</option>
+                        <c:if test="${row.childCategories ne null}">
+                            <c:forEach items="${row.childCategories}" var="cRow">
+                                <option value="${cRow.id}">---${cRow.name}</option>
+                                <c:if test="${cRow.childCategories ne null}">
+                                    <c:forEach items="${cRow.childCategories}" var="sRow">
+                                        <option value="${sRow.id}">------${sRow.name}</option>
+                                    </c:forEach>
+                                </c:if>
+                            </c:forEach>
+                        </c:if>
+                    </c:forEach>
+                </select>
             </td>
         </tr>
-
         <tr>
             <td><label>Name:</label></td>
             <td><form:input path="name" /></td>
@@ -85,7 +99,5 @@ created by Pagmaa
 </div>
 </div>
 </body>
-
-
 
 <%@include file="/WEB-INF/jsp/template/footer.jsp"%>

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@include file="/WEB-INF/include.jsp" %>
 <html>
 <head>
@@ -257,9 +258,13 @@
                         <sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_VENDOR')">
                             <li><a href="/report/reportFilter">Report</a></li>
                         </sec:authorize>
-                        <li><a href="#">Pages <span class="caret"></span></a>
+                        <li><a href="#">Products<span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">All Products</a></li>
+                                <li><a href="/product/all">All</a></li>
+                                <sec:authorize access="hasRole('ROLE_VENDOR')">
+                                    <li><a href="/vendor/product/all">Own products</a></li>
+                                    <li><a href="/vendor/product/save">Upload</a></li>
+                                </sec:authorize>
                             </ul>
                         </li>
                         <sec:authorize access="hasRole('CUSTOMER')">

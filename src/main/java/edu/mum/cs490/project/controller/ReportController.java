@@ -48,7 +48,7 @@ public class ReportController {
     @GetMapping(value = "/reportFilter")
     public String ReportLoading(Model model) {
         model.addAttribute("vendors", vendorService.find(null, null, Status.ENABLED));
-        model.addAttribute("categories", categoryService.getAllCategory());
+        model.addAttribute("categories", categoryService.find(null, null, Status.ENABLED));
         if (!model.containsAttribute("reportFilterForm")) {
             model.addAttribute("reportFilterForm", new ReportFilterForm());
         }
@@ -61,7 +61,7 @@ public class ReportController {
                                @AuthenticationPrincipal User user, HttpServletResponse response) {
 
         model.addAttribute("vendors", vendorService.find(null, null, Status.ENABLED));
-        model.addAttribute("categories", categoryService.getAllCategory());
+        model.addAttribute("categories", categoryService.find(null, null, Status.ENABLED));
 
         if (bindingResult.hasErrors()) {
             return "report/reportFilter";

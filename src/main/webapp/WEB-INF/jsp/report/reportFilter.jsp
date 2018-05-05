@@ -1,9 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-
+<%@include file="/WEB-INF/include.jsp"%>
 <%@include file="/WEB-INF/jsp/template/header.jsp" %>
 
 <section id="aa-myaccount">
@@ -19,14 +15,31 @@
                                 <%@ page import="java.text.*, java.util.Date" %>
                                 <% DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                                     String formattedDate = df.format(new Date()); %>
-                                <form:input class="col-md-7" path="begin_Date" type="date" min="2017-01-10"
-                                            value="<%= formattedDate %>"/>
+                                <form:input id="begin_Date" class="col-md-7" path="begin_Date" type="date"
+                                            min="2017-01-10"
+                                            value="<%= formattedDate %>"/> <br/>
+                                <div class="form-group">
+                                    <label class="col-md-3"></label>
+                                    <div class="col-md-7">
+                                        <form:errors path="begin_Date" cssStyle="color: red"/>
+                                    </div>
+                                </div>
                             </div>
-                            <br/><br/>
+                            <br/>
                             <div class="form-group" style="border-width: 20px ">
                                 <label class="col-md-3">To:</label>
-                                <form:input class="col-md-7" path="end_Date" type="date" max="2050-01-10"
-                                            value="<%= formattedDate %>"/>
+                                <form:input id="end_Date" class="col-md-7" path="end_Date" type="date" max="2050-01-10"
+                                            min="begin_Date.value" value="<%= formattedDate %>"/><br/>
+                                <div class="form-group">
+                                    <label class="col-md-3"></label>
+                                    <div class="col-md-7">
+                                        <form:errors path="end_Date" cssStyle="color: red"/><br/>
+                                        <c:if test="${not empty error}">
+                                            <p>${error}</p>
+                                        </c:if>
+                                        <%--<form:errors path="end_DateValid" cssStyle="color: red"/>--%>
+                                    </div>
+                                </div>
                             </div>
                             <br/>
                             <!-- check sec ROLE-->
@@ -53,7 +66,8 @@
                                 <label class="col-md-3">Category:</label>
                                 <label class="col-md-7"><input type="checkbox" value="0"
                                                                id="allCategory" checked
-                                                               onclick="myFunctionReport('#allCategory','#category')"/> All</label><br/>
+                                                               onclick="myFunctionReport('#allCategory','#category')"/>
+                                    All</label><br/>
                                 <label class="col-md-3"></label>
                                 <form:select id="category" class="col-md-7" path="lstCategory_Id"
                                              multiple="multiple" size="5" disabled="true">
@@ -66,7 +80,7 @@
                             <br/><br/> <br/><br/><br/>
                             <div class="col-md-10" align="center">
                                 <input id="btnExport" style="color: orangered" type="submit" value="Export"
-                                       formtarget="_blank"/>
+                                       />
                             </div>
                         </form:form>
                     </div>

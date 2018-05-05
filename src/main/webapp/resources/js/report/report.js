@@ -5,3 +5,11 @@ function myFunctionReport(checkboxId, selectId) {
         $(selectId).prop('disabled', false);
     }
 }
+
+$(document).ready(function () {
+    $("#begin_Date").t.keypress(function (event) {
+//press enter button
+        if (event.which == 13) {
+            $("#your-other-input").focus();
+        }
+    })

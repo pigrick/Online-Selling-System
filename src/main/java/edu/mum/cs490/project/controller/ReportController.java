@@ -64,16 +64,13 @@ public class ReportController {
         model.addAttribute("categories", categoryService.getAllCategory());
 
         if (bindingResult.hasErrors()) {
-            if (reportFilterForm.getBegin_Date().after(reportFilterForm.getEnd_Date())) {
-                model.addAttribute("error", "Please choose a date after From date.");
-                redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.reportFilterForm", bindingResult);
-                redirectAttributes.addFlashAttribute("reportFilterForm", reportFilterForm);
-                return "redirect:/report/reportFilter";
-            }
-//            redirectAttributes.addFlashAttribute("reportFilterFormError", "Please choose a date after From date.");
-//            return "report/reportFilter";
+            return "report/reportFilter";
         }
-        report(reportFilterForm, user, response);
+        else if (reportFilterForm.getBegin_Date().after(reportFilterForm.getEnd_Date())) {
+            model.addAttribute("error", "Please choose a date after From date.");
+            return "report/reportFilter";
+        }
+//        report(reportFilterForm, user, response);
         return "report/reportFilter";
     }
 

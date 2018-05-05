@@ -1,6 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-<%@include file="/WEB-INF/include.jsp"%>
+<%@include file="/WEB-INF/include.jsp" %>
 <%@include file="/WEB-INF/jsp/template/header.jsp" %>
+
+<form:errors path="*" class="has-error"/>
 
 <section id="aa-myaccount">
     <div class="container">
@@ -35,9 +37,9 @@
                                     <div class="col-md-7">
                                         <form:errors path="end_Date" cssStyle="color: red"/><br/>
                                         <c:if test="${not empty error}">
-                                            <p>${error}</p>
+                                            <p style="color:red">${error}</p>
                                         </c:if>
-                                        <%--<form:errors path="end_DateValid" cssStyle="color: red"/>--%>
+                                            <%--<form:errors path="end_DateValid" cssStyle="color: red"/>--%>
                                     </div>
                                 </div>
                             </div>
@@ -48,7 +50,7 @@
                                     <label class="col-md-3">Vendor:</label>
                                     <label for="allVendor" class="col-md-7">
                                         <input type="checkbox" value="0" id="allVendor" checked
-                                               onclick="myFunctionReport('#allVendor','#vendor')"/> All</label><br/>
+                                        /> All</label><br/>
                                     <label class="col-md-3"></label>
                                     <form:select id="vendor" class="col-md-7" path="lstVendor_Id"
                                                  multiple="multiple" disabled="true">
@@ -66,7 +68,7 @@
                                 <label class="col-md-3">Category:</label>
                                 <label class="col-md-7"><input type="checkbox" value="0"
                                                                id="allCategory" checked
-                                                               onclick="myFunctionReport('#allCategory','#category')"/>
+                                />
                                     All</label><br/>
                                 <label class="col-md-3"></label>
                                 <form:select id="category" class="col-md-7" path="lstCategory_Id"
@@ -80,7 +82,7 @@
                             <br/><br/> <br/><br/><br/>
                             <div class="col-md-10" align="center">
                                 <input id="btnExport" style="color: orangered" type="submit" value="Export"
-                                       />
+                                />
                             </div>
                         </form:form>
                     </div>
@@ -89,5 +91,5 @@
         </div>
     </div>
 </section>
-<script src="/resources/js/report/report.js"/>
+<script type="text/javascript" src="/resources/js/report/report.js" charset="utf-8"/>
 <%@include file="/WEB-INF/jsp/template/footer.jsp" %>

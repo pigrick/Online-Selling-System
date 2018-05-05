@@ -65,7 +65,6 @@ public class ReportController {
 
         model.addAttribute("vendors", vendorService.find(null, null, Status.ENABLED));
         model.addAttribute("categories", categoryService.find(null, null, Status.ENABLED));
-
         if (bindingResult.hasErrors()) {
             return "report/reportFilter";
         }

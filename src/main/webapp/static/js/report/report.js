@@ -16,6 +16,7 @@ $(document).ready(function () {
         myFunctionReport('#allCategory', '#category');
     });
 
+
 })
 //     $("#begin_Date").t.keypress(function (event) {
 // //press enter button

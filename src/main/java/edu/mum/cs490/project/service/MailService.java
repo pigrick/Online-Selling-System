@@ -1,8 +1,7 @@
 package edu.mum.cs490.project.service;
 
 import edu.mum.cs490.project.domain.Admin;
-import edu.mum.cs490.project.domain.OrderDetail;
-import edu.mum.cs490.project.domain.User;
+import edu.mum.cs490.project.domain.Order;
 
 import java.util.List;
 
@@ -12,5 +11,5 @@ import java.util.List;
 public interface MailService {
     boolean sendEmailToCustomer(String toEmail, String userName);
     boolean sendEmailToVendorAndAdmin(String toEmail, List<Admin> lstAdmin, String userName);
-    boolean sendEmailToCustomerAndVendor(List<OrderDetail> lstOrderDetail);
+    boolean sendEmailToCustomerAndVendor(Order order);
 }

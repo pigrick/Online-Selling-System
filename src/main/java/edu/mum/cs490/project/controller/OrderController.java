@@ -42,14 +42,17 @@ public class OrderController {
 
     private final AESConverter aesConverter;
 
+    private final MailService mailService;
+
     @Autowired
     public OrderController(OrderService orderService, MockPaymentServiceImpl mockPaymentService, CustomerService customerService,
-                           ProductService productService, AESConverter aesConverter) {
+                           ProductService productService, AESConverter aesConverter, MailService mailService) {
         this.orderService = orderService;
         this.mockPaymentService = mockPaymentService;
         this.productService = productService;
         this.aesConverter = aesConverter;
         this.customerService = customerService;
+        this.mailService = mailService;
     }
 
     //Get all the orders depending on admin and vendor
@@ -235,7 +238,7 @@ public class OrderController {
         orderService.deductProductQuantityAfterPurchase(order);
 
         order = orderService.saveOrUpdate(order);
-
+        mailService.sendEmailToCustomerAndVendor(order);
         session.removeAttribute("order");
         session.removeAttribute("shoppingcart");
         model.addAttribute("cards", this.orderService.findCardByUser_id(user.getId()));
@@ -304,6 +307,7 @@ public class OrderController {
 
         order = orderService.saveOrUpdate(order);
 
+        mailService.sendEmailToCustomerAndVendor(order);
         session.removeAttribute("order");
         session.setAttribute("shoppingcart", new ShoppingCart());
         model.addAttribute("order", order);

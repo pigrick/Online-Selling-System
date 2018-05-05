@@ -1,19 +1,17 @@
 package edu.mum.cs490.project.service.impl;
 
 import edu.mum.cs490.project.domain.Admin;
+import edu.mum.cs490.project.domain.Order;
 import edu.mum.cs490.project.domain.OrderDetail;
 import edu.mum.cs490.project.domain.Vendor;
 import edu.mum.cs490.project.service.MailService;
 import edu.mum.cs490.project.utils.EmailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.config.ScheduledTask;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.Set;
-import java.util.Timer;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -23,8 +21,8 @@ import java.util.stream.Collectors;
 public class MailServiceImpl implements MailService {
 
     private final EmailUtil emailUtil;
-
-    static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    private final static DecimalFormat df = new DecimalFormat("###.##");
+    private final static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     @Autowired
     public MailServiceImpl(EmailUtil emailUtil){
@@ -55,35 +53,35 @@ public class MailServiceImpl implements MailService {
         catch(Exception ex){
             ex.printStackTrace();
 
-            /*Timer time = new Timer(); // Instantiate Timer Object
-            ScheduledTask st = new ScheduledTask(); // Instantiate SheduledTask class
-            time.schedule(st, 0, 1000); // Create Repetitively task for every 1 secs
-
-            //for demo only.
-            for (int i = 0; i <= 5; i++) {
-                System.out.println("Execution in Main Thread...." + i);
-                Thread.sleep(2000);
-                if (i == 5) {
-                    System.out.println("Application Terminates");
-                    System.exit(0);
-                }
-            }*/
-
             return false;
         }
         return true;
     }
 
     @Override
-    public boolean sendEmailToCustomerAndVendor(List<OrderDetail> lstOrderDetail) {
+    public boolean sendEmailToCustomerAndVendor(Order order) {
         try{
-            emailUtil.sendEmail(lstOrderDetail.get(0).getOrder().getCustomer().getEmail(), "Verification", prepareTemplateForCustomerWhenPurchase(lstOrderDetail));
+            String toEmail = "", customerName = "", address = "";
+            if(order.getCustomer() == null){
+                toEmail = order.getGuest().getEmail();
+                customerName = order.getGuest().getFirstName() + " " + order.getGuest().getLastName();
+                address = order.getGuest().getAddress().toString();
+            }
+            else
+            {
+                toEmail = order.getCustomer().getEmail();
+                customerName = order.getCustomer().getFirstName() + " " + order.getCustomer().getLastName();
+                address = order.getCustomer().getAddresses().get(0).toString();
+            }
+            emailUtil.sendEmail(toEmail, "Verification", prepareTemplateForCustomerWhenPurchase(customerName, address, order));
 
-            Set<Vendor> lstVendor = new TreeSet<>();
-            lstOrderDetail.forEach(l->lstVendor.add(l.getProduct().getVendor()));
+            final List<Vendor> lstVendor = new ArrayList<>();
+            order.getOrderDetails().forEach(u->{
+                    if(!lstVendor.contains(u))
+                        lstVendor.add(u.getProduct().getVendor());});
             for(Vendor vendor : lstVendor){
-                List<OrderDetail> currentVendorsOrder = lstOrderDetail.stream().filter(u->u.getProduct().getVendor().getId() == vendor.getId()).collect(Collectors.toList());
-                emailUtil.sendEmail(vendor.getEmail(), "Shipping Notification", prepareTemplateForVendorWhenPurchase(currentVendorsOrder));
+                List<OrderDetail> currentVendorsOrder = order.getOrderDetails().stream().filter(u->u.getProduct().getVendor().getId() == vendor.getId()).collect(Collectors.toList());
+                emailUtil.sendEmail(vendor.getEmail(), "Shipping Notification", prepareTemplateForVendorWhenPurchase(address, new Date(), currentVendorsOrder));
             }
         }
         catch(Exception ex){
@@ -2073,8 +2071,7 @@ public class MailServiceImpl implements MailService {
         return str.toString();
     }
 
-    private String prepareTemplateForCustomerWhenPurchase(List<OrderDetail> lstOrderDetail){
-
+    private String prepareTemplateForCustomerWhenPurchase(String customerName, String address, Order order){
         StringBuilder str = new StringBuilder();
         str.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
                 "<html xmlns=\"http://www.w3.org/1999/xhtml\" style=\"font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\">\n" +
@@ -2142,16 +2139,16 @@ public class MailServiceImpl implements MailService {
                 "\t\t\t<div class=\"content\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; max-width: 600px; display: block; margin: 0 auto; padding: 20px;\">\n" +
                 "\t\t\t\t<table class=\"main\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; border-radius: 3px; background-color: #fff; margin: 0; border: 1px solid #e9e9e9;\" bgcolor=\"#fff\"><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-wrap aligncenter\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 20px;\" align=\"center\" valign=\"top\">\n" +
                 "\t\t\t\t\t\t\t<table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\">\n" +
-                "\t\t\t\t\t\t\t\t\t\t<h1 class=\"aligncenter\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif; box-sizing: border-box; font-size: 32px; color: #000; line-height: 1.2em; font-weight: 500; text-align: center; margin: 40px 0 0;\" align=\"center\">$"+lstOrderDetail.get(0).getOrder().getTotalPriceWithTax()+" Paid</h1>\n" +
+                "\t\t\t\t\t\t\t\t\t\t<h1 class=\"aligncenter\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif; box-sizing: border-box; font-size: 32px; color: #000; line-height: 1.2em; font-weight: 500; text-align: center; margin: 40px 0 0;\" align=\"center\">$"+order.getTotalPriceWithTax()+" Paid</h1>\n" +
                 "\t\t\t\t\t\t\t\t\t</td>\n" +
                 "\t\t\t\t\t\t\t\t</tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-block\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;\" valign=\"top\">\n" +
                 "\t\t\t\t\t\t\t\t\t\t<h2 class=\"aligncenter\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,'Lucida Grande',sans-serif; box-sizing: border-box; font-size: 24px; color: #000; line-height: 1.2em; font-weight: 400; text-align: center; margin: 40px 0 0;\" align=\"center\">Thanks for using Mongolian Team Online Store.</h2>\n" +
                 "\t\t\t\t\t\t\t\t\t</td>\n" +
                 "\t\t\t\t\t\t\t\t</tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-block aligncenter\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;\" align=\"center\" valign=\"top\">\n" +
-                "\t\t\t\t\t\t\t\t\t\t<table class=\"invoice\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; text-align: left; width: 80%; margin: 40px auto;\"><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;\" valign=\"top\">"+lstOrderDetail.get(0).getOrder().getCustomer().getFirstName() + lstOrderDetail.get(0).getOrder().getCustomer().getLastName()+"<br style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\" />Invoice #"+lstOrderDetail.get(0).getOrder().getId()+"<br style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\" />"+simpleDateFormat.format(lstOrderDetail.get(0).getOrder().getOrderDate())+"</td>\n" +
+                "\t\t\t\t\t\t\t\t\t\t<table class=\"invoice\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; text-align: left; width: 80%; margin: 40px auto;\"><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;\" valign=\"top\">"+customerName+"<br style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\" />Invoice #"+order.getId()+"<br style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\" />"+simpleDateFormat.format(new Date())+"</td>\n" +
                 "\t\t\t\t\t\t\t\t\t\t\t</tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;\" valign=\"top\">\n" +
                 "\t\t\t\t\t\t\t\t\t\t\t\t\t<table class=\"invoice-items\" cellpadding=\"0\" cellspacing=\"0\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; margin: 0;\">");
-                for(OrderDetail orderDetail : lstOrderDetail){
+                for(OrderDetail orderDetail : order.getOrderDetails()){
                     str.append(
                             "<tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\">" +
                                     "<td style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;\" valign=\"top\">"+orderDetail.getProduct().getName()+"</td>\n" +
@@ -2161,11 +2158,11 @@ public class MailServiceImpl implements MailService {
                 str.append(
                 "<tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\">" +
                         "<td style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;\" valign=\"top\">TAX</td>\n" +
-                        "<td class=\"alignright\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;\" align=\"right\" valign=\"top\">$ "+lstOrderDetail.get(0).getOrder().getTax()+"</td>\n" +
+                        "<td class=\"alignright\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;\" align=\"right\" valign=\"top\">$ "+df.format(order.getTax())+"</td>\n" +
                         "</tr>" +
                 "<tr class=\"total\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\">" +
                 "   <td class=\"alignright\" width=\"80%\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-top-width: 2px; border-top-color: #333; border-top-style: solid; border-bottom-color: #333; border-bottom-width: 2px; border-bottom-style: solid; font-weight: 700; margin: 0; padding: 5px 0;\" align=\"right\" valign=\"top\">Total</td>\n" +
-                "   <td class=\"alignright\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-top-width: 2px; border-top-color: #333; border-top-style: solid; border-bottom-color: #333; border-bottom-width: 2px; border-bottom-style: solid; font-weight: 700; margin: 0; padding: 5px 0;\" align=\"right\" valign=\"top\">$ "+lstOrderDetail.get(0).getOrder().getTotalPriceWithTax()+"</td>\n" +
+                "   <td class=\"alignright\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-top-width: 2px; border-top-color: #333; border-top-style: solid; border-bottom-color: #333; border-bottom-width: 2px; border-bottom-style: solid; font-weight: 700; margin: 0; padding: 5px 0;\" align=\"right\" valign=\"top\">$ "+order.getTotalPriceWithTax()+"</td>\n" +
                 "</tr></table></td>\n" +
                 "\t\t\t\t\t\t\t\t\t\t\t</tr></table></td>\n" +
                 "\t\t\t\t\t\t\t\t</tr><tr style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; margin: 0;\"><td class=\"content-block aligncenter\" style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;\" align=\"center\" valign=\"top\">\n" +
@@ -2181,10 +2178,10 @@ public class MailServiceImpl implements MailService {
                         "\n" +
                         "\n" +
                         "        <p>\n" +
-                        "            "+ lstOrderDetail.get(0).getOrder().getAddress()+
+                        "            "+ address+
                         "            <br/>\n" +
-                        "            "+ lstOrderDetail.get(0).getOrder().getCustomer().getFirstName() + " " + lstOrderDetail.get(0).getOrder().getCustomer().getLastName()+" <br/>\n" +
-                        "            **** **** **** "+ lstOrderDetail.get(0).getOrder().getCard().getLast4Digit()+"\n" +
+                        "            "+ customerName +" <br/>\n" +
+                        "            **** **** **** "+ order.getCard().getLast4Digit()+"\n" +
                         "        </p>\n"+
                 "\t\t</td>\n" +
                 "\t\t<td style=\"font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0;\" valign=\"top\"></td>\n" +
@@ -2193,7 +2190,7 @@ public class MailServiceImpl implements MailService {
         return str.toString();
     }
 
-    private String prepareTemplateForVendorWhenPurchase(List<OrderDetail> lstOrderDetail){
+    private String prepareTemplateForVendorWhenPurchase(String address, Date shippingDate, List<OrderDetail> lstOrderDetail){
         StringBuilder str = new StringBuilder();
         str.append("<!doctype html>\n" +
                 "<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">\n" +
@@ -2744,7 +2741,6 @@ public class MailServiceImpl implements MailService {
                 "\n" +
                 "}</style></head>\n" +
                 "    <body>\n" +
-                "\t\t<!--*|IF:MC_PREVIEW_TEXT|*-->\n" +
                 "\t\t<!--[if !gte mso 9]><!----><span class=\"mcnPreviewText\" style=\"display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;\">*|MC_PREVIEW_TEXT|*</span><!--<![endif]-->\n" +
                 "\t\t<!--*|END:IF|*-->\n" +
                 "        <center>\n" +
@@ -2819,10 +2815,10 @@ public class MailServiceImpl implements MailService {
                 "                        \n" +
                 "                        <td valign=\"top\" class=\"mcnTextContent\" style=\"padding: 0px 18px 9px; line-height: 100%;\">\n" +
                 "                        \n" +
-                "<h1 style=\"text-align: center;\">Date : "+simpleDateFormat.format(lstOrderDetail.get(0).getOrder().getShippingDate())+"</h1>"+
+                "<h1 style=\"text-align: center;\">Date : "+simpleDateFormat.format(shippingDate)+"</h1>"+
                 "                            <h1 style=\"text-align: center;\">SHIPPING ADDRESS :&nbsp;</h1>\n" +
                 "\n" +
-                "<div style=\"text-align: center;\">"+lstOrderDetail.get(0).getOrder().getAddress()+"</div>\n" +
+                "<div style=\"text-align: center;\">"+address+"</div>\n" +
                 "\n" +
                 "                        </td>\n" +
                 "                    </tr>\n" +
@@ -2859,7 +2855,7 @@ public class MailServiceImpl implements MailService {
                             "                        \n" +
                             "                        <td valign=\"top\" class=\"mcnTextContent\" style=\"padding: 0px 18px 9px; line-height: 100%;\">\n" +
                             "                        \n" +
-                            "                            <div style=\"text-align: left;\">1. "+orderDetail.getProduct().getId()+"</div>\n" +
+                            "                            <div style=\"text-align: left;\">1. "+orderDetail.getProduct().getId()+ " - " + orderDetail.getProduct().getName() +"</div>\n" +
                             "\n" +
                             "                        </td>\n" +
                             "                    </tr>\n" +

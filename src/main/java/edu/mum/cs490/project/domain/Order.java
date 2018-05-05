@@ -12,7 +12,7 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
-@Table(name = "`order`", indexes = {@Index(columnList = "customer_id", name = "customer_idx")})
+@Table(name="`order`", indexes = {@Index(columnList = "customer_id", name = "customer_idx")})
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +31,7 @@ public class Order {
     private Address address;
     @Enumerated(EnumType.STRING)
     private Status status = Status.ENABLED;
-    @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST})
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade={ CascadeType.PERSIST} )
     private List<OrderDetail> orderDetails;
 
     public Order() {

@@ -12,7 +12,7 @@ public class OrderDetail {
     private Integer id;
     @ManyToOne(fetch = FetchType.LAZY)
     private Order order;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     private Product product;
     private int quantity;
     private double price;

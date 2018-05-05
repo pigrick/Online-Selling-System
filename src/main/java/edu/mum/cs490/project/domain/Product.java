@@ -13,7 +13,7 @@ public class Product {
     private String name;
     @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JsonIgnore
     private Vendor vendor;
     private int quantity;

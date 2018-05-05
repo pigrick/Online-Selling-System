@@ -35,7 +35,7 @@ public class VendorProductController {
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public String productManagement(@AuthenticationPrincipal Vendor vendor, Model model) {
-        List<Product> productsList = productService.findByVendorAndStatus(vendor, Status.ENABLED);
+        List<Product> productsList = productService.find(null, null, vendor.getId(), Status.ENABLED, null);
         model.addAttribute("productList", productsList);
 
         return "vendor/productManagement";
@@ -87,14 +87,14 @@ public class VendorProductController {
         product.setPrice(form.getPrice());
         product.setQuantity(form.getQuantity());
         product.setVendor(vendor);
-        productService.saveOrUpdateProduct(product);
+        productService.saveOrUpdate(product);
 
         if (file != null) {
             String fileFullName = fileManagementService.createFile(file, "product", product.getId());
 
             if (fileFullName != null) {
                 product.setImage(fileFullName);
-                productService.saveOrUpdateProduct(product);
+                productService.saveOrUpdate(product);
                 model.addAttribute("message", new Message(Message.Type.SUCCESS, "successfully.uploaded"));
             }
         }

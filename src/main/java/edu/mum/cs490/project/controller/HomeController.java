@@ -33,7 +33,7 @@ public class HomeController {
     public String getHome(Model model){
 
 
-        List<Product> productList = productService.getAllProduct();
+        List<Product> productList = productService.find(null, null, null, Status.ENABLED, null);
         List<Category> mainCategories = categoryService.find(null, null, Status.ENABLED);
 
         productList.addAll(productList);

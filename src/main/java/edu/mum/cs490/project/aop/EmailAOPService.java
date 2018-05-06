@@ -31,8 +31,8 @@ public class EmailAOPService {
         }
     }
 
-    @AfterThrowing(pointcut = "execution(* edu.mum.cs490.project.utils.EmailUtil.sendEmail(..)) && args(toEmail, subject, body)", throwing = "ex")
-    public void aopResendEmail(String toEmail, String subject, String body, Exception ex){
+    @AfterThrowing("execution(* edu.mum.cs490.project.utils.EmailUtil.sendEmail(..)) && args(toEmail, subject, body)")
+    public void aopResendEmail(String toEmail, String subject, String body){
         try {
             if(delay == 60)
             {
@@ -42,7 +42,6 @@ public class EmailAOPService {
             delay = delay == 0 ? 5 : delay == 5 ? 30 : 60;
             Thread.sleep(delay * 60000);
             emailUtil.sendEmail(toEmail, subject, body);
-
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -64,7 +64,6 @@ public class EmailUtil {
         }
         catch (Exception e) {
             e.printStackTrace();
-            //TODO send email to admin
         }
     }
 
@@ -104,11 +103,10 @@ public class EmailUtil {
         }
         catch (Exception e) {
             e.printStackTrace();
-            //TODO send email to admin
         }
     }
 
-    public static MimeMessage generateMime(){
+    private static MimeMessage generateMime(){
         MimeMessage msg = new MimeMessage(session);
         try
         {

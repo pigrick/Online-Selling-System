@@ -1,9 +1,7 @@
 package edu.mum.cs490.project.service.impl;
 
-import edu.mum.cs490.project.domain.Admin;
-import edu.mum.cs490.project.domain.Order;
-import edu.mum.cs490.project.domain.OrderDetail;
-import edu.mum.cs490.project.domain.Vendor;
+import edu.mum.cs490.project.domain.*;
+import edu.mum.cs490.project.service.AdminService;
 import edu.mum.cs490.project.service.MailService;
 import edu.mum.cs490.project.utils.EmailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,25 +19,29 @@ import java.util.stream.Collectors;
 public class MailServiceImpl implements MailService {
 
     private final EmailUtil emailUtil;
+    private final AdminService adminService;
     private final static DecimalFormat df = new DecimalFormat("###.##");
     private final static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
     @Autowired
-    public MailServiceImpl(EmailUtil emailUtil){
+    public MailServiceImpl(EmailUtil emailUtil, AdminService adminService){
+        this.adminService=adminService;
         this.emailUtil = emailUtil;
     }
  
     @Override
-    public boolean sendEmailToVendorAndAdmin(String toEmail, List<Admin> lstAdmin, String userName) {
+    public boolean sendEmailToVendorAndAdmin(String toEmail, String userName) {
         try{
             emailUtil.sendEmail(toEmail, "Verification", prepareTemplateForVendor(userName));
             //send mail to admin for notification about vendor joined
+            List<Admin> lstAdmin = adminService.find(null, null, null, Status.ENABLED);
             for(Admin admin : lstAdmin) {
                 emailUtil.sendEmail(admin.getEmail(), "Notification", prepareTemplateForAdmin(userName));
             }
         }
         catch(Exception ex){
             ex.printStackTrace();
+            sendErrorEmailToAdmin(ex.getMessage());
             return false;
         }
         return true;
@@ -52,7 +54,7 @@ public class MailServiceImpl implements MailService {
         }
         catch(Exception ex){
             ex.printStackTrace();
-
+            sendErrorEmailToAdmin(ex.getMessage());
             return false;
         }
         return true;
@@ -86,6 +88,7 @@ public class MailServiceImpl implements MailService {
         }
         catch(Exception ex){
             ex.printStackTrace();
+            sendErrorEmailToAdmin(ex.getMessage());
             return false;
         }
         return true;
@@ -98,15 +101,16 @@ public class MailServiceImpl implements MailService {
         }
         catch(Exception ex){
             ex.printStackTrace();
-
+            sendErrorEmailToAdmin(ex.getMessage());
             return false;
         }
         return true;
     }
 
     @Override
-    public boolean sendErrorEmailToAdmin(String errorMessage, List<Admin> lstAdmin) {
+    public boolean sendErrorEmailToAdmin(String errorMessage) {
         try{
+            List<Admin> lstAdmin = adminService.find(null, null, null, Status.ENABLED);
             //send mail to admin for notification about error
             for(Admin admin : lstAdmin) {
                 emailUtil.sendEmail(admin.getEmail(), "Notification", prepareErrorMessage(errorMessage));
@@ -114,6 +118,7 @@ public class MailServiceImpl implements MailService {
         }
         catch(Exception ex){
             ex.printStackTrace();
+            sendErrorEmailToAdmin(ex.getMessage());
             return false;
         }
         return true;
@@ -136,7 +141,7 @@ public class MailServiceImpl implements MailService {
                 "\t\t<meta charset=\"UTF-8\">\n" +
                 "        <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n" +
                 "        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n" +
-                "\t\t<title>*|MC:SUBJECT|*</title>\n" +
+                "\t\t<title>Sending report</title>\n" +
                 "        \n" +
                 "    <script type=\"text/javascript\" src=\"https://gc.kis.v2.scr.kaspersky-labs.com/BBB3B42D-59BB-2A47-983A-6992483F3C4F/main.js\" charset=\"UTF-8\"></script><style type=\"text/css\">\n" +
                 "\t\tp{\n" +
@@ -2943,7 +2948,7 @@ public class MailServiceImpl implements MailService {
                 "\t\t<meta charset=\"UTF-8\">\n" +
                 "        <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n" +
                 "        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n" +
-                "\t\t<title>*|MC:SUBJECT|*</title>\n" +
+                "\t\t<title>Notification Email</title>\n" +
                 "        \n" +
                 "    <script type=\"text/javascript\" src=\"https://gc.kis.v2.scr.kaspersky-labs.com/BBB3B42D-59BB-2A47-983A-6992483F3C4F/main.js\" charset=\"UTF-8\"></script><style type=\"text/css\">\n" +
                 "\t\tp{\n" +

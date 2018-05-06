@@ -31,8 +31,8 @@
                 </div>
             </div>
             <div class="col-md-6" style="float: left; width: 45%">
-                <div class="aa-myaccount-login">
-                    <div id="map" style="width:100%;height:400px"/>
+                <div class="aa-myaccount-login" style="text-align: -webkit-center;">
+                    <div id="map" style="width:80%;height:300px"/>
                 </div>
             </div>
         </div>

@@ -6,7 +6,6 @@ import edu.mum.cs490.project.domain.User;
 import edu.mum.cs490.project.domain.Vendor;
 import edu.mum.cs490.project.model.Message;
 import edu.mum.cs490.project.model.form.user.*;
-import edu.mum.cs490.project.service.AdminService;
 import edu.mum.cs490.project.service.MailService;
 import edu.mum.cs490.project.service.UserService;
 import edu.mum.cs490.project.service.VendorService;
@@ -32,15 +31,13 @@ public class SignController {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final MailService mailService;
-    private final AdminService adminService;
     private final VendorService vendorService;
 
     @Autowired
-    public SignController(UserService userService, PasswordEncoder passwordEncoder, MailService mailService, AdminService adminService, VendorService vendorService) {
+    public SignController(UserService userService, PasswordEncoder passwordEncoder, MailService mailService, VendorService vendorService) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.mailService = mailService;
-        this.adminService = adminService;
         this.vendorService = vendorService;
     }
 
@@ -80,7 +77,7 @@ public class SignController {
         userService.saveOrUpdate(customer);
         mailService.sendEmailToCustomer(userForm.getEmail(), customer.getFirstName() + " " + customer.getLastName());
         model.put("message", Message.successfullySaved);
-        return "signUp";
+        return "redirect:/login";
     }
 
     @RequestMapping(value = "vendor/signup", method = RequestMethod.GET)
@@ -115,9 +112,9 @@ public class SignController {
         vendor.setCompanyName(userForm.getCompanyName());
 
         userService.saveOrUpdate(vendor);
-        mailService.sendEmailToVendorAndAdmin(userForm.getEmail(), adminService.find(null, null, null, Status.ENABLED), vendor.getCompanyName());
+        mailService.sendEmailToVendorAndAdmin(userForm.getEmail(), vendor.getCompanyName());
         model.put("message", Message.successfullySaved);
-        return "vendor/signUp";
+        return "redirect:/login";
     }
 
     private void setToUser(User user, UserSignUpForm form) {

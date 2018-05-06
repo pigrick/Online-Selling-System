@@ -36,7 +36,7 @@ public class VendorProductController {
     @Autowired
     private FileManagementService fileManagementService;
 
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    @GetMapping
     public String productManagement(@AuthenticationPrincipal Vendor vendor, Model model) {
         List<Product> productsList = productService.find(null, null, vendor.getId(), Status.ENABLED, null);
         model.addAttribute("productList", productsList);
@@ -51,7 +51,7 @@ public class VendorProductController {
                              //@RequestParam(defaultValue = "1") Integer page,
                              @RequestParam(required = false) Integer categoryId, Model model) {
 
-        List<Product> productsList = productService.find(name, categoryId, vendor.getId(), Status.ENABLED, null);
+        List<Product> productsList = productService.find(name.equals("") ? null : name, categoryId, vendor.getId(), Status.ENABLED, null);
         model.addAttribute("productList", productsList);
 
         return "/vendor/list";
@@ -114,14 +114,14 @@ public class VendorProductController {
                 model.addAttribute("message", new Message(Message.Type.SUCCESS, "successfully.uploaded"));
             }
         }
-        return "redirect:/vendor/product/all";
+        return "vendor/saveProduct";
     }
 
     @GetMapping("/delete")
-    public String deleteProduct(@RequestParam(required = true) Integer id) {
+    public Message deleteProduct(@RequestParam(required = true) Integer id, Model model) {
 
         productService.delete(id);
 
-        return "redirect:/vendor/product/all";
+        return new Message(Message.Type.SUCCESS, "successfully.deleted");
     }
 }

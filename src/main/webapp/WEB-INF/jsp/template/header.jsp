@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@include file="/WEB-INF/include.jsp" %>
 <html>
 <head>
@@ -109,36 +110,28 @@
                                                     </li>--%>
                                                     <%--<li><a href="/vendor/signup">Vendor SignUp </a>
                                                     </li>--%>
-
+                                                <sec:authorize access="hasRole('ADMIN')">
+                                                    <li><a href="#">Product <span class="caret"></span></a>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a href="/admin/product">Product Management</a></li>
+                                                            <li><a href="/admin/category/m">Category Management</a></li>
+                                                        </ul>
+                                                    </li>
+                                                </sec:authorize>
                                             </ul>
                                         </li>
                                         <li><a href="/login">Login</a></li>
 
                                     </sec:authorize>
 
-                                    <sec:authorize access="hasRole('ADMIN')">
-                                        <li><a href="#">Product <span class="caret"></span></a>
-                                            <ul class="dropdown-menu">
-                                                <li><a href="/admin/product">Product Management</a></li>
-                                                <li><a href="/admin/category">Category Management</a></li>
-                                            </ul>
-                                        </li>
-                                    </sec:authorize>
-
 
                                     <sec:authorize access="hasRole('ADMIN')">
                                         <li><a href="#">Profile <span class="caret"></span></a>
                                             <ul class="dropdown-menu">
-                                                <li><a href="/admin/user/a">List User</a></li>
-                                                <li><a href="/admin/user/a/l">Edit Vendor</a></li>
-                                                <li><a href="/admin/user/a/e">Edit Admin--</a></li>
+                                                <li><a href="/profile/edit/">Edit Customer</a></li>
+                                                <li><a href="/profile/vendor/edit">Edit Vendor</a></li>
                                                 <li><a href="/profile/edit/password">Edit Password</a></li>
-                                                <li><a href="/admin/user/a/c">Create Category</a></li>
-                                                <li><a href="/admin/user/v/l">Vendor</a></li>
-                                                <li><a href="/admin/user/v/e">Vendor Edit--</a></li>
-                                                <li><a href="/admin/user/d">Delete--</a></li>
-                                                <li><a href="/admin/user/c/l">Customer</a></li>
-                                                <%--<li><a href="/logout">LogOut</a></li>--%>
+                                                <li><a href="/logout">LogOut</a></li>
                                             </ul>
                                         </li>
                                     </sec:authorize>

@@ -31,6 +31,7 @@ public interface ProductService {
     @PreAuthorize("#hasAnyRole('ROLE_ADMIN' ,'ROLE_VENDOR')")
     void changeStatus(Integer id, Status status);
 
+    @Transactional
     List<Product> find(String name, Integer categoryId, Integer vendorId, Status status, Sort sort);
 
     public Page<Product> findPage(String name, Integer categoryId, Integer vendorId, Status status, Pageable pageable);

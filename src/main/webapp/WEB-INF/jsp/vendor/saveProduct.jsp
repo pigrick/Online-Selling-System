@@ -1,9 +1,10 @@
-<!--
-
-created by Pagmaa
-
-
--->
+<%--
+  Created by IntelliJ IDEA.
+  User: Erdenebayar
+  Date: 5/2/2018
+  Time: 2:32 PM
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/include.jsp"%>
 
@@ -104,9 +105,26 @@ created by Pagmaa
 </form:form>
 
 </div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-primary" onclick="create.submit()">Save changes</button>
 </div>
-</body>
+
+<script type="text/javascript">
+    $(function () {
+        create.init();
+    });
+</script>
 
 
 
 <%@include file="/WEB-INF/jsp/template/footer.jsp"%>
+<c:if test="${!empty message}">
+    <script>
+        $.sticky('<spring:message code="${message.message}"/>', {autoclose : 5000, position: "top-right", type: "st-${fn:toLowerCase(message.type)}" });
+
+        <c:if test="${message.type eq 'SUCCESS'}">
+        create.success();
+        </c:if>
+    </script>
+</c:if>

@@ -138,7 +138,35 @@ public class ReportController {
 
 
     //Send report to vendors monthly/weekly
-    public void sendReportToVendor() {
+//    public void sendReportToVendor() {
+//
+//        try {
+//            List<Vendor> lstVendor = vendorService.find(null, null, Status.ENABLED);
+//            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//            List<OrderDetail> list = new ArrayList<>();
+//            List<Integer> lstVendorId = new ArrayList<>();
+//            Date endDate = new Date();
+//            Date beginDate = new Date(endDate.getYear(), endDate.getMonth() == 0 ? 11 : endDate.getMonth() - 1, endDate.getDay());
+//            String nameOfAttachment = "Selling report - " + (beginDate.getMonth() + 1);
+//            for (Vendor vendor : lstVendor) {
+//                lstVendorId.add(vendor.getId());
+//                list = collectData(lstVendorId, new ArrayList<>(), beginDate, endDate);
+//                if (list != null && !list.isEmpty()) {
+//                    byte[] bytes = generateJasperReportPDF("reportForVendor", outputStream, list);
+//                    mailService.sendReportToVendor(vendor.getEmail(), bytes, nameOfAttachment);
+//                }
+//                list.clear();
+//                lstVendorId.clear();
+//            }
+//        } catch (IOException ex) {
+//            ex.printStackTrace();
+//        } catch (JRException ex) {
+//            ex.printStackTrace();
+//        }
+//    }
+
+    //Send report to vendors weekly/monthly
+    public void sendReportToVendor(Date beginDate) {
 
         try {
             List<Vendor> lstVendor = vendorService.find(null, null, Status.ENABLED);
@@ -146,8 +174,7 @@ public class ReportController {
             List<OrderDetail> list = new ArrayList<>();
             List<Integer> lstVendorId = new ArrayList<>();
             Date endDate = new Date();
-            Date beginDate = new Date(endDate.getYear(), endDate.getMonth() == 0 ? 11 : endDate.getMonth() - 1, endDate.getDay());
-            String nameOfAttachment = "Selling report - " + (beginDate.getMonth() + 1);
+            String nameOfAttachment = "Selling report - From " + beginDate.getTime() + " To " + endDate.getTime();
             for (Vendor vendor : lstVendor) {
                 lstVendorId.add(vendor.getId());
                 list = collectData(lstVendorId, new ArrayList<>(), beginDate, endDate);
@@ -165,33 +192,6 @@ public class ReportController {
         }
     }
 
-    //Send report to vendors weekly/monthly
-//    public void sendReportToVendor(Date beginDate) {
-//
-//        try {
-//            List<Vendor> lstVendor = vendorService.find(null, null, Status.ENABLED);
-//            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-//            List<OrderDetail> list = new ArrayList<>();
-//            List<Integer> lstVendorId = new ArrayList<>();
-//            Date endDate = new Date();
-//            String nameOfAttachment = "Selling report - From " + beginDate.getTime() + " To " + endDate.getTime();
-//            for (Vendor vendor : lstVendor) {
-//                lstVendorId.add(vendor.getId());
-//                list = collectData(lstVendorId, new ArrayList<>(), beginDate, endDate);
-//                if (list != null && !list.isEmpty()) {
-//                    byte[] bytes = generateJasperReportPDF("reportForVendor", outputStream, list);
-//                    mailService.sendReportToVendor(vendor.getEmail(), bytes, nameOfAttachment);
-//                }
-//                list.clear();
-//                lstVendorId.clear();
-//            }
-//        } catch (IOException ex) {
-//            ex.printStackTrace();
-//        } catch (JRException ex) {
-//            ex.printStackTrace();
-//        }
-//    }
-//
     private List<OrderDetail> collectData(List<Integer> lstVendorId, List<Integer> lstCategoryId, Date beging_Date, Date end_Date) {
         List<OrderDetail> lstOrderDetail = new ArrayList<>();
 

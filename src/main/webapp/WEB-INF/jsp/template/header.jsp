@@ -119,10 +119,13 @@
                                         <li>
                                             <a href="#">Profile <span class="caret"></span></a>
                                             <ul class="dropdown-menu">
-                                                <sec:authorize access="hasAnyRole('CUSTOMER,ADMIN')">
+                                                <sec:authorize access="hasRole('ROLE_CUSTOMER')">
                                                     <li><a href="/profile/edit/">Edit Profile</a></li>
                                                 </sec:authorize>
-                                                <sec:authorize access="hasRole('VENDOR')">
+                                                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                                                    <li><a href="/profile/admin/edit/">Edit Profile</a></li>
+                                                </sec:authorize>
+                                                <sec:authorize access="hasRole('ROLE_VENDOR')">
                                                     <li><a href="/profile/vendor/edit/">Edit Profile</a></li>
                                                 </sec:authorize>
                                                 <li><a href="/profile/edit/password">Edit Password</a></li>

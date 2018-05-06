@@ -35,13 +35,29 @@ public class AdminProductController {
         this.categoryService = categoryService;
     }
 
-    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    @GetMapping
     public String productManagement(Model model) {
         List<Product> productsList = productService.find(null, null, null, Status.ENABLED, null);
         model.addAttribute("productList", productsList);
+        model.addAttribute("categories", categoryService.find(null, null, null));
+        model.addAttribute("statuses", Status.values());
 
-        return "admin/productManagement";
+        return "admin/index";
     }
+
+    @RequestMapping(value = "/list")
+    public String getProduct(@RequestParam(required = false) String name,
+                             @RequestParam(required = false) Integer categoryId,
+                             @RequestParam(required = false , defaultValue = "ENABLED") Status status,
+                             Model model) {
+
+        List<Product> productsList = productService.find(name.equals("") ? null : name, categoryId, null, status, null);
+        model.addAttribute("productList", productsList);
+        model.addAttribute("statuses", Status.values());
+
+        return "/admin/list";
+    }
+
 
     @GetMapping("/update")
     public String updateProduct(@RequestParam(required = false) Integer id, Model model) {
@@ -54,8 +70,8 @@ public class AdminProductController {
             model.addAttribute("productForm", new ProductForm());
         }
         model.addAttribute("categories", categoryService.find(null, null, Status.ENABLED));
-
-        return "admin/saveProduct";
+        model.addAttribute("statuses", Status.values());
+        return "admin/edit";
     }
 
     @PostMapping("/update")

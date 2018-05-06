@@ -44,6 +44,11 @@ public class HomeController {
         return "index";
     }
 
+    @RequestMapping("/contact")
+    public String getContact(){
+        return "contact";
+    }
+
 
 
 

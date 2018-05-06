@@ -5,7 +5,8 @@
 <section id="aa-myaccount">
     <div class="container">
         <div class="text-center">
-            <h1> <b><i>Oops...</i> Something went wrong.</b> </h1>
+            <h1> <b><i>Oops...</i></b> </h1>
+            <h3>Something went wrong.</h3>
             <p> Not to worry. you can either head back to our <a href="/"><b><u>homepage</u></b></a> </p>
         </div>
     </div>

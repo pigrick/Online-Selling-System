@@ -78,62 +78,67 @@
                                 <ul class="nav navbar-nav">
 
                                     <sec:authorize access="isAuthenticated()">
-                                        <li><a href="#" style="cursor: default">Welcome: ${signedUser.username} </a>
-                                        </li>
-                                        <sec:authorize access="hasRole('VENDOR')">
-                                            <li><a href="#" style="cursor: default">Vendor</a>
-                                            </li>
-                                            <li><a href="/profile/vendor/edit">Edit Vendor</a></li>
-                                            <li><a href="/profile/edit/password">Edit Password</a></li>
-                                            <li><a href="#">${signedUser.companyName}</a></li>
-                                        </sec:authorize>
-                                        <sec:authorize access="hasRole('ADMIN')">
-                                            <li><a href="#">Admin</a></li>
-                                        </sec:authorize>
-                                        <sec:authorize access="hasRole('CUSTOMER')">
-                                            <li><a href="#" style="cursor: default">Customer </a></li>
-                                            <li><a href="/profile/edit/">Edit Customer</a></li>
-                                            <li><a href="/profile/edit/password">Edit Password</a></li>
-                                            <li><a href="#" style="cursor: default">Customer </a></li>
-                                        </sec:authorize>
-                                        <li><a href="/logout">Logout</a></li>
-                                    </sec:authorize>
-
-
-                                    <sec:authorize access="!isAuthenticated()">
-                                        <li><a href="#">SignUp <span class="caret"></span></a>
+                                        <li>
+                                            <a href="#" style="cursor: default">
+                                                Welcome:
+                                                <sec:authorize access="hasRole('ROLE_CUSTOMER')">Customer </sec:authorize>
+                                                <sec:authorize access="hasRole('ROLE_VENDOR')">Vendor </sec:authorize>
+                                                <sec:authorize access="hasRole('ROLE_ADMIN')">Admin </sec:authorize>
+                                                    ${signedUser.username} <span class="caret"></span>
+                                            </a>
                                             <ul class="dropdown-menu">
-                                                <li><a href="/signup">Customer SignUp</a></li>
-                                                <li><a href="/vendor/signup">Vendor SignUp</a></li>
-                                                <li><a href="/profile/edit/password">Edit Password</a></li>
-                                                    <%--<li><a href="/signup">Customer SignUp </a>
-                                                    </li>--%>
-                                                    <%--<li><a href="/vendor/signup">Vendor SignUp </a>
-                                                    </li>--%>
-                                                <sec:authorize access="hasRole('ADMIN')">
-                                                    <li><a href="#">Product <span class="caret"></span></a>
+                                                <sec:authorize access="hasRole('ROLE_CUSTOMER')">
+                                                    <li><a href="/order/customer/all/1">Orders</a></li>
+                                                </sec:authorize>
+                                                <sec:authorize access="hasRole('ROLE_ADMIN')">
+                                                    <li>
+                                                        <a href="javascript:void(0);">
+                                                            User Management <span class="caret"></span>
+                                                        </a>
                                                         <ul class="dropdown-menu">
-                                                            <li><a href="/admin/product">Product Management</a></li>
-                                                            <li><a href="/admin/category/m">Category Management</a></li>
+                                                            <li><a href="/admin/user/admin">Manage Admin</a></li>
+                                                            <li><a href="/admin/user/vendor">Manage vendor</a></li>
+                                                            <li><a href="/admin/user/customer">Manage Customer</a></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <a href="/admin/product">Product <span class="caret"></span></a>
+                                                        <ul class="dropdown-menu">
+                                                            <li><a href="/admin/category">Category</a></li>
                                                         </ul>
                                                     </li>
                                                 </sec:authorize>
+                                                <sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_VENDOR')">
+                                                    <li><a href="/report/reportFilter">Report</a></li>
+                                                </sec:authorize>
+                                                <sec:authorize access="hasRole('ROLE_VENDOR')">
+                                                    <li><a href="/vendor/product">Own products</a></li>
+                                                </sec:authorize>
                                             </ul>
                                         </li>
-                                        <li><a href="/login">Login</a></li>
-
-                                    </sec:authorize>
-
-
-                                    <sec:authorize access="hasRole('ADMIN')">
-                                        <li><a href="#">Profile <span class="caret"></span></a>
+                                        <li>
+                                            <a href="#">Profile <span class="caret"></span></a>
                                             <ul class="dropdown-menu">
-                                                <li><a href="/profile/edit/">Edit Customer</a></li>
-                                                <li><a href="/profile/vendor/edit">Edit Vendor</a></li>
+                                                <sec:authorize access="hasAnyRole('CUSTOMER,ADMIN')">
+                                                    <li><a href="/profile/edit/">Edit Profile</a></li>
+                                                </sec:authorize>
+                                                <sec:authorize access="hasRole('VENDOR')">
+                                                    <li><a href="/profile/vendor/edit/">Edit Profile</a></li>
+                                                </sec:authorize>
                                                 <li><a href="/profile/edit/password">Edit Password</a></li>
                                                 <li><a href="/logout">LogOut</a></li>
                                             </ul>
                                         </li>
+                                    </sec:authorize>
+                                    <sec:authorize access="!isAuthenticated()">
+                                        <li>
+                                            <a href="#">SignUp <span class="caret"></span></a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="/signup">Customer SignUp</a></li>
+                                                <li><a href="/vendor/signup">Vendor SignUp</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="/login">Login</a></li>
                                     </sec:authorize>
                                 </ul>
                             </div><!--/.nav-collapse -->
@@ -259,24 +264,8 @@
                                 </li>
                             </ul>
                         </li>
-
                         <li><a href="/contact">Contact</a></li>
-                        <sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_VENDOR')">
-                            <li><a href="/report/reportFilter">Report</a></li>
-                        </sec:authorize>
-                        <li><a href="#">Products<span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="/product/all">All</a></li>
-                                <sec:authorize access="hasRole('ROLE_VENDOR')">
-                                    <li><a href="/vendor/product/all">Own products</a></li>
-                                    <li><a href="/vendor/product/save">Upload</a></li>
-                                </sec:authorize>
-                            </ul>
-                        </li>
-                        <sec:authorize access="hasRole('CUSTOMER')">
-                            <li><a href="/order/customer/all/1">Orders</a></li>
-
-                        </sec:authorize>
+                        <li><a href="/product/list">Products</a></li>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>

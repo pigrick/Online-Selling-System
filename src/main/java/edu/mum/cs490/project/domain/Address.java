@@ -19,7 +19,6 @@ public class Address {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private User user;
-
     public Address(){}
 
     public Address(Integer id, String phoneNumber, String street, String city, String state, String zipcode, User user) {

@@ -34,11 +34,11 @@
 
 <script type="text/javascript">
     $(function () {
-        module.list();
+        module.list(1);
     });
     module = {
-        list : function(){
-            $.get('/admin/user/vendor/list', $("#filterForm").serialize(), function(data){
+        list : function(page){
+            $.get('/admin/user/vendor/list?page=' + page, $("#filterForm").serialize(), function(data){
                 $('#list-target').html(data);
             });
         },

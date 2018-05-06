@@ -11,6 +11,8 @@ import javax.mail.internet.MimeMultipart;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Properties;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * Created by Tamir Ganbat 05/01/2018
@@ -20,6 +22,8 @@ public class EmailUtil {
 
     private static Properties properties = new Properties();
     private static Properties propertiesOfMail = new Properties();
+
+    ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
     static{
         try {
@@ -102,7 +106,7 @@ public class EmailUtil {
         }
     }
 
-    private MimeMessage generateMime(){
+    private static MimeMessage generateMime(){
         MimeMessage msg = new MimeMessage(session);
         try
         {
@@ -120,5 +124,4 @@ public class EmailUtil {
         }
         return msg;
     }
-
 }

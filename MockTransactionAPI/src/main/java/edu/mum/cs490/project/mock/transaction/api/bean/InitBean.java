@@ -85,7 +85,7 @@ public class InitBean implements ApplicationRunner {
         account.setCardNo("4929127657563699");
         account.setCVV("123");
         account.setAmount(20000.0);
-        account.setExpirationDate("04/2018");
+        account.setExpirationDate("05/2018");
         account.setName("YEE RICK");
         account.setZipCode("52557");
         account.setCreatedAt(new Date());

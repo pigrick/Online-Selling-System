@@ -1,21 +1,20 @@
 package edu.mum.cs490.project.utils.jpreport;
 
 import edu.mum.cs490.project.controller.ReportController;
-import edu.mum.cs490.project.service.MailService;
-import edu.mum.cs490.project.service.ReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
 import java.util.Date;
 
+@Component
 public class ReportCronJob {
 
-    @Autowired
-    ReportService reportService;
+    public ReportCronJob() {
 
-    @Autowired
-    MailService mailService;
+    }
+
 
     @Autowired
     ReportController reportController;
@@ -33,16 +32,16 @@ public class ReportCronJob {
         return beginDate;
     }
 
-    @Scheduled(cron = "0 0/1 * * 0-11 * ?")
+    @Scheduled(cron="0/5 * *  * * ?") //59 59 23 L * ?
     public void monthlyReport() {
 //        reportController.sendReportToVendor(beginDateOfMonth());
-        System.out.println("Test cron job");
+        reportController.sendReportToVendor();
     }
 
-    @Scheduled(cron = "0 0 0 * * Sun ?")
-    public void weeklyReport() {
-        reportController.sendReportToVendor(beginDateOfWeek());
-    }
+//    @Scheduled(cron = "0 0 0 * * SUN")
+//    public void weeklyReport() {
+//        reportController.sendReportToVendor(beginDateOfWeek());
+//    }
 
 
 }

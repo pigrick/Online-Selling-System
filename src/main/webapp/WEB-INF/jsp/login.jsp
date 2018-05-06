@@ -13,16 +13,17 @@
 
                             <h4>Login</h4>
 
-
                             <c:url value="/login" var="loginProcessingUrl"/>
                             <form action="${loginProcessingUrl}" method="post">
-
-
                                 <!-- use param.error assuming FormLoginConfigurer#failureUrl contains the query parameter error -->
                                 <c:if test="${SPRING_SECURITY_LAST_EXCEPTION != null}">
-                                    <div>
-                                        <p id="error" style="color: red"> Failed to login.</p>
+                                    <div class="alert alert-danger" role="alert">
+                                        <span class="sr-only">Failed to login:</span>
                                         <c:if test="${SPRING_SECURITY_LAST_EXCEPTION != null}">
+                                            <p class="text-center">
+                                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                                Failed to login.
+                                            </p>
                                             Reason: <c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}" />
                                         </c:if>
                                     </div>

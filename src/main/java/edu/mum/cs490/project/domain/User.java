@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class User implements UserDetails{
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -25,7 +25,7 @@ public class User implements UserDetails{
     @OneToMany(mappedBy = "owner")
     private List<CardDetail> cards;
 
-    public User(){
+    public User() {
 
     }
 
@@ -94,17 +94,17 @@ public class User implements UserDetails{
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return status.equals(Status.ENABLED);
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return status.equals(Status.ENABLED);
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return status.equals(Status.ENABLED);
     }
 
     @Override

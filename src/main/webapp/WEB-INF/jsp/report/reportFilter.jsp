@@ -2,8 +2,6 @@
 <%@include file="/WEB-INF/include.jsp" %>
 <%@include file="/WEB-INF/jsp/template/header.jsp" %>
 
-<form:errors path="*" class="has-error"/>
-
 <section id="aa-myaccount">
     <div class="container">
         <div class="row">
@@ -18,8 +16,7 @@
                                 <% DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                                     String formattedDate = df.format(new Date()); %>
                                 <form:input id="begin_Date" class="col-md-7" path="begin_Date" type="date"
-                                            min="2017-01-10"
-                                            value="<%= formattedDate %>"/> <br/>
+                                            min="2017-01-10" tabindex="1" value="<%= formattedDate %>"/> <br/>
                                 <div class="form-group">
                                     <label class="col-md-3"></label>
                                     <div class="col-md-7">
@@ -31,7 +28,7 @@
                             <div class="form-group" style="border-width: 20px ">
                                 <label class="col-md-3">To:</label>
                                 <form:input id="end_Date" class="col-md-7" path="end_Date" type="date" max="2050-01-10"
-                                            min="begin_Date.value" value="<%= formattedDate %>"/><br/>
+                                            min="begin_Date.value" tabindex="2" value="<%= formattedDate %>"/><br/>
                                 <div class="form-group">
                                     <label class="col-md-3"></label>
                                     <div class="col-md-7">
@@ -39,7 +36,6 @@
                                         <c:if test="${not empty error}">
                                             <p style="color:red">${error}</p>
                                         </c:if>
-                                            <%--<form:errors path="end_DateValid" cssStyle="color: red"/>--%>
                                     </div>
                                 </div>
                             </div>
@@ -49,15 +45,15 @@
                                 <div class="form-group">
                                     <label class="col-md-3">Vendor:</label>
                                     <label for="allVendor" class="col-md-7">
-                                        <input type="checkbox" value="0" id="allVendor" checked
+                                        <input type="checkbox" tabindex="3" value="0" id="allVendor" checked
                                         /> All</label><br/>
                                     <label class="col-md-3"></label>
-                                    <form:select id="vendor" class="col-md-7" path="lstVendor_Id"
+                                    <form:select tabindex="4" id="vendor" class="col-md-7" path="lstVendor_Id"
                                                  multiple="multiple" disabled="true">
-                                        <%--<form:option id="vendorAll" selected="selected" value="0">ALL</form:option>--%>
                                         <c:forEach var="v" items="${vendors}">
-                                            <form:option id="otherVendors"
-                                                         value="${v.id}">${v.companyName}</form:option>
+                                            <form:option id="otherVendors" value="${v.id}">
+                                                ${v.companyName}
+                                            </form:option>
                                         </c:forEach>
                                     </form:select>
                                 </div>
@@ -66,14 +62,13 @@
 
                             <div class="form-group">
                                 <label class="col-md-3">Category:</label>
-                                <label class="col-md-7"><input type="checkbox" value="0"
+                                <label class="col-md-7"><input type="checkbox" value="0" tabindex="5"
                                                                id="allCategory" checked
                                 />
                                     All</label><br/>
                                 <label class="col-md-3"></label>
-                                <form:select id="category" class="col-md-7" path="lstCategory_Id"
+                                <form:select tabindex="6" id="category" class="col-md-7" path="lstCategory_Id"
                                              multiple="multiple" size="5" disabled="true">
-                                    <%--<form:option selected="selected" value="0">ALL</form:option>--%>
                                     <c:forEach var="c" items="${categories}">
                                         <form:option value="${c.id}">${c.name}</form:option>
                                     </c:forEach>
@@ -82,7 +77,7 @@
                             <br/><br/> <br/><br/><br/>
                             <div class="col-md-10" align="center">
                                 <input id="btnExport" style="color: orangered" type="submit" value="Export"
-                                />
+                                       formtarget="_blank" tabindex="7"/>
                             </div>
                         </form:form>
                     </div>
@@ -91,5 +86,5 @@
         </div>
     </div>
 </section>
-<script type="text/javascript" src="/resources/js/report/report.js" charset="utf-8"/>
+<script type="text/javascript" src="/static/js/report/report.js" charset="utf-8"/>
 <%@include file="/WEB-INF/jsp/template/footer.jsp" %>

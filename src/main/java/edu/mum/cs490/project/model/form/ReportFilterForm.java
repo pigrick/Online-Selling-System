@@ -27,8 +27,6 @@ public class ReportFilterForm implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date end_Date;
 
-//    private Boolean end_DateValid;
-
     public ReportFilterForm(){}
 
     public List<Integer> getLstVendor_Id() {
@@ -62,18 +60,4 @@ public class ReportFilterForm implements Serializable {
     public void setEnd_Date(Date end_Date) {
         this.end_Date = end_Date;
     }
-
-//    @AssertTrue(message = "Please choose a date after From date." )
-//    public boolean isEnd_DateValid() {
-//        return this.begin_Date.before(this.end_Date) || this.begin_Date.equals(this.end_Date);
-//    }
-
-//    @AssertTrue(message = "Date is wrong" )
-//    public Boolean getEnd_DateValid() {
-//        return this.begin_Date.before(this.end_Date) || this.begin_Date.equals(this.end_Date);
-//    }
-//
-//    public void setEnd_DateValid(Boolean end_DateValid) {
-//        this.end_DateValid = end_DateValid;
-//    }
 }

@@ -1,11 +1,13 @@
 package edu.mum.cs490.project.controller;
 
 import edu.mum.cs490.project.domain.*;
+import edu.mum.cs490.project.model.Message;
 import edu.mum.cs490.project.model.form.ReportFilterForm;
 import edu.mum.cs490.project.service.CategoryService;
 import edu.mum.cs490.project.service.MailService;
 import edu.mum.cs490.project.service.OrderDetailService;
 import edu.mum.cs490.project.service.VendorService;
+import javassist.NotFoundException;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
@@ -67,16 +69,21 @@ public class ReportController {
         model.addAttribute("categories", categoryService.find(null, null, Status.ENABLED));
         if (bindingResult.hasErrors()) {
             return "report/reportFilter";
-        }
-        else if (reportFilterForm.getBegin_Date().after(reportFilterForm.getEnd_Date())) {
+        } else if (reportFilterForm.getBegin_Date().after(reportFilterForm.getEnd_Date())) {
             model.addAttribute("error", "Please choose a date after From date.");
             return "report/reportFilter";
         }
-        report(reportFilterForm, user, response);
+        try {
+            report(reportFilterForm, user, response);
+        } catch (NotFoundException nfe) {
+            model.addAttribute("message", new Message(Message.Type.ERROR, nfe.getMessage()));
+        } catch (Exception ex) {
+            model.addAttribute("message", Message.errorOccurred);
+        }
         return "report/reportFilter";
     }
 
-    public void report(ReportFilterForm reportFilterForm, @AuthenticationPrincipal User user, HttpServletResponse response) {
+    public void report(ReportFilterForm reportFilterForm, @AuthenticationPrincipal User user, HttpServletResponse response) throws Exception  {
 
         if (reportFilterForm.getLstVendor_Id() == null)
             reportFilterForm.setLstVendor_Id(new ArrayList<>());
@@ -94,6 +101,10 @@ public class ReportController {
             reportName = "report";
         }
         List<OrderDetail> list = collectData(reportFilterForm.getLstVendor_Id(), reportFilterForm.getLstCategory_Id(), reportFilterForm.getBegin_Date(), reportFilterForm.getEnd_Date());
+
+        if (list == null || list.isEmpty()) {
+            throw new NotFoundException("no.data.available.on.this.period");
+        }
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         // Initialize response
@@ -113,13 +124,15 @@ public class ReportController {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             System.out.println("<<<<File Not Fount Exception>>>>");
+            throw e;
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("<<<<Input Output Stream Exception>>>>");
+            throw e;
         } catch (JRException e) {
             e.printStackTrace();
             System.out.println("<<<<JRException Stream Exception>>>>");
-        } finally {
+            throw e;
         }
     }
 

@@ -83,12 +83,17 @@
                                         <sec:authorize access="hasRole('VENDOR')">
                                             <li><a href="#" style="cursor: default">Vendor</a>
                                             </li>
+                                            <li><a href="/profile/vendor/edit">Edit Vendor</a></li>
+                                            <li><a href="/profile/edit/password">Edit Password</a></li>
                                             <li><a href="#">${signedUser.companyName}</a></li>
                                         </sec:authorize>
                                         <sec:authorize access="hasRole('ADMIN')">
                                             <li><a href="#">Admin</a></li>
                                         </sec:authorize>
                                         <sec:authorize access="hasRole('CUSTOMER')">
+                                            <li><a href="#" style="cursor: default">Customer </a></li>
+                                            <li><a href="/profile/edit/">Edit Customer</a></li>
+                                            <li><a href="/profile/edit/password">Edit Password</a></li>
                                             <li><a href="#" style="cursor: default">Customer </a></li>
                                         </sec:authorize>
                                         <li><a href="/logout">Logout</a></li>
@@ -100,6 +105,7 @@
                                             <ul class="dropdown-menu">
                                                 <li><a href="/signup">Customer SignUp</a></li>
                                                 <li><a href="/vendor/signup">Vendor SignUp</a></li>
+                                                <li><a href="/profile/edit/password">Edit Password</a></li>
                                                     <%--<li><a href="/signup">Customer SignUp </a>
                                                     </li>--%>
                                                     <%--<li><a href="/vendor/signup">Vendor SignUp </a>
@@ -262,7 +268,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href="/product/all">All</a></li>
                                 <sec:authorize access="hasRole('ROLE_VENDOR')">
-                                    <li><a href="/vendor/product">Own products</a></li>
+                                    <li><a href="/vendor/product/all">Own products</a></li>
                                     <li><a href="/vendor/product/save">Upload</a></li>
                                 </sec:authorize>
                             </ul>

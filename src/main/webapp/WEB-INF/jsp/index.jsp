@@ -22,6 +22,7 @@
                         <div class="col-md-5 no-padding">
                             <div class="aa-promo-left">
                                 <div class="aa-promo-banner">
+                                    <img style="object-fit: cover;" src="/static/img/for-women-450x450.jpg" alt="img">
                                     <img style="object-fit: cover;" src="${resourcePath}${products.get(0).image}" alt="img">
                                     <div class="aa-prom-content">
                                         <span>${products.get(0).name}</span>
@@ -99,6 +100,7 @@
                                                             href="<c:url value="/product/${product.id}" />">${product.name}</a>
                                                     </h4>
                                                     <span class="aa-product-price">$${product.price}</span><span
+                                                        class="aa-product-price"><del>$333</del></span>
                                                 </figcaption>
                                             </figure>
 
@@ -126,14 +128,9 @@
             <div class="col-md-12">
                 <div class="aa-client-brand-area">
                     <ul class="aa-client-brand-slider">
-                        <li><a href="#"><img src="<c:url value="/static/img/client-brand-ak.png" />" alt="ak img"></a></li>
-                        <li><a href="#"><img src="<c:url value="/static/img/client-brand-bart.png" />" alt="bart img"></a></li>
-                        <li><a href="#"><img src="<c:url value="/static/img/client-brand-gamet.png" />" alt="gamet img"></a></li>
-                        <li><a href="#"><img src="<c:url value="/static/img/client-brand-panasonic.png" />" alt="panasonic img"></a></li>
-                        <li><a href="#"><img src="<c:url value="/static/img/client-brand-redible.png" />" alt="redible img"></a></li>
-
-
-
+                        <c:forEach items="${vendors}" var="vendor">
+                            <li><a href="<c:url value="product/search?vendorId=${vendor.id}" /> "><img width="500" height="80" src="<c:url value="${resourcePath}${vendor.image}" />" alt="${vendor.companyName}"></a></li>
+                        </c:forEach>
                     </ul>
                 </div>
             </div>

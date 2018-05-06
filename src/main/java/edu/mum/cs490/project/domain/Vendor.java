@@ -12,6 +12,7 @@ public class Vendor extends User {
 
     @Column(unique = true)
     private String companyName;
+    private String image;
 
     public Vendor() {
         super();
@@ -24,6 +25,14 @@ public class Vendor extends User {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     @Override

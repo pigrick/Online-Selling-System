@@ -14,6 +14,7 @@ public class CustomerForm extends UserForm implements Serializable {
     private String firstName;
     @NotBlank
     private String lastName;
+    private String companyName;
 
     public CustomerForm() {
     }
@@ -38,5 +39,9 @@ public class CustomerForm extends UserForm implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getCompanyName() {
+        return companyName;
     }
 }

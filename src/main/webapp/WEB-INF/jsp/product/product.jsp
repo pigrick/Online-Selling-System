@@ -43,7 +43,7 @@
                                     <h3>${product.name}</h3>
                                     <div class="aa-price-block">
                                         <span class="aa-product-view-price">$${product.price}</span>
-                                        <p class="aa-product-avilability">Avilability: <span id="stock">${product.status}</span></p>
+                                        <p class="aa-product-avilability">Avilability: <span id="stock">${product.quantity}</span></p>
                                     </div>
                                     <p>${product.description}</p>
                                     <div class="aa-prod-quantity">

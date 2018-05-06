@@ -22,6 +22,7 @@
                         <div class="col-md-5 no-padding">
                             <div class="aa-promo-left">
                                 <div class="aa-promo-banner">
+                                    <img style="object-fit: cover;" src="/static/img/for-women-450x450.jpg" alt="img">
                                     <img style="object-fit: cover;" src="${resourcePath}${products.get(0).image}" alt="img">
                                     <div class="aa-prom-content">
                                         <span>${products.get(0).name}</span>
@@ -99,6 +100,7 @@
                                                             href="<c:url value="/product/${product.id}" />">${product.name}</a>
                                                     </h4>
                                                     <span class="aa-product-price">$${product.price}</span><span
+                                                        class="aa-product-price"><del>$333</del></span>
                                                 </figcaption>
                                             </figure>
 
@@ -131,8 +133,6 @@
                         <li><a href="#"><img src="<c:url value="/static/img/client-brand-gamet.png" />" alt="gamet img"></a></li>
                         <li><a href="#"><img src="<c:url value="/static/img/client-brand-panasonic.png" />" alt="panasonic img"></a></li>
                         <li><a href="#"><img src="<c:url value="/static/img/client-brand-redible.png" />" alt="redible img"></a></li>
-
-
 
                     </ul>
                 </div>

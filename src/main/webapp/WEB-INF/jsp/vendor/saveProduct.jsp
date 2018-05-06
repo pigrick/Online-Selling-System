@@ -9,24 +9,6 @@ created by Pagmaa
 
 <%@include file="/WEB-INF/jsp/template/header.jsp"%>
 
-<script>
-    create = {
-        init: function() {
-            $('#productForm').ajaxForm({
-                target:'#edit-target',
-                url:'/vendor/product/save'
-            });
-        },
-        success: function() {
-            $('#edit-modal').modal('hide');
-            module.list();
-        },
-        submit: function() {
-            $('#productForm').submit();
-        }
-    };
-</script>
-
 <body>
 
 <div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 main">
@@ -60,6 +42,13 @@ created by Pagmaa
         <tr>
             <td scope="col"><label>Category:</label></td>
             <td scope="col">
+    <form:hidden path="id"/>
+    <form:select path="categoryId">
+        <form:option value="">Select Category</form:option>
+        <c:forEach items="${categories}" var="row">
+            <form:option value="${row.id}">${row.name}</form:option>
+        </c:forEach>
+    </form:select>
                 <select name="categoryId">
                     <option value="">Select Category</option>
                     <c:forEach items="${categories}" var="row">
@@ -117,5 +106,7 @@ created by Pagmaa
 </div>
 </div>
 </body>
+
+
 
 <%@include file="/WEB-INF/jsp/template/footer.jsp"%>

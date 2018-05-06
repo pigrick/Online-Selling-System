@@ -24,7 +24,7 @@ import javax.validation.Valid;
  */
 @SuppressWarnings("unchecked")
 @Controller
-@RequestMapping("profile")
+@RequestMapping(value ="profile")
 public class UserProfileController {
 
     private final UserService userService;
@@ -45,7 +45,8 @@ public class UserProfileController {
     @RequestMapping(value = "edit", method = RequestMethod.GET)
     public String profileEdit(@AuthenticationPrincipal Customer user, ModelMap model) {
         model.put("editForm", new CustomerForm(user));
-        return "profile/editCustomer";
+       return "profile/editCustomer";
+
     }
 
     @RequestMapping(value = "edit", method = RequestMethod.POST)
@@ -60,16 +61,12 @@ public class UserProfileController {
             result.rejectValue("username", "username.duplicate");
             return "profile/editVendor";
         }
-
         Customer customer = (Customer) userService.getById(3);
-
         user.setEmail(editForm.getEmail());
         user.setUsername(editForm.getUsername());
         user.setFirstName(editForm.getFirstName());
         user.setLastName(editForm.getLastName());
-
         userService.saveOrUpdate(user);
-
         model.put("message", Message.successfullySaved);
         return "profile/editCustomer";
     }
@@ -92,14 +89,11 @@ public class UserProfileController {
             result.rejectValue("username", "username.duplicate");
             return "profile/editVendor";
         }
-
         user.setEmail(editForm.getEmail());
         user.setUsername(editForm.getUsername());
         user.setCompanyName(editForm.getCompanyName());
-
         userService.saveOrUpdate(user);
         model.put("message", Message.successfullySaved);
-
         model.put("editForm", new VendorForm(user));
         return "profile/editVendor";
     }

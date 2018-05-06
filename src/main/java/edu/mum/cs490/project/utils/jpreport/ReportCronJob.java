@@ -32,16 +32,16 @@ public class ReportCronJob {
         return beginDate;
     }
 
-    @Scheduled(cron="0/5 * *  * * ?") //59 59 23 L * ?
+    @Scheduled(cron=" 0 0 23  * * ?") //59 59 23 L * ?
     public void monthlyReport() {
-//        reportController.sendReportToVendor(beginDateOfMonth());
-        reportController.sendReportToVendor();
+        reportController.sendReportToVendor(beginDateOfMonth());
+//        reportController.sendReportToVendor();
     }
 
-//    @Scheduled(cron = "0 0 0 * * SUN")
-//    public void weeklyReport() {
-//        reportController.sendReportToVendor(beginDateOfWeek());
-//    }
+    @Scheduled(cron = "0 0 0 * * SUN")
+    public void weeklyReport() {
+        reportController.sendReportToVendor(beginDateOfWeek());
+    }
 
 
 }

@@ -199,9 +199,9 @@
                         </div>
                         <!-- / cart box -->
                         <!-- search box -->
-                        <form>
+                        <form action="/product/search" method="get">
                             <div class="aa-search-box">
-                                <input type="text" ng-model="keyword" placeholder="Product Name">
+                                <input type="text" name="name" value="${param.name}" placeholder="Product Name">
                                 <button type="submit" style="width: 50px; height: 40px" class="fa fa-search"></button>
                             </div>
                         </form>

@@ -2,6 +2,7 @@ package edu.mum.cs490.project.service.impl;
 
 import edu.mum.cs490.project.domain.Product;
 import edu.mum.cs490.project.domain.Status;
+import edu.mum.cs490.project.repository.CategoryRepository;
 import edu.mum.cs490.project.repository.ProductRepository;
 import edu.mum.cs490.project.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,10 +21,12 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository) {
         this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
@@ -51,7 +55,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> find(String name, Integer categoryId, Integer vendorId, Status status, Sort sort) {
-        return productRepository.find(name, categoryId, vendorId, status, sort);
+        List<Integer> categoryIds = null;
+        if (categoryId != null) {
+            categoryIds = new ArrayList<>(categoryRepository.getOne(categoryId).getParentIds());
+        }
+        return productRepository.find(name, categoryId, categoryIds, vendorId, status, sort);
     }
 
     @Override

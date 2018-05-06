@@ -12,12 +12,6 @@
 <section id="aa-product-details">
     <div class="container">
 
-        <c:set var="role" scope="page" value="${param.role}" />
-        <c:set var="url" scope="page" value="/pd" />
-        <c:if test="${role='admin'}">
-            <c:set var="url" scope="page" value="/admin" />
-        </c:if>
-
         <div class="row">
             <div class="col-md-12">
                 <div class="aa-product-details-area">
@@ -29,8 +23,8 @@
                                     <div id="demo-1" class="simpleLens-gallery-container">
                                         <div class="simpleLens-container">
                                             <div class="simpleLens-big-image-container">
-                                                <a data-lens-image="/static/images/${product.id}/0.png" class="simpleLens-lens-image">
-                                                    <img src="/static/images/${product.id}/0.png" class="simpleLens-big-image" >
+                                                <a data-lens-image="${resourcePath}${product.image}" class="simpleLens-lens-image">
+                                                    <img src="${resourcePath}${product.image}" class="simpleLens-big-image" >
                                                 </a>
                                             </div>
                                         </div>

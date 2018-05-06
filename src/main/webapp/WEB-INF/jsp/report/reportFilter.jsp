@@ -76,8 +76,7 @@
                             </div>
                             <br/><br/> <br/><br/><br/>
                             <div class="col-md-10" align="center">
-                                <input id="btnExport" style="color: orangered" type="submit" value="Export"
-                                       formtarget="_blank" tabindex="7"/>
+                                <input id="btnExport" style="color: orangered" type="submit" value="Export" tabindex="7"/>
                             </div>
                         </form:form>
                     </div>
@@ -86,5 +85,16 @@
         </div>
     </div>
 </section>
-<script type="text/javascript" src="/static/js/report/report.js" charset="utf-8"/>
+
+<script type="text/javascript" src="/static/js/report/report.js" charset="utf-8"></script>
 <%@include file="/WEB-INF/jsp/template/footer.jsp" %>
+
+<c:if test="${!empty message}">
+    <script type="text/javascript">
+        $.sticky('<spring:message code="${message.message}"/>', {autoclose : 5000, position: "top-right", type: "st-${fn:toLowerCase(message.type)}" });
+
+        <%--<c:if test="${message.type eq 'SUCCESS'}">--%>
+        <%----%>
+        <%--</c:if>--%>
+    </script>
+</c:if>

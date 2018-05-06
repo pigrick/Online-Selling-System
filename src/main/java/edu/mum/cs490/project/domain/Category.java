@@ -2,7 +2,9 @@ package edu.mum.cs490.project.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -11,17 +13,17 @@ public class Category implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     @ManyToOne(fetch = FetchType.LAZY)
     private Category parentCategory;
-
     private String name;
-
     @Enumerated(EnumType.STRING)
     private Status status = Status.ENABLED;
 
     @OneToMany(mappedBy = "parentCategory")
     private List<Category> childCategories;
+
+    @Transient
+    private Set<Integer> parentIds = new HashSet<>();
 
     public Integer getId() {
         return id;
@@ -61,5 +63,14 @@ public class Category implements Serializable {
 
     public void setChildCategories(List<Category> childCategories) {
         this.childCategories = childCategories;
+    }
+
+    public Set<Integer> getParentIds() {
+        this.parentIds.add(id);
+        for (Category category : childCategories) {
+            this.parentIds.addAll(category.getParentIds());
+        }
+
+        return parentIds;
     }
 }

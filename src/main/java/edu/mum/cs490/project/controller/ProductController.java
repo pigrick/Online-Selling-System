@@ -1,6 +1,7 @@
 package edu.mum.cs490.project.controller;
 
 import edu.mum.cs490.project.domain.Product;
+import edu.mum.cs490.project.domain.Category;
 import edu.mum.cs490.project.domain.Status;
 import edu.mum.cs490.project.service.CategoryService;
 import edu.mum.cs490.project.service.ProductService;
@@ -11,6 +12,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("product")
@@ -27,10 +31,10 @@ public class ProductController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping
+   /* @GetMapping
     public String index(Model model) {
         return "product/index";
-    }
+    }*/
 
     @GetMapping(value = {"list", "search"})
     public String getAllProduct(@RequestParam(required = false) String name,
@@ -42,18 +46,16 @@ public class ProductController {
         if (orderByPrice != null) {
             orders = orderByPrice ? Sort.by("price").ascending() : Sort.by("price").descending();
         }
-        //Page<Product> productsList = this.productService.findPage(name, categoryId, vendorId, Status.ENABLED, PageRequest.of(page - 1, PAGE_SIZE, orders));
-        //model.addAttribute("products", productsList.getContent());
         model.addAttribute("products", this.productService.find(name, categoryId, vendorId, Status.ENABLED, orders));
         model.addAttribute("categories", categoryService.find(null, null, Status.ENABLED));
         model.addAttribute("title", "Products:");
-        return "product/products";
+        return "product/list";
     }
 
     @GetMapping("/{productId}")
     public String getById(Model theModel, @PathVariable("productId") Integer productId) {
         theModel.addAttribute("product", productService.getOne(productId));
-        return "product/product";
+        return "product/view";
     }
 
 }

@@ -47,3 +47,5 @@
     </c:forEach>
     </tbody>
 </table>
+
+<%@include file="/WEB-INF/jsp/template/pagination.jsp"%>

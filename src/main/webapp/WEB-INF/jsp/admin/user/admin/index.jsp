@@ -13,6 +13,7 @@
                     <input type="text" name="username" class="form-control" width="100" placeholder="Username">
                     <input type="text" name="lastName" class="form-control" width="100" placeholder="Last Name">
                     <input type="text" name="firstName" class="form-control" width="100" placeholder="First Name">
+                    <input type="hidden" id="page" name="page" value="">
                     <select name="status" class="form-control">
                         <c:forEach items="${statuses}" var="row">
                             <option value="${row}">${row}</option>
@@ -36,11 +37,12 @@
 
 <script type="text/javascript">
     $(function () {
-        module.list();
+        module.list(1);
     });
     module = {
-        list : function(){
-            $.get('/admin/user/admin/list', $("#filterForm").serialize(), function(data){
+        list : function(page){
+
+            $.get('/admin/user/admin/list?page=' + page, $("#filterForm").serialize(), function(data){
                 $('#list-target').html(data);
             });
         },

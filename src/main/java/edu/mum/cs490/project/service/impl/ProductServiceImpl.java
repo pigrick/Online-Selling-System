@@ -5,6 +5,8 @@ import edu.mum.cs490.project.domain.Status;
 import edu.mum.cs490.project.repository.ProductRepository;
 import edu.mum.cs490.project.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -50,5 +52,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> find(String name, Integer categoryId, Integer vendorId, Status status, Sort sort) {
         return productRepository.find(name, categoryId, vendorId, status, sort);
+    }
+
+    @Override
+    public Page<Product> findPage(String name, Integer categoryId, Integer vendorId, Status status, Pageable pageable) {
+        return productRepository.findPage(name, categoryId, vendorId, status, pageable);
     }
 }

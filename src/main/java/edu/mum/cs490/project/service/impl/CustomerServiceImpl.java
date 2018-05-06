@@ -7,6 +7,8 @@ import edu.mum.cs490.project.repository.AddressRepository;
 import edu.mum.cs490.project.repository.CustomerRepository;
 import edu.mum.cs490.project.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,5 +48,10 @@ public class CustomerServiceImpl extends UserServiceImpl<Customer> implements Cu
     @Override
     public List<Customer> find(String username, String firstName, String lastName, Status status) {
         return repository.find(username, firstName, lastName, status);
+    }
+
+    @Override
+    public Page<Customer> findPage(String username, String firstName, String lastName, Status status, Pageable pageable) {
+        return repository.findPage(username, firstName, lastName, status, pageable);
     }
 }

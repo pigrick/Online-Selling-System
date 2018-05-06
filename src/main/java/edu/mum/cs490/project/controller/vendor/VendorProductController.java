@@ -1,5 +1,6 @@
 package edu.mum.cs490.project.controller.vendor;
 
+import edu.mum.cs490.project.domain.Order;
 import edu.mum.cs490.project.domain.Product;
 import edu.mum.cs490.project.domain.Status;
 import edu.mum.cs490.project.domain.Vendor;
@@ -9,6 +10,8 @@ import edu.mum.cs490.project.service.CategoryService;
 import edu.mum.cs490.project.service.ProductService;
 import edu.mum.cs490.project.service.impl.FileManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,6 +48,7 @@ public class VendorProductController {
     @RequestMapping(value = "/list")
     public String getProduct(@AuthenticationPrincipal Vendor vendor,
                              @RequestParam(required = false) String name,
+                             //@RequestParam(defaultValue = "1") Integer page,
                              @RequestParam(required = false) Integer categoryId, Model model) {
 
         List<Product> productsList = productService.find(name, categoryId, vendor.getId(), Status.ENABLED, null);

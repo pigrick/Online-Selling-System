@@ -14,6 +14,8 @@ import edu.mum.cs490.project.service.CustomerService;
 import edu.mum.cs490.project.service.UserService;
 import edu.mum.cs490.project.service.VendorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,6 +37,8 @@ public class AdminUserController {
     private final VendorService vendorService;
     private final PasswordEncoder passwordEncoder;
 
+    private final int PAGE_SIZE = 10;
+
     @Autowired
     public AdminUserController(AdminService adminService, UserService userService, CustomerService customerService, VendorService vendorService, PasswordEncoder passwordEncoder) {
         this.adminService = adminService;
@@ -47,7 +51,7 @@ public class AdminUserController {
     @RequestMapping(value = {"a", "admin"})
     public String index(Model model) {
         model.addAttribute("statuses", Status.values());
-        getAdmins(null, null, null, Status.ENABLED, model);
+        getAdmins(null, null, null, Status.ENABLED,1, model);
         return "admin/user/admin/index";
     }
 
@@ -56,8 +60,12 @@ public class AdminUserController {
                             @RequestParam(required = false) String firstName,
                             @RequestParam(required = false) String lastName,
                             @RequestParam(required = false, defaultValue = "ENABLED") Status status,
+                            @RequestParam(defaultValue = "1") Integer page,
                             Model model) {
-        model.addAttribute("list", adminService.find(username, firstName, lastName, status));
+        Page<Admin> adminList =  adminService.findPage(username, firstName,lastName, status, PageRequest.of(page-1,PAGE_SIZE));
+        model.addAttribute("list", adminList.getContent());
+        model.addAttribute("result", adminList);
+        //model.addAttribute("list", adminService.find(username, firstName, lastName, status));
         return "admin/user/admin/list";
     }
 
@@ -130,9 +138,13 @@ public class AdminUserController {
     public String getAdmins(@RequestParam(required = false) String username,
                             @RequestParam(required = false) String companyName,
                             @RequestParam(required = false, defaultValue = "ENABLED") Status status,
+                            @RequestParam(defaultValue = "1") Integer page,
                             Model model) {
+
+        Page<Vendor> vendorList = vendorService.findPage(username, companyName, status, PageRequest.of(page - 1, PAGE_SIZE));
         model.addAttribute("statuses", Status.values());
-        model.addAttribute("list", vendorService.find(username, companyName, status));
+        model.addAttribute("list", vendorList.getContent());
+        model.addAttribute("result", vendorList);
         return "admin/user/vendor/list";
     }
 
@@ -177,9 +189,13 @@ public class AdminUserController {
                                @RequestParam(required = false) String firstName,
                                @RequestParam(required = false) String lastName,
                                @RequestParam(required = false, defaultValue = "ENABLED") Status status,
+                               @RequestParam(defaultValue = "1") Integer page,
                                Model model) {
+        Page<Customer> customerList = customerService.findPage(username, firstName, lastName, status, PageRequest.of(page - 1, PAGE_SIZE));
         model.addAttribute("statuses", Status.values());
-        model.addAttribute("list", customerService.find(username, firstName, lastName, status));
+        model.addAttribute("list", customerList.getContent());
+        model.addAttribute("result", customerList);
+        //model.addAttribute("list", customerService.find(username, firstName, lastName, status));
         return "admin/user/customer/list";
     }
 

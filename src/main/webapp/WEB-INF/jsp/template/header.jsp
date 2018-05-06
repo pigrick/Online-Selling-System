@@ -107,7 +107,7 @@
                                                 <sec:authorize access="hasRole('ADMIN')">
                                                     <li><a href="#">Product <span class="caret"></span></a>
                                                         <ul class="dropdown-menu">
-                                                            <li><a href="/admin/product/m">Product Management</a></li>
+                                                            <li><a href="/admin/product">Product Management</a></li>
                                                             <li><a href="/admin/category/m">Category Management</a></li>
                                                         </ul>
                                                     </li>
@@ -262,7 +262,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href="/product/all">All</a></li>
                                 <sec:authorize access="hasRole('ROLE_VENDOR')">
-                                    <li><a href="/vendor/product/all">Own products</a></li>
+                                    <li><a href="/vendor/product">Own products</a></li>
                                     <li><a href="/vendor/product/save">Upload</a></li>
                                 </sec:authorize>
                             </ul>

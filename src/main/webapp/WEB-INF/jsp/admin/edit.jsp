@@ -35,23 +35,23 @@
         <form:hidden path="id"/>
         <div class="form-group">
             <form:errors path="categoryId" cssStyle="color: red" />
-            <label for="category">Category</label>
-            <select name="categoryId">
-                <option value="">Select Category</option>
+            <label for="categoryId">Category</label>
+            <form:select path="categoryId" cssClass="form-control">
+                <form:option value="">Select Category</form:option>
                 <c:forEach items="${categories}" var="row">
-                    <option value="${row.id}">${row.name}</option>
+                    <form:option value="${row.id}">${row.name}</form:option>
                     <c:if test="${row.childCategories ne null}">
                         <c:forEach items="${row.childCategories}" var="cRow">
-                            <option value="${cRow.id}">---${cRow.name}</option>
+                            <form:option value="${cRow.id}">---${cRow.name}</form:option>
                             <c:if test="${cRow.childCategories ne null}">
                                 <c:forEach items="${cRow.childCategories}" var="sRow">
-                                    <option value="${sRow.id}">------${sRow.name}</option>
+                                    <form:option value="${sRow.id}">------${sRow.name}</form:option>
                                 </c:forEach>
                             </c:if>
                         </c:forEach>
                     </c:if>
                 </c:forEach>
-            </select>
+            </form:select>
         </div>
         <div class="form-group">
             <form:errors path="name" cssStyle="color: red" />

@@ -61,8 +61,6 @@ public class UserProfileController {
             return "profile/editVendor";
         }
 
-        Customer customer = (Customer) userService.getById(3);
-
         user.setEmail(editForm.getEmail());
         user.setUsername(editForm.getUsername());
         user.setFirstName(editForm.getFirstName());

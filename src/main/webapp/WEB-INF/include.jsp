@@ -11,6 +11,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="my" tagdir="/WEB-INF/tags" %>
 
 <c:set var="signedUser" value="<%=edu.mum.cs490.project.utils.SignedUser.getSignedUser()%>"/>
 <spring:eval var="resourcePath" expression="@environment.getProperty('resource.path')" scope="application"/>

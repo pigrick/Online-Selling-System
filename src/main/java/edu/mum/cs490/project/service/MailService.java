@@ -13,4 +13,5 @@ public interface MailService {
     boolean sendEmailToVendorAndAdmin(String toEmail, List<Admin> lstAdmin, String userName);
     boolean sendEmailToCustomerAndVendor(Order order);
     boolean sendReportToVendor(String toEmail, byte[] report, String nameOfAttachment);
+    boolean sendErrorEmailToAdmin(String errorMessage, List<Admin> lstAdmin);
 }

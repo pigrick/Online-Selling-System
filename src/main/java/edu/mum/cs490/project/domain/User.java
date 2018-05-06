@@ -22,7 +22,7 @@ public class User implements UserDetails {
     private Status status = Status.ENABLED;
     @OneToMany(mappedBy = "user")
     private List<Address> addresses;
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.PERSIST)
     private List<CardDetail> cards;
 
     public User() {

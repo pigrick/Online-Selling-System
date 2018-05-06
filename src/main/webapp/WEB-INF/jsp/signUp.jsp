@@ -82,10 +82,12 @@
                                     }
                                 </script>
 
-                                <input type="submit" value="submit" id="register-submit" class="btn btn-default" disabled>
-                                <a href="<c:url value="/" />" class="btn btn-default">Cancel</a>
+                                <%--<input type="submit" value="submit" id="register-submit" class="btn btn-default" disabled>--%>
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                             </form:form>
+
+                            <button type="button" class="btn btn-primary" onclick="create.submit()">submit</button>
+                            <a href="<c:url value="/" />" class="btn btn-default">Cancel</a>
                         </div>
                     </div>
                 </div>

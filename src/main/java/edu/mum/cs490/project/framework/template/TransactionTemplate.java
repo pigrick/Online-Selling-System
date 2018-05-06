@@ -5,7 +5,7 @@ import edu.mum.cs490.project.domain.Order;
 import edu.mum.cs490.project.framework.observer.NotifierSubject;
 import edu.mum.cs490.project.framework.observer.TransferSubject;
 
-public abstract class PurchaseTemplate {
+public abstract class TransactionTemplate {
 
 
     public final Integer process() {
@@ -16,9 +16,9 @@ public abstract class PurchaseTemplate {
             notifyPurchase();
 
             transfer();
-
-            additionalAction();
         }
+
+        additionalAction();
 
         return resultCode;
     }

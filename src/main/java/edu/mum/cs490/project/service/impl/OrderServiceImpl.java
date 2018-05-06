@@ -2,27 +2,24 @@ package edu.mum.cs490.project.service.impl;
 
 import edu.mum.cs490.project.domain.*;
 import edu.mum.cs490.project.framework.observer.*;
-import edu.mum.cs490.project.framework.template.PurchaseTemplate;
+import edu.mum.cs490.project.framework.template.TransactionTemplate;
 import edu.mum.cs490.project.framework.template.impl.PurchaseTemplateImpl;
 import edu.mum.cs490.project.model.ShoppingCart;
 import edu.mum.cs490.project.repository.AddressRepository;
 import edu.mum.cs490.project.repository.CardDetailRepository;
 import edu.mum.cs490.project.repository.OrderRepository;
 import edu.mum.cs490.project.repository.ProductRepository;
+import edu.mum.cs490.project.service.MailService;
 import edu.mum.cs490.project.service.OrderService;
 import edu.mum.cs490.project.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpSession;
-import java.security.InvalidParameterException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -36,17 +33,19 @@ public class OrderServiceImpl implements OrderService {
     private final PaymentService paymentService;
     private final AddressRepository addressRepository;
     private final ProductRepository productRepository;
+    private final MailService mailService;
 
     private static final int PAGE_SIZE = 5;
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository, CardDetailRepository cardDetailRepository,
-                            PaymentService paymentService, AddressRepository addressRepository, ProductRepository productRepository) {
+                            PaymentService paymentService, AddressRepository addressRepository, ProductRepository productRepository, MailService mailService) {
         this.orderRespository = orderRepository;
         this.cardDetailRepository = cardDetailRepository;
         this.paymentService = paymentService;
         this.addressRepository = addressRepository;
         this.productRepository = productRepository;
+        this.mailService = mailService;
     }
 
     @Value("${card.detail.id.oss}")
@@ -135,7 +134,7 @@ public class OrderServiceImpl implements OrderService {
     public Integer purchase(Order order) {
         CardDetail OSSCardDetail = cardDetailRepository.findById(cardDetailIdOSS).get();
         CardDetail TAXCardDetail = cardDetailRepository.findById(cardDetailIdTAX).get();
-        PurchaseTemplate purchaseTemplate = getPurchaseTemplate(order, OSSCardDetail, TAXCardDetail);
+        TransactionTemplate purchaseTemplate = getPurchaseTemplate(order, OSSCardDetail, TAXCardDetail);
         return purchaseTemplate.process();
     }
 
@@ -175,20 +174,20 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void deductProductQuantityAfterPurchase(Order order) {
         for (OrderDetail od : order.getOrderDetails()) {
-            this.productRepository.deductProductAfterPurchase(od.getQuantity(), od.getProduct().getId());
+            //this.productRepository.deductProductAfterPurchase(od.getQuantity(), od.getProduct().getId());
         }
     }
 
 
-    private PurchaseTemplate getPurchaseTemplate(Order order, CardDetail OSSCardDetail, CardDetail taxCardDetail) {
+    private TransactionTemplate getPurchaseTemplate(Order order, CardDetail OSSCardDetail, CardDetail taxCardDetail) {
         NotifierSubject notifierSubject = new NotifierSubject();
-        notifierSubject.addObserver(new MailToCustomerObserver());
-        notifierSubject.addObserver(new MailToVendorObserver());
+        notifierSubject.addObserver(new MessageObserver());
+        notifierSubject.addObserver(new MailObserver(order, mailService));
 
         TransferSubject transferSubject = new TransferSubject();
         transferSubject.addObserver(new TransferToVendorObserver(order, OSSCardDetail, paymentService, cardDetailRepository));
         transferSubject.addObserver(new TransferToTAXObserver(order, OSSCardDetail, taxCardDetail, paymentService));
-        PurchaseTemplate purchaseTemplate = new PurchaseTemplateImpl(order, OSSCardDetail, notifierSubject, transferSubject, paymentService);
+        TransactionTemplate purchaseTemplate = new PurchaseTemplateImpl(order, OSSCardDetail, notifierSubject, transferSubject, paymentService);
         return purchaseTemplate;
     }
 }

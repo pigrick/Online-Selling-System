@@ -128,12 +128,9 @@
             <div class="col-md-12">
                 <div class="aa-client-brand-area">
                     <ul class="aa-client-brand-slider">
-                        <li><a href="#"><img src="<c:url value="/static/img/client-brand-ak.png" />" alt="ak img"></a></li>
-                        <li><a href="#"><img src="<c:url value="/static/img/client-brand-bart.png" />" alt="bart img"></a></li>
-                        <li><a href="#"><img src="<c:url value="/static/img/client-brand-gamet.png" />" alt="gamet img"></a></li>
-                        <li><a href="#"><img src="<c:url value="/static/img/client-brand-panasonic.png" />" alt="panasonic img"></a></li>
-                        <li><a href="#"><img src="<c:url value="/static/img/client-brand-redible.png" />" alt="redible img"></a></li>
-
+                        <c:forEach items="${vendors}" var="vendor">
+                            <li><a href="<c:url value="product/search?vendorId=${vendor.id}" /> "><img width="500" height="80" src="<c:url value="${resourcePath}${vendor.image}" />" alt="${vendor.companyName}"></a></li>
+                        </c:forEach>
                     </ul>
                 </div>
             </div>

@@ -3,9 +3,11 @@ package edu.mum.cs490.project.controller;
 import edu.mum.cs490.project.domain.Category;
 import edu.mum.cs490.project.domain.Product;
 import edu.mum.cs490.project.domain.Status;
+import edu.mum.cs490.project.domain.Vendor;
 import edu.mum.cs490.project.service.CategoryService;
 import edu.mum.cs490.project.service.ProductService;
 import edu.mum.cs490.project.service.UserService;
+import edu.mum.cs490.project.service.VendorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +30,8 @@ public class HomeController {
 
     @Autowired
     private ProductService productService;
+    @Autowired
+    private VendorService vendorService;
 
     @RequestMapping("/")
     public String getHome(Model model){
@@ -35,11 +39,13 @@ public class HomeController {
 
         List<Product> productList = productService.find(null, null, null, Status.ENABLED, null);
         List<Category> mainCategories = categoryService.find(null, null, Status.ENABLED);
+        List<Vendor> vendors = vendorService.find(null, null, Status.ENABLED);
 
         productList.addAll(productList);
         model.addAttribute("products", productList);
         model.addAttribute("mainCategories", mainCategories);
         model.addAttribute("topProducts", productList);
+        model.addAttribute("vendors", vendors);
 
         return "index";
     }

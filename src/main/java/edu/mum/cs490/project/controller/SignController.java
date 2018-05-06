@@ -76,7 +76,7 @@ public class SignController {
         userService.saveOrUpdate(customer);
         mailService.sendEmailToCustomer(userForm.getEmail(), customer.getFirstName() + " " + customer.getLastName());
         model.put("message", Message.successfullySaved);
-        return "signUp";
+        return "redirect:/login";
     }
 
     @RequestMapping(value = "vendor/signup", method = RequestMethod.GET)
@@ -113,7 +113,7 @@ public class SignController {
         userService.saveOrUpdate(vendor);
         mailService.sendEmailToVendorAndAdmin(userForm.getEmail(), vendor.getCompanyName());
         model.put("message", Message.successfullySaved);
-        return "vendor/signUp";
+        return "redirect:/login";
     }
 
     private void setToUser(User user, UserSignUpForm form) {

@@ -5,8 +5,8 @@
 <section id="aa-myaccount">
     <div class="container">
         <div class="text-center">
-            <h1> <b><i>"404"</i></b> </h1>
-            <h3>Not Found.</h3>
+            <h1> <b><i>"403"</i></b></h1>
+            <h3>You don't have permission to access this page.</h3>
             <p> Not to worry. you can either head back to our <a href="/"><b><u>homepage</u></b></a> </p>
         </div>
     </div>

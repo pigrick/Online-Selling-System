@@ -61,16 +61,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .logoutSuccessUrl("/")
                 .and()
                 .authorizeRequests()
-                    .antMatchers("/profile/**").authenticated()
                     .antMatchers("/**/signup").anonymous()
-                   .antMatchers("/admin/**").hasRole("ADMIN")
-                   .antMatchers("/report/**").hasAnyRole("ADMIN,VENDOR")
-                   .antMatchers("/vendor/**").hasRole("VENDOR")
-                    .antMatchers("/profile/**").hasAnyRole("CUSTOMER,VENDOR,ADMIN")
+                    .antMatchers("/admin/**").hasRole("ADMIN")
+                    .antMatchers("/report/**").hasAnyRole("ADMIN,VENDOR")
+                    .antMatchers("/vendor/**").hasRole("VENDOR")
+                    .antMatchers("/profile/vendor/**").hasRole("VENDOR")
+                    .antMatchers("/profile/**").hasAnyRole("CUSTOMER,ADMIN")
                     .antMatchers("/order/checkout/**", "/order/customer/**").hasRole("CUSTOMER");
-
-
-
     }
 
     @Bean

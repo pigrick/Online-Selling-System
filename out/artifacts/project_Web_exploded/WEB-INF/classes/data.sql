@@ -1,3 +1,7 @@
+# CREATE USER 'oss'@'localhost' IDENTIFIED BY 'oss';
+# GRANT ALL PRIVILEGES ON OSS.* TO 'oss'@'localhost';
+# FLUSH PRIVILEGES;
+
 INSERT INTO user VALUES (1 , 'ebatsukh@mum.edu', '$2a$10$snL9/9oR.u6CtqN/g5hJm.GtmHr4wx1ptuOD8.GL8wR4yvHg8Y/7O', 'ENABLED',
                                   'erdenebayar');
 INSERT INTO user VALUES (4 , 'akron@mum.edu', '$2a$10$5CROa6Yafyrk/NdPLtUIwemYIjWlh9fSMtGEIuKfmWN98dXMyvUYi', 'ENABLED','akron');
@@ -17,10 +21,13 @@ INSERT INTO vendor VALUES ('BARTIET', 5);
 INSERT INTO vendor VALUES ('GAMET', 6);
 INSERT INTO vendor VALUES ('PANASONIC', 7);
 
-INSERT INTO category VALUES (1, "Clothing",'ENABLED',null);
-INSERT INTO category VALUES (2, "Watches",'ENABLED',null);
-INSERT INTO category VALUES (3, "Shoes",'ENABLED',null);
-INSERT INTO category VALUES (4, "Bag",'ENABLED',null);
+INSERT INTO category VALUES (1, "Women",'ENABLED',null);
+INSERT INTO category VALUES (2, "Men",'ENABLED',null);
+INSERT INTO category VALUES (3, "Clothing",'ENABLED',1);
+INSERT INTO category VALUES (4, "Bag",'ENABLED',1);
+INSERT INTO category VALUES (5, "Watches",'ENABLED',2);
+INSERT INTO category VALUES (6, "Shoes",'ENABLED',2);
+INSERT INTO category VALUES (7, "Accessories",'ENABLED',5);
 
 
 INSERT INTO user VALUES (3, 'ylai@mum.edu','$2a$10$ibMbCkRcLFo4snX8071GSuJ9bV15Jvl9wFNafEkiSBTFuFt8m9BtO', 'ENABLED', 'yeerick');
@@ -39,10 +46,10 @@ INSERT INTO card_detail VALUES(6, 'QraOsmY1Vm/D/pQN6BuLhw==', 'hiE+wqyvnTqJkKbp/
 INSERT INTO address VALUES (1, 'Fairfield', '2058871599', 'Iowa', 'ENABLED', '1000 N 4th St', '52557', 3);
 INSERT INTO address VALUES (2, 'Fairfield', '2058871599', 'Iowa', 'ENABLED', '52 E. Golden Lane', '52556', 3);
 
-INSERT INTO product VALUES(1, 'Branded Mechanical Watch', null, 'ROLEX VISION',  150, 3, 'ENABLED', 2, 2 );
-INSERT INTO product VALUES(2, 'Jean', null, 'Livi',  200, 3, 'ENABLED', 1, 2);
-INSERT INTO product VALUES(3, 'shoes', null , 'Rothy Grey ',  125, 10, 'ENABLED', 3, 4);
-INSERT INTO product VALUES(4, 'Women Leather Market Tote Bag by Everlane in Blush', null, 'Everlane ',  165, 10, 'ENABLED', 4, 5 );
+INSERT INTO product VALUES(1, 'Branded Mechanical Watch', 'product\\1\\1.png', 'ROLEX VISION',  150, 3, 'ENABLED', 1, 2 );
+INSERT INTO product VALUES(2, 'Jean', 'product\\2\\2.png', 'Livi',  200, 3, 'ENABLED', 2, 2);
+INSERT INTO product VALUES(3, 'shoes', 'product\\3\\3.png' , 'Rothy Grey ',  125, 10, 'ENABLED', 3, 4);
+INSERT INTO product VALUES(4, 'Women Leather Market Tote Bag by Everlane in Blush', 'product\\4\\4.png', 'Everlane ',  165, 10, 'ENABLED', 4, 5 );
 
 INSERT INTO order_detail VALUES(1, 20000, 3, 1, 1);
 INSERT INTO `order` VALUES (1, DATE '2018-4-4', DATE '2018-4-4', 'ENABLED', 1, 1, 3, NULL);

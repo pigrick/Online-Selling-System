@@ -2,6 +2,8 @@ package edu.mum.cs490.project.service;
 
 import edu.mum.cs490.project.domain.Product;
 import edu.mum.cs490.project.domain.Status;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,5 +31,8 @@ public interface ProductService {
     @PreAuthorize("#hasAnyRole('ROLE_ADMIN' ,'ROLE_VENDOR')")
     void changeStatus(Integer id, Status status);
 
+    @Transactional
     List<Product> find(String name, Integer categoryId, Integer vendorId, Status status, Sort sort);
+
+    public Page<Product> findPage(String name, Integer categoryId, Integer vendorId, Status status, Pageable pageable);
 }

@@ -2,9 +2,12 @@ package edu.mum.cs490.project.utils;
 
 import org.springframework.stereotype.Component;
 
+import javax.activation.DataHandler;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Properties;
@@ -48,15 +51,47 @@ public class EmailUtil {
     public void sendEmail(String toEmail, String subject, String body){
         try
         {
-            MimeMessage msg = new MimeMessage(session);
-            msg.addHeader("Content-type", propertiesOfMail.getProperty("Content-type"));
-            msg.addHeader("format", propertiesOfMail.getProperty("format"));
-            msg.addHeader("Content-Transfer-Encoding", propertiesOfMail.getProperty("Content-Transfer-Encoding"));
-
-            msg.setFrom(new InternetAddress(propertiesOfMail.getProperty("mimemessage.from.internetaddress.address"), propertiesOfMail.getProperty("mimemessage.from.internetaddress.personal")));
-            msg.setReplyTo(InternetAddress.parse(propertiesOfMail.getProperty("mimemessage.replyto.internetaddress.addresslist"), Boolean.parseBoolean(propertiesOfMail.getProperty("mimemessage.replyto.internetaddress.strict"))));
+            MimeMessage msg = generateMime();
             msg.setSubject(subject, propertiesOfMail.getProperty("mimemessage.subject"));
             msg.setContent(body, propertiesOfMail.getProperty("mimemessage.body"));
+            msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, Boolean.parseBoolean(propertiesOfMail.getProperty("mimemessage.replyto.internetaddress.strict"))));
+
+            Transport.send(msg);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @param toEmail
+     * @param subject
+     * @param body
+     * @param attachmentFile
+     */
+    public void sendEmailWithAttachment(String toEmail, String subject, String body, byte[] attachmentFile, String nameOfAttachment){
+        try
+        {
+            MimeMessage msg = generateMime();
+            msg.setSubject(subject, propertiesOfMail.getProperty("mimemessage.subject"));
+
+            // creates message part
+            MimeBodyPart messageBodyPart = new MimeBodyPart();
+            messageBodyPart.setContent(body, propertiesOfMail.getProperty("mimemessage.body"));
+
+            MimeBodyPart att = new MimeBodyPart();
+            BufferedDataSource bds = new BufferedDataSource(attachmentFile, nameOfAttachment);
+            att.setDataHandler(new DataHandler(bds));
+            att.setFileName(bds.getName());
+
+            // creates multi-part
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(messageBodyPart);
+            multipart.addBodyPart(att);
+
+            // sets the multi-part as e-mail's content
+            msg.setContent(multipart);
+
             msg.setSentDate(new Date());
             msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail, Boolean.parseBoolean(propertiesOfMail.getProperty("mimemessage.replyto.internetaddress.strict"))));
 
@@ -66,4 +101,24 @@ public class EmailUtil {
             e.printStackTrace();
         }
     }
+
+    private MimeMessage generateMime(){
+        MimeMessage msg = new MimeMessage(session);
+        try
+        {
+            msg.addHeader("Content-type", propertiesOfMail.getProperty("Content-type"));
+            msg.addHeader("format", propertiesOfMail.getProperty("format"));
+            msg.addHeader("Content-Transfer-Encoding", propertiesOfMail.getProperty("Content-Transfer-Encoding"));
+
+            msg.setFrom(new InternetAddress(propertiesOfMail.getProperty("mimemessage.from.internetaddress.address"), propertiesOfMail.getProperty("mimemessage.from.internetaddress.personal")));
+            msg.setReplyTo(InternetAddress.parse(propertiesOfMail.getProperty("mimemessage.replyto.internetaddress.addresslist"), Boolean.parseBoolean(propertiesOfMail.getProperty("mimemessage.replyto.internetaddress.strict"))));
+
+            msg.setSentDate(new Date());
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return msg;
+    }
+
 }

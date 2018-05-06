@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Import;
         "edu.mum.cs490.project.repository",
         "edu.mum.cs490.project.controller",
         "edu.mum.cs490.project.service",
+        "edu.mum.cs490.project.utils",
 })
 public class Configs {
 

@@ -33,13 +33,13 @@ public class ReportCronJob {
         return beginDate;
     }
 
-    @Scheduled(cron="0/5 * 15  * * ?") //59 59 23 L * ?
+    @Scheduled(cron="0/5 * *  * * ?") //59 59 23 L * ?
     public void monthlyReport() {
 //        reportController.sendReportToVendor(beginDateOfMonth());
         System.out.println("Test cron job");
     }
 
-    @Scheduled(cron = "0 0 0 * Sun ?")
+    @Scheduled(cron = "0 0 0 * * SUN")
     public void weeklyReport() {
         reportController.sendReportToVendor(beginDateOfWeek());
     }

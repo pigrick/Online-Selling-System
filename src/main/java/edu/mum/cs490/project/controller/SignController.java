@@ -71,6 +71,7 @@ public class SignController {
         }
 
         Customer customer = new Customer();
+        customer.setStatus(Status.ENABLED);
         setToUser(customer, userForm);
 
         customer.setFirstName(userForm.getFirstName());
@@ -123,7 +124,5 @@ public class SignController {
         user.setUsername(form.getUsername());
         user.setPassword(passwordEncoder.encode(form.getPassword()));
         user.setEmail(form.getEmail());
-        user.setEmail(form.getEmail());
-        user.setStatus(Status.ENABLED);
     }
 }

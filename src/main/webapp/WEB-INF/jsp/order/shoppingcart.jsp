@@ -20,7 +20,7 @@
                 <input type="hidden" id="productid" name="productid" value="${orderDetail.product.id}"/>
                 <td>
                     <a href="/product/${orderDetail.product.id}"><img
-                        src="/static/images/${orderDetail.product.id}/0.png" alt="img" height="100" width="100"></a>
+                        src="${resourcePath}${orderDetail.product.image}" alt="img" height="100" width="100"></a>
                 </td>
                 <td><a href="/product/${orderDetail.product.id}"><c:out value="${orderDetail.product.name}"/></a></td>
                 <td id="price"><fmt:formatNumber value="${orderDetail.price}" type="currency" currencySymbol="$"/></td>

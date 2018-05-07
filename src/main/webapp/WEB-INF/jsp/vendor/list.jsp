@@ -1,7 +1,6 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/include.jsp"%>
-
 <table class="table table-striped">
     <thead>
     <tr>
@@ -33,7 +32,7 @@
                         <i class="glyphicon glyphicon-remove"></i>
                     </a>
 
-            </td>td
+            </td>
         </tr>
     </c:forEach>
     </tbody>

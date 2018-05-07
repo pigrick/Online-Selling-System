@@ -50,26 +50,6 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="aa-header-top-area">
-                        <!-- start header top left -->
-                        <div class="aa-header-top-left">
-                            <!-- start language -->
-                            <div class="aa-language">
-                                <div class="dropdown">
-                                    <a class="btn dropdown-toggle" href="#" type="button" id="dropdownMenu1"
-                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                        <img src="/static/img/flag/english.jpg" alt="english flag">ENGLISH
-                                        <span class="caret"></span>
-                                    </a>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                        <li><a href="#"><img src="/static/img/flag/english.jpg" alt="">ENGLISH</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <!-- / language -->
-                            <a class="btn dropdown-toggle" href="#" style="margin-top: -1px">Daily Deals</a>
-                        </div>
-                        <!-- / header top left -->
 
                         <!--  header top right -->
                         <div class="aa-header-top-right">
@@ -145,10 +125,10 @@
                                                 <li><a href="/profile/edit">Edit Customer</a></li>
                                                 <li><a href="/profile/vendor/edit">Edit Vendor</a></li>
                                                 <li><a href="/profile/edit/password">Edit Password</a></li>
-
                                                 <li><a href="/signup">Customer SignUp</a></li>
                                                 <li><a href="/vendor/signup">Vendor SignUp</a></li>
                                             </ul>
+                                        <li><a href="/login">Login</a></li>
                                         </li>
                                     </sec:authorize>
                                 </ul>
@@ -312,7 +292,9 @@
             </div>
         </div>
     </div>
+
 </section>
+<span class="clearfix"></span>
 
 
 <!-- / menu -->

@@ -35,7 +35,7 @@
         <div class="table-responsive">
             <div id="list-target"></div>
             <br/>
-            <button class="btn btn-default" type="button" onclick="module.create()">Add product</button>
+            <button type="button" class="btn btn-primary" onclick="module.create()">Add product</button>
         </div>
     </div>
 </div>

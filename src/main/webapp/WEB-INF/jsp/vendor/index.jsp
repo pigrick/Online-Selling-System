@@ -28,7 +28,7 @@
                             </c:if>
                         </c:forEach>
                     </select>
-                    <button class="btn btn-default" type="button" onclick="module.list()">Search</button>
+                    <button class="btn btn-default" type="button" onclick="module.list(1)">Search</button>
                 </form>
             </div>
         </div>
@@ -46,11 +46,11 @@
 
 <script type="text/javascript">
     $(function () {
-        module.list();
+        module.list(1);
     });
     module = {
-        list : function(){
-            $.get('/vendor/product/list', $("#filterForm").serialize(), function(data){
+        list : function(page){
+            $.get('/vendor/product/list?page=' + page, $("#filterForm").serialize(), function(data){
                 $('#list-target').html(data);
             });
         },

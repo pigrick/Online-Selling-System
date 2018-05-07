@@ -34,5 +34,5 @@ public interface ProductService {
     @Transactional
     List<Product> find(String name, Integer categoryId, Integer vendorId, Status status, Sort sort);
 
-    public Page<Product> findPage(String name, Integer categoryId, Integer vendorId, Status status, Pageable pageable);
+    Page<Product> findPage(String name, Integer categoryId, Integer vendorId, Status status, Pageable pageable);
 }

@@ -40,13 +40,15 @@
                                         <p class="aa-product-avilability">Avilability: <span id="stock">${product.quantity}</span></p>
                                     </div>
                                     <p>${product.description}</p>
+                                    <form:form action="/order/addToCart/${product.id}" method="get">
                                     <div class="aa-prod-quantity">
-                                        <input type="number" style="width: 50px;cursor: default" id="quantity"
+                                        <input type="number" style="width: 50px;cursor: default" id="quantity" name="quantity"
                                                min="1" max="${product.quantity}" value="1">
                                     </div>
                                     <div class="aa-prod-view-bottom">
-                                        <a class="aa-add-to-cart-btn" style="cursor: hand" href="/order/addToCart/${product.id}">Add To Cart</a>
+                                        <input type="submit" class="aa-add-to-cart-btn" style="cursor: hand" value="Add To Cart"></input>
                                     </div>
+                                    </form:form>
                                 </div>
                             </div>
                         </div>

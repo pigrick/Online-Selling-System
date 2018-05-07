@@ -64,6 +64,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<Product> findPage(String name, Integer categoryId, Integer vendorId, Status status, Pageable pageable) {
-        return productRepository.findPage(name, categoryId, vendorId, status, pageable);
+        List<Integer> categoryIds = null;
+        if (categoryId != null) {
+            categoryIds = new ArrayList<>(categoryRepository.getOne(categoryId).getParentIds());
+        }
+        return productRepository.findPage(name, categoryId, categoryIds, vendorId, status, pageable);
     }
 }

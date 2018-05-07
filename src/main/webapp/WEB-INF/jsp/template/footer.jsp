@@ -165,5 +165,7 @@
 <script src="/static/js/jquery.form.js" charset="utf-8"></script>
 <script src="/static/js/smoke/smoke.min.js" charset="utf-8"></script>
 <script src="/static/js/sticky/sticky.min.js" charset="utf-8"></script>
+<!--cart for header js-->
+<script src="/static/js/order/cart.js"></script>
 </body>
 </html>

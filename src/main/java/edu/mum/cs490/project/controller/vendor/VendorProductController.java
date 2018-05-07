@@ -36,6 +36,8 @@ public class VendorProductController {
     @Autowired
     private FileManagementService fileManagementService;
 
+    private final int PAGE_SIZE = 10;
+
     @GetMapping
     public String productManagement(@AuthenticationPrincipal Vendor vendor, Model model) {
         List<Product> productsList = productService.find(null, null, vendor.getId(), Status.ENABLED, null);
@@ -48,11 +50,12 @@ public class VendorProductController {
     @RequestMapping(value = "/list")
     public String getProduct(@AuthenticationPrincipal Vendor vendor,
                              @RequestParam(required = false) String name,
-                             //@RequestParam(defaultValue = "1") Integer page,
+                             @RequestParam(defaultValue = "1") Integer page,
                              @RequestParam(required = false) Integer categoryId, Model model) {
-
-        List<Product> productsList = productService.find(name.equals("") ? null : name, categoryId, vendor.getId(), Status.ENABLED, null);
-        model.addAttribute("productList", productsList);
+        Page<Product> productsList = productService.findPage(name.equals("") ? null : name, categoryId, vendor.getId(), Status.ENABLED, PageRequest.of(page-1, PAGE_SIZE));
+        //List<Product> productsList = productService.find(name.equals("") ? null : name, categoryId, vendor.getId(), Status.ENABLED, null);
+        model.addAttribute("result", productsList);
+        model.addAttribute("productList", productsList.getContent());
 
         return "/vendor/list";
     }

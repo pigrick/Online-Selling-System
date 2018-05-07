@@ -101,10 +101,56 @@
                             </c:if>
                         });
                     </script>
+                    <c:set value="${result.getNumber() + 1}" var="currentIndex"/>
+                    <c:choose>
+                        <c:when test="${1 < (currentIndex - 5)}">
+                            <c:set value="${currentIndex - 5}" var="beginIndex"/>
+                        </c:when>
+                        <c:otherwise>
+                            <c:set value="${1}" var="beginIndex"/>
+                        </c:otherwise>
+                    </c:choose>
+                    <c:choose>
+                        <c:when test="${(beginIndex + 10) < result.getTotalPages()}">
+                            <c:set value="${beginIndex + 10}" var="endIndex"/>
+                        </c:when>
+                        <c:otherwise>
+                            <c:set value="${result.getTotalPages()}" var="endIndex"/>
+                        </c:otherwise>
+                    </c:choose>
                     <div class="aa-product-catg-pagination">
                         <nav>
-                            <ul class="pagination" id="pagination-ul">
-
+                            <ul class="pagination">
+                                <c:choose>
+                                    <c:when test="${currentIndex == 1}">
+                                        <li class="disabled"><a href="javascript:void(0);">&lt;&lt;</a></li>
+                                        <li class="disabled"><a href="javascript:void(0);">&lt;</a></li>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <li><a href="/product/list?page;">&lt;&lt;</a></li>
+                                        <li><a href="/product/list?page=${currentIndex-1}">&lt;</a></li>
+                                    </c:otherwise>
+                                </c:choose>
+                                <c:forEach var="i" begin="${beginIndex}" end="${endIndex}">
+                                    <c:choose>
+                                        <c:when test="${i == currentIndex}">
+                                            <li class="disabled"><a href="/product/list?page=${i}"><c:out value="${i}"/></a></li>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <li><a href="/product/list?page=${i}"><c:out value="${i}"/></a></li>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:forEach>
+                                <c:choose>
+                                    <c:when test="${currentIndex ge result.totalPages}">
+                                        <li class="disabled"><a href="javascript:void(0);">&gt;</a></li>
+                                        <li class="disabled"><a href="javascript:void(0);">&gt;&gt;</a></li>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <li><a href="/product/list?page=${currentIndex + 1}" >&gt;</a></li>
+                                        <li><a href="/product/list?page=${result.totalPages}">&gt;&gt;</a></li>
+                                    </c:otherwise>
+                                </c:choose>
                             </ul>
                         </nav>
                     </div>

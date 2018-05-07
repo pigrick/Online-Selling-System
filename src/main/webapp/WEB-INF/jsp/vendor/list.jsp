@@ -10,6 +10,7 @@
         <th>Price</th>
         <th>Category</th>
         <th>Description</th>
+        <th>Status</th>
         <th></th>
     </tr>
     </thead>
@@ -21,19 +22,27 @@
             <td>${row.price}</td>
             <td>${row.category.getName()}</td>
             <td>${row.description}</td>
+            <td>${row.status}</td>
             <td>
                     <%--<a href="#" type="button" onclick="module.delete('${row.id}')">
                         <i class="glyphicon glyphicon-info-sign"></i>
                     </a>--%>
-                <a href="#edit" onclick="module.edit('${row.id}')">
+                <a href="#edit" onclick="modules.edit('${row.id}')">
                     <i class="glyphicon glyphicon-pencil"></i>
                 </a>
 
-                    <a href="#delete" type="button" onclick="module.delete('${row.id}')">
-                        <i class="glyphicon glyphicon-remove"></i>
-                    </a>
+                        <c:if test="${row.status eq 'ENABLED'}">
+                            <a href="#delete" type="button" onclick="modules.delete('${row.id}')">
+                                <i class="glyphicon glyphicon-remove"></i>
+                            </a>
+                        </c:if>
+                        <c:if test="${row.status ne 'ENABLED'}">
+                            <a href="#changeStatus" type="button" onclick="modules.changeStatus('${row.id}', 'ENABLED')">
+                                <i class="glyphicon glyphicon-ok"></i>
+                            </a>
+                        </c:if>
 
-            </td>td
+            </td>
         </tr>
     </c:forEach>
     </tbody>

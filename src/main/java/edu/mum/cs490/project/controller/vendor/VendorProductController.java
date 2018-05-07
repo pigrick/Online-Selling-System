@@ -42,7 +42,8 @@ public class VendorProductController {
     public String productManagement(@AuthenticationPrincipal Vendor vendor, Model model) {
         List<Product> productsList = productService.find(null, null, vendor.getId(), Status.ENABLED, null);
         model.addAttribute("productList", productsList);
-        model.addAttribute("categories", categoryService.find(null, null, Status.ENABLED));
+        model.addAttribute("categories", categoryService.find(null, null, null));
+        model.addAttribute("statuses", Status.values());
 
         return "/vendor/index";
     }
@@ -50,12 +51,13 @@ public class VendorProductController {
     @RequestMapping(value = "/list")
     public String getProduct(@AuthenticationPrincipal Vendor vendor,
                              @RequestParam(required = false) String name,
-                             @RequestParam(defaultValue = "1") Integer page,
-                             @RequestParam(required = false) Integer categoryId, Model model) {
-        Page<Product> productsList = productService.findPage(name.equals("") ? null : name, categoryId, vendor.getId(), Status.ENABLED, PageRequest.of(page-1, PAGE_SIZE));
-        //List<Product> productsList = productService.find(name.equals("") ? null : name, categoryId, vendor.getId(), Status.ENABLED, null);
-        model.addAttribute("result", productsList);
-        model.addAttribute("productList", productsList.getContent());
+                             @RequestParam(required = false) Integer categoryId,
+                             @RequestParam(required = false) Status status,
+                             Model model) {
+
+        List<Product> productsList = productService.find(name.equals("") ? null : name, categoryId, vendor.getId(), status, null);
+        model.addAttribute("productList", productsList);
+        model.addAttribute("statuses", Status.values());
 
         return "/vendor/list";
     }
@@ -120,10 +122,19 @@ public class VendorProductController {
     }
 
     @GetMapping("/delete")
+    @ResponseBody
     public Message deleteProduct(@RequestParam(required = true) Integer id, Model model) {
 
         productService.delete(id);
 
         return new Message(Message.Type.SUCCESS, "successfully.deleted");
+    }
+
+    @RequestMapping(value = {"changeStatus"})
+    @ResponseBody
+    public Message changeStatus(@RequestParam Integer id, @RequestParam Status status,
+                                Model model) {
+        productService.changeStatus(id, status);
+        return new Message(Message.Type.SUCCESS, "successfully.changed.status");
     }
 }

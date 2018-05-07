@@ -18,7 +18,7 @@
         },
         success: function() {
             $('#edit-modal').modal('hide');
-            module.list();
+            modules.list();
         },
         submit: function() {
             if($('#file').val() == null || $('#file').val() == ''){
@@ -76,6 +76,15 @@
             <label for="description"> Description</label>
             <form:errors path="description" cssStyle="color: red" />
             <form:textarea path="description"  class="form-Control" />
+        </div>
+        <div class="form-group">
+            <form:errors path="categoryId" cssStyle="color: red" />
+            <label for="status">Status</label>
+            <select name="status" class="form-control">
+                <c:forEach items="${statuses}" var="row">
+                    <option value="${row}">${row}</option>
+                </c:forEach>
+            </select>
         </div>
         <div class="form-group">
             <label for="image">Image</label>

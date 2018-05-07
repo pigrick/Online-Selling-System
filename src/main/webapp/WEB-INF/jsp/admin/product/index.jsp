@@ -70,10 +70,6 @@
             });
         },
 
-        success: function() {
-            $('#edit-modal').modal('hide');
-            module.list();
-        },
 
         delete: function(id){
             smoke.confirm('Are sure to delete this!',function(e){
@@ -98,6 +94,6 @@
                     });
                 }
             }, {cancel:"Cancel", ok:"Change"});
-        },
+        }
     };
 </script>

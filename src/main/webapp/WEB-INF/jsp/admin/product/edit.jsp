@@ -75,7 +75,7 @@
         </div>
         <div class="form-group">
             <form:errors path="categoryId" cssStyle="color: red" />
-            <label for="status">Category</label>
+            <label for="status">Status</label>
         <select name="status" class="form-control">
             <c:forEach items="${statuses}" var="row">
                 <option value="${row}">${row}</option>

@@ -1,5 +1,6 @@
 package edu.mum.cs490.project.controller;
 
+import edu.mum.cs490.project.domain.Admin;
 import edu.mum.cs490.project.domain.Customer;
 import edu.mum.cs490.project.domain.User;
 import edu.mum.cs490.project.domain.Vendor;
@@ -56,12 +57,40 @@ public class UserProfileController {
             return "profile/editCustomer";
         }
 
+        if (userService.existByIdNotAndUsername(user.getId(), editForm.getUsername())) {
+            model.put("message", new Message(Message.Type.ERROR, "username.duplicate"));
+            result.rejectValue("username", "username.duplicate");
+            return "profile/editVendor";
+        }
+
+        user.setEmail(editForm.getEmail());
+        user.setUsername(editForm.getUsername());
+        user.setFirstName(editForm.getFirstName());
+        user.setLastName(editForm.getLastName());
+        userService.saveOrUpdate(user);
+        model.put("message", Message.successfullySaved);
+        return "profile/editCustomer";
+    }
+
+    @RequestMapping(value = "admin/edit", method = RequestMethod.GET)
+    public String adminProfileEdit(@AuthenticationPrincipal Admin user, ModelMap model) {
+        model.put("editForm", new AdminForm(user));
+        return "profile/editCustomer";
+
+    }
+
+    @RequestMapping(value = "admin/edit", method = RequestMethod.POST)
+    public String adminProfileEdit(@AuthenticationPrincipal Admin user, @Valid @ModelAttribute("editForm") AdminForm editForm, BindingResult result, ModelMap model) {
+        if (result.hasErrors()) {
+            model.put("message", Message.errorOccurred);
+            return "profile/editCustomer";
+        }
+
         if (userService.existByIdNotAndUsername(user.getId(), editForm.getUsername())){
             model.put("message", new Message(Message.Type.ERROR, "username.duplicate"));
             result.rejectValue("username", "username.duplicate");
             return "profile/editVendor";
         }
-        Customer customer = (Customer) userService.getById(3);
 
         user.setEmail(editForm.getEmail());
         user.setUsername(editForm.getUsername());

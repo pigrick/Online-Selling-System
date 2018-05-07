@@ -78,7 +78,7 @@
         delete: function(id){
             smoke.confirm('Are sure to delete this!',function(e){
                 if (e){
-                    $.get('/vendor/product/delete', 'id='+id, function(msg){
+                    $.get('/admin/product/delete', 'id='+id, function(msg){
                         var message = msg.message || msg;
                         var type = 'st-'+(msg.type || 'success').toLowerCase();
                         $.sticky(message, {autoclose: 10000, position:'top-right', type: type});
@@ -86,6 +86,18 @@
                     });
                 }
             }, {cancel:"Cancel", ok:"Delete"});
-        }
+        },
+        changeStatus: function(id,status){
+            smoke.confirm('Are sure to change status of this!',function(e){
+                if (e){
+                    $.get('/admin/product/changeStatus', 'id='+id+'&status='+status, function(msg){
+                        var message = msg.message || msg;
+                        var type = 'st-'+(msg.type || 'success').toLowerCase();
+                        $.sticky(message, {autoclose: 10000, position:'top-right', type: type});
+                        module.list();
+                    });
+                }
+            }, {cancel:"Cancel", ok:"Change"});
+        },
     };
 </script>

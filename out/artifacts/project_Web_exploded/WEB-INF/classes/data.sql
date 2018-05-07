@@ -10,8 +10,23 @@ INSERT INTO user VALUES (5 , 'bartiet@mum.edu', '$2a$10$5CROa6Yafyrk/NdPLtUIwemY
 INSERT INTO user VALUES (6 , 'gamet@mum.edu', '$2a$10$5CROa6Yafyrk/NdPLtUIwemYIjWlh9fSMtGEIuKfmWN98dXMyvUYi', 'ENABLED','gamet');
 INSERT INTO user VALUES (7 , 'panasonic@mum.edu', '$2a$10$5CROa6Yafyrk/NdPLtUIwemYIjWlh9fSMtGEIuKfmWN98dXMyvUYi', 'ENABLED','panasonic');
 
-
 INSERT INTO admin VALUES ('Erdenebayar', 'Batsukh', 1);
+
+#Insert customer
+INSERT INTO user VALUES (3, 'ylai@mum.edu','$2a$10$ibMbCkRcLFo4snX8071GSuJ9bV15Jvl9wFNafEkiSBTFuFt8m9BtO', 'ENABLED', 'yeerick');
+INSERT INTO customer VALUES ('Yee Rick', 'Lai', 3);
+INSERT INTO user VALUES (8, 'ebatsukh@mum.edu','$2a$10$ibMbCkRcLFo4snX8071GSuJ9bV15Jvl9wFNafEkiSBTFuFt8m9BtO', 'ENABLED', 'bay');
+INSERT INTO customer VALUES ('Erdenebayar', 'Batsukh', 8);
+INSERT INTO user VALUES (9, 'tuvshin0bt@gmail.com','$2a$10$ibMbCkRcLFo4snX8071GSuJ9bV15Jvl9wFNafEkiSBTFuFt8m9BtO', 'ENABLED', 'batt');
+INSERT INTO customer VALUES ('Battuvshin', 'Badarch', 9);
+INSERT INTO user VALUES (10, 'tbatmunkh@mum.edu','$2a$10$ibMbCkRcLFo4snX8071GSuJ9bV15Jvl9wFNafEkiSBTFuFt8m9BtO', 'ENABLED', 'tamir');
+INSERT INTO customer VALUES ('Tamir', 'Batmunkh', 10);
+INSERT INTO user VALUES (11, 'pagmaa.erdenebat@gmail.com','$2a$10$ibMbCkRcLFo4snX8071GSuJ9bV15Jvl9wFNafEkiSBTFuFt8m9BtO', 'ENABLED', 'pagma');
+INSERT INTO customer VALUES ('Pagmaa', 'Erdenebat', 11);
+INSERT INTO user VALUES (12, 'thha@mum.edu)','$2a$10$ibMbCkRcLFo4snX8071GSuJ9bV15Jvl9wFNafEkiSBTFuFt8m9BtO', 'ENABLED', 'hong');
+INSERT INTO customer VALUES ('Pagmaa', 'Erdenebat', 12);
+INSERT INTO user VALUES (13, 'chpiseth9@gmail.com','$2a$10$ibMbCkRcLFo4snX8071GSuJ9bV15Jvl9wFNafEkiSBTFuFt8m9BtO', 'ENABLED', 'seth');
+INSERT INTO customer VALUES ('Thuy Hong', 'Ha', 13);
 
 
 INSERT INTO user VALUES (2 , 'ebatsukh@mum.edu', '$2a$10$snL9/9oR.u6CtqN/g5hJm.GtmHr4wx1ptuOD8.GL8wR4yvHg8Y/7O', 'ENABLED',
@@ -30,9 +45,6 @@ INSERT INTO category VALUES (5, 'category\\5\\5.jpg', "Watches",'ENABLED',2);
 INSERT INTO category VALUES (6, 'category\\6\\6.jpg', "Shoes",'ENABLED',2);
 INSERT INTO category VALUES (7, 'category\\7\\7.jpg', "Accessories",'ENABLED',5);
 
-
-INSERT INTO user VALUES (3, 'ylai@mum.edu','$2a$10$ibMbCkRcLFo4snX8071GSuJ9bV15Jvl9wFNafEkiSBTFuFt8m9BtO', 'ENABLED', 'yeerick');
-INSERT INTO customer VALUES ('Yee Rick', 'Lai', 3);
 --4000300020001000 100 05/2020 OSS 52557
 --4000300020002000 200 05/2020 TAX 10000
 --4000300020003001 301 05/2020 V1 52557
@@ -47,10 +59,10 @@ INSERT INTO card_detail VALUES(6, 'QraOsmY1Vm/D/pQN6BuLhw==', 'hiE+wqyvnTqJkKbp/
 INSERT INTO address VALUES (1, 'Fairfield', '2058871599', 'Iowa', 'ENABLED', '1000 N 4th St', '52557', 3);
 INSERT INTO address VALUES (2, 'Fairfield', '2058871599', 'Iowa', 'ENABLED', '52 E. Golden Lane', '52556', 3);
 
-INSERT INTO product VALUES(1, 'Branded Mechanical Watch', 'product\\1\\1.png', 'ROLEX VISION',  150, 3, 'ENABLED', 1, 2 );
-INSERT INTO product VALUES(2, 'Jean', 'product\\2\\2.png', 'Livi',  200, 3, 'ENABLED', 2, 2);
-INSERT INTO product VALUES(3, 'shoes', 'product\\3\\3.png' , 'Rothy Grey ',  125, 10, 'ENABLED', 3, 4);
+INSERT INTO product VALUES(1, 'Jean', 'product\\1\\1.png', 'Livi',  200, 3, 'ENABLED', 3, 2);
+INSERT INTO product VALUES(2, 'Branded Mechanical Watch', 'product\\2\\2.png', 'ROLEX VISION',  150, 3, 'ENABLED', 5, 2 );
+INSERT INTO product VALUES(3, 'Shoes', 'product\\3\\3.png' , 'Rothy Grey ',  125, 10, 'ENABLED', 6, 4);
 INSERT INTO product VALUES(4, 'Women Leather Market Tote Bag by Everlane in Blush', 'product\\4\\4.png', 'Everlane ',  165, 10, 'ENABLED', 4, 5 );
 
-INSERT INTO order_detail VALUES(1, 20000, 3, 1, 1);
+INSERT INTO order_detail VALUES(1, 150, 3, 1, 1);
 INSERT INTO `order` VALUES (1, DATE '2018-4-4', DATE '2018-4-4', 'ENABLED', 1, 1, 3, NULL);

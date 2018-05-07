@@ -115,21 +115,18 @@
                                                 <li><a href="/logout">LogOut</a></li>
                                             </ul>
                                         </li>
-                                        <li><a href="/login">Login</a></li>
 
                                     </sec:authorize>
                                     <sec:authorize access="!isAuthenticated()">
                                         <li>
                                             <a href="#">SignUp <span class="caret"></span></a>
                                             <ul class="dropdown-menu">
-                                                <li><a href="/profile/edit">Edit Customer</a></li>
-                                                <li><a href="/profile/vendor/edit">Edit Vendor</a></li>
-                                                <li><a href="/profile/edit/password">Edit Password</a></li>
                                                 <li><a href="/signup">Customer SignUp</a></li>
                                                 <li><a href="/vendor/signup">Vendor SignUp</a></li>
                                             </ul>
-                                        <li><a href="/login">Login</a></li>
+
                                         </li>
+                                        <li><a href="/login">Login</a></li>
                                     </sec:authorize>
                                 </ul>
                             </div><!--/.nav-collapse -->

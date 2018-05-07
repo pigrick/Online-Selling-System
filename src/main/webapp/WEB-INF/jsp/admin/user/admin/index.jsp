@@ -41,7 +41,9 @@
     });
     module = {
         list : function(page){
-
+            if (page === undefined){
+                page = 1;
+            }
             $.get('/admin/user/admin/list?page=' + page, $("#filterForm").serialize(), function(data){
                 $('#list-target').html(data);
             });

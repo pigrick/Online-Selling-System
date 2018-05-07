@@ -137,7 +137,7 @@ public class AdminUserController {
     @RequestMapping(value = {"v/l", "vendor/list"})
     public String getAdmins(@RequestParam(required = false) String username,
                             @RequestParam(required = false) String companyName,
-                            @RequestParam(required = false, defaultValue = "ENABLED") Status status,
+                            @RequestParam(required = false) Status status,
                             @RequestParam(defaultValue = "1") Integer page,
                             Model model) {
 

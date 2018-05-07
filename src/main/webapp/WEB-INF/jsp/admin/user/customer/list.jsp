@@ -20,7 +20,7 @@
     </thead>
     <tbody>
     <c:forEach items="${list}" var="row">
-        <tr>
+        <tr <c:if test="${row.status ne 'ENABLED'}">class="danger" </c:if>>
             <td><i>${row.username}</i></td>
             <td><i>${row.email}</i></td>
             <td>${row.firstName} - ${row.lastName}</td>

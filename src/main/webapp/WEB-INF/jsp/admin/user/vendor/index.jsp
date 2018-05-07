@@ -13,6 +13,7 @@
                     <input type="text" name="username" class="form-control" width="100" placeholder="Username">
                     <input type="text" name="companyName" class="form-control" width="100" placeholder="Company Name">
                     <select name="status" class="form-control">
+                        <option value="">Select Statuses</option>
                         <c:forEach items="${statuses}" var="row">
                             <option value="${row}">${row}</option>
                         </c:forEach>
@@ -38,6 +39,9 @@
     });
     module = {
         list : function(page){
+            if (page === undefined){
+                page = 1;
+            }
             $.get('/admin/user/vendor/list?page=' + page, $("#filterForm").serialize(), function(data){
                 $('#list-target').html(data);
             });

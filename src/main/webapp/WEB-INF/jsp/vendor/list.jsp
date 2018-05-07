@@ -15,8 +15,7 @@
     </thead>
     <tbody>
     <c:forEach items="${productList}" var="row">
-        <tr>
-
+        <tr <c:if test="${row.status ne 'ENABLED'}">class="danger" </c:if>>
             <td><i>${row.name}</i></td>
             <td><i>${row.quantity}</i></td>
             <td>${row.price}</td>

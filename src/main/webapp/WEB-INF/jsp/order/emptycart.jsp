@@ -1,7 +1,7 @@
 <%@include file="/WEB-INF/jsp/template/header.jsp" %>
 <link rel="stylesheet" type="text/css" href="/static/css/order/order.css">
 
-<div class="container tpy">
+<div class="container">
     <h1>No items in shopping cart to checkout!</h1>
     <c:if test="${errorMessages != null}">
         <div class="alert-danger">

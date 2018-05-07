@@ -1,7 +1,7 @@
 <%@include file="/WEB-INF/jsp/template/header.jsp" %>
 
 <link rel='stylesheet' type='text/css' href='/static/paymentdetail/css/receipt.css'/>
-<div class="container tpy">
+<div class="container">
     <h1>Order Details Receipt</h1>
 </div>
 <div class="container border mbot">

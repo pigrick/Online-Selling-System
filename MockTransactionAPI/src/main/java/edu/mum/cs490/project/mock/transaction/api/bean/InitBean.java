@@ -150,6 +150,16 @@ public class InitBean implements ApplicationRunner {
         account6.setZipCode("52557");
         account6.setCreatedAt(new Date());
         accountDAO.save(account6);
+
+        Account account7= new Account();
+        account7.setCardNo("4916519227635608");
+        account7.setCVV("123");
+        account7.setAmount(50000.0);
+        account7.setExpirationDate("01/2020");
+        account7.setName("SOMESH");
+        account7.setZipCode("52557");
+        account7.setCreatedAt(new Date());
+        accountDAO.save(account7);
     }
 
     @Value("${api.secret.key.word}")

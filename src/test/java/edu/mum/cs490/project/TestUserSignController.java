@@ -69,9 +69,10 @@ public class TestUserSignController {
         vendorSignUpForm.setUsername("erdenebayar");
         vendorSignUpForm.setEmail("ebatsukh@mum.edu");
 
-        // Check User Signup
+        // Check User Signup to controller
         mockMvc.perform(post("/signup").flashAttr("moduleForm", signUpForm))
                 .andExpect(model().attributeHasFieldErrors("moduleForm", "username"));
+        //moduleForm is from SignController
 
         // Check Vendor Signup
         mockMvc.perform(post("/vendor/signup").flashAttr("moduleForm", vendorSignUpForm))

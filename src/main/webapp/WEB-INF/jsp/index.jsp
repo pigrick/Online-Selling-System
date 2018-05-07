@@ -22,7 +22,6 @@
                         <div class="col-md-5 no-padding">
                             <div class="aa-promo-left">
                                 <div class="aa-promo-banner">
-                                    <img style="object-fit: cover;" src="/static/img/for-women-450x450.jpg" alt="img">
                                     <img style="object-fit: cover;" src="${resourcePath}${products.get(0).image}" alt="img">
                                     <div class="aa-prom-content">
                                         <span>${products.get(0).name}</span>
@@ -146,5 +145,3 @@
 <%--<form action="/logout" method="post">
     <button type="submit">Logout</button>
 </form>--%>
-</body>
-</html>

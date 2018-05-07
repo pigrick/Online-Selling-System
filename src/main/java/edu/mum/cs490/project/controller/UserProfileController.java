@@ -119,11 +119,14 @@ public class UserProfileController {
             result.rejectValue("username", "username.duplicate");
             return "profile/editVendor";
         }
+
         user.setEmail(editForm.getEmail());
         user.setUsername(editForm.getUsername());
         user.setCompanyName(editForm.getCompanyName());
+
         userService.saveOrUpdate(user);
         model.put("message", Message.successfullySaved);
+
         model.put("editForm", new VendorForm(user));
         return "profile/editVendor";
     }

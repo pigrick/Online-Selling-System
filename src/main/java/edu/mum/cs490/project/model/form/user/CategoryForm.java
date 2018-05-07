@@ -13,39 +13,23 @@ import java.io.Serializable;
 public class CategoryForm implements Serializable {
 
     @NotBlank
-    private Category MainCategory;
+    private String name;
     @NotBlank
-    private String SubCategory;
-    private edu.mum.cs490.project.domain.Status Status;
+    private String parentCategory;
 
-
-    public CategoryForm(Category category) {
-        this.MainCategory  = category.getParentCategory();
-        this.SubCategory = category.getName();
-        this.Status = category.getStatus();
+    public String getName() {
+        return name;
     }
 
-    public Category getMainCategory() {
-        return MainCategory;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setMainCategory(Category mainCategory) {
-        MainCategory = mainCategory;
+    public String getParentCategory() {
+        return parentCategory;
     }
 
-    public String getSubCategory() {
-        return SubCategory;
-    }
-
-    public void setSubCategory(String subCategory) {
-        SubCategory = subCategory;
-    }
-
-    public edu.mum.cs490.project.domain.Status getStatus() {
-        return Status;
-    }
-
-    public void setStatus(edu.mum.cs490.project.domain.Status status) {
-        Status = status;
+    public void setParentCategory(String parentCategory) {
+        this.parentCategory = parentCategory;
     }
 }

@@ -48,7 +48,7 @@
                                 <c:set var="counter" value="${counter + 1}" scope="page"/>
                                 <li id="product-li-number-${counter}">
                                     <figure>
-                                        <a class="aa-product-img" href="/admin//product=${product.id}">
+                                        <a class="aa-product-img" href="/product/${product.id}">
                                             <img style="width: 250px; height: 300px" src="${resourcePath}${product.image}"></a>
                                         <a class="aa-add-card-btn" style="cursor: hand" href="/order/addToCart/${product.id}"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                                             <%--<a class="aa-add-card-btn" style="cursor: hand" ng-click="addToCart('${product.id}','${_csrf.parameterName}=${_csrf.token}')">--%>
@@ -117,21 +117,29 @@
                         <h3>Category</h3>
                         <ul class="aa-catg-nav">
                             <c:forEach items="${categories}" var="row">
-                                <li><a href="${searchUrl}<my:replaceParam name="categoryId" value="${row.id}"/> ">${row.name}</a></li>
+                                <li><a <c:if test="${row.id eq param.categoryId}">class="selected" </c:if> href="${searchUrl}<my:replaceParam name="categoryId" value="${row.id}"/> ">${row.name}</a></li>
                                 <c:if test="${row.childCategories ne null}">
                                     <ul class="aa-catg-nav">
                                         <c:forEach items="${row.childCategories}" var="cRow">
-                                            <li><a href="${searchUrl}<my:replaceParam name="categoryId" value="${cRow.id}"/> ">--- ${cRow.name}</a></li>
+                                            <li><a <c:if test="${cRow.id eq param.categoryId}">class="selected" </c:if> href="${searchUrl}<my:replaceParam name="categoryId" value="${cRow.id}"/> ">--- ${cRow.name}</a></li>
                                             <c:if test="${cRow.childCategories ne null}">
                                                 <ul class="aa-catg-nav">
                                                     <c:forEach items="${cRow.childCategories}" var="sRow">
-                                                        <li><a href="${searchUrl}<my:replaceParam name="categoryId" value="${sRow.id}"/> ">------ ${sRow.name}</a></li>
+                                                        <li><a <c:if test="${sRow.id eq param.categoryId}">class="selected" </c:if> href="${searchUrl}<my:replaceParam name="categoryId" value="${sRow.id}"/> ">------ ${sRow.name}</a></li>
                                                     </c:forEach>
                                                 </ul>
                                             </c:if>
                                         </c:forEach>
                                     </ul>
                                 </c:if>
+                            </c:forEach>
+                        </ul>
+                    </div>
+                    <div class="aa-sidebar-widget">
+                        <h3>Vendor</h3>
+                        <ul class="aa-catg-nav">
+                            <c:forEach items="${vendors}" var="row">
+                                <li><a <c:if test="${row.id eq param.vendorId}">class="selected" </c:if> href="${searchUrl}<my:replaceParam name="vendorId" value="${row.id}"/> ">${row.companyName}</a></li>
                             </c:forEach>
                         </ul>
                     </div>

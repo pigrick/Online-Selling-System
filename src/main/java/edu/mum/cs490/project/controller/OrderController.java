@@ -238,10 +238,6 @@ public class OrderController {
             return this.orderService.checkProductAvailabilityForCustomer(session, model, productUnavailability, order, user);
         }
 
-//        Integer responseCode = mockPaymentService.doTransaction(System.currentTimeMillis() + "", paymentForm.getCardNumber(),
-//                paymentForm.getCardExpirationDate(), paymentForm.getCardHolderName(), paymentForm.getCvv(),
-//                paymentForm.getCardZipcode(), order.getTotalPriceWithTax(), "4322637205582291");
-
         Integer responseCode = orderService.purchase(order);
 
         if (responseCode != 1) {
@@ -310,9 +306,6 @@ public class OrderController {
             return this.orderService.checkProductAvailabilityForGuest(session, model, productUnavailability, order);
         }
 
-//        Integer responseCode = mockPaymentService.doTransaction(System.currentTimeMillis() + "", paymentForm.getCardNumber(),
-//                paymentForm.getCardExpirationDate(), paymentForm.getCardHolderName(), paymentForm.getCvv(),
-//                paymentForm.getCardZipcode(), order.getTotalPriceWithTax(), "4322637205582291");
         Integer responseCode = orderService.purchase(order);
 
         if (responseCode != 1) {

@@ -181,8 +181,8 @@ public class OrderServiceImpl implements OrderService {
 
     private TransactionTemplate getPurchaseTemplate(Order order, CardDetail OSSCardDetail, CardDetail taxCardDetail) {
         NotifierSubject notifierSubject = new NotifierSubject();
-        notifierSubject.addObserver(new MessageObserver());
-        notifierSubject.addObserver(new MailObserver(order, mailService));
+//        notifierSubject.addObserver(new MessageObserver());
+//        notifierSubject.addObserver(new MailObserver(order, mailService));
 
         TransferSubject transferSubject = new TransferSubject();
         transferSubject.addObserver(new TransferToVendorObserver(order, OSSCardDetail, paymentService, cardDetailRepository));

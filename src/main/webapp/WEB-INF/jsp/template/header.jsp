@@ -243,40 +243,36 @@
                     <!-- Left nav -->
                     <ul class="nav navbar-nav">
                         <li><a href="/">Home</a></li>
-                        <li><a href="#">Men <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Trousers</a></li>
-                                <li><a href="#">T-Shirt</a></li>
-                                <li><a href="#">Shoes</a></li>
-                                <li><a href="#">And more.. <span class="caret"></span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#">Sandals</a></li>
-                                        <li><a href="#">Loafers</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <li><a href="#">Women <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Jean</a></li>
-                                <li><a href="#">Pant</a></li>
-                                <li><a href="#">Shoes</a></li>
-                                <li><a href="#">And more.. <span class="caret"></span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#">Sandals</a></li>
-                                        <li><a href="#">Loafers</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-
+                        <c:forEach items="${mainCategories}" var="category">
+                            <li><a href="product/search?categoryId=${category.id}">${category.name} <span class="caret"></span></a>
+                            <c:if test="${category.childCategories ne null && not empty category.childCategories}">
+                                <ul class="dropdown-menu">
+                                <c:forEach items="${category.childCategories}" var="subCategory">
+                                    <li><a href="product/search?categoryId=${subCategory.id}">${subCategory.name}
+                                        <c:if test="${subCategory.childCategories ne null && not empty subCategory.childCategories}">
+                                            <span class="caret">
+                                        </c:if>
+                                    </a>
+                                    <c:if test="${subCategory.childCategories ne null && not empty subCategory.childCategories}">
+                                        <ul class="dropdown-menu">
+                                        <c:forEach items="${subCategory.childCategories}" var="sub2Category">
+                                            <li><a href="product/search?categoryId=${sub2Category.id}">${sub2Category.name}</a></li>
+                                        </c:forEach>
+                                        </ul>
+                                    </c:if>
+                                    </li>
+                                </c:forEach>
+                                </ul>
+                            </c:if>
+                            </li>
+                        </c:forEach>
                         <li><a href="/contact">Contact</a></li>
                         <sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_VENDOR')">
                             <li><a href="/report/reportFilter">Report</a></li>
                         </sec:authorize>
                         <li><a href="#">Products<span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="/product/all">All</a></li>
+                                <li><a href="/product/list">All</a></li>
                                 <sec:authorize access="hasRole('ROLE_VENDOR')">
                                     <li><a href="/vendor/product/all">Own products</a></li>
                                     <li><a href="/vendor/product/save">Upload</a></li>
@@ -292,7 +288,6 @@
             </div>
         </div>
     </div>
-
 </section>
 <span class="clearfix"></span>
 

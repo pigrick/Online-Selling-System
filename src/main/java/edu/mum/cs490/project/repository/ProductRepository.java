@@ -24,7 +24,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "(:categoryId IS NULL OR a.category.id IN :categoryIds) AND " +
             "(:vendorId IS NULL OR a.vendor.id =:vendorId) AND " +
             "((:status IS NULL AND a.status = 'ENABLED') OR (a.status =:status)) AND " +
-            "(a.vendor.status = 'ENABLED')")
+            "(a.vendor.status = 'ENABLED') order by a.id desc")
 //    List<Product> find(@Param("name") String name, @Param("categoryId") Integer categoryId, @Param("categoryIds") Integer[] categoryIds, @Param("vendorId") Integer vendorId, @Param("status") Status status, Sort sort);
     List<Product> find(@Param("name") String name, @Param("categoryId") Integer categoryId, @Param("categoryIds") List<Integer> categoryIds, @Param("vendorId") Integer vendorId, @Param("status") Status status, Sort sort);
 

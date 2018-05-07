@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.ServletContext;
 import java.util.List;
 
 @Controller
@@ -33,19 +34,24 @@ public class HomeController {
     @Autowired
     private VendorService vendorService;
 
+    @Autowired
+    private ServletContext servletContext;
+
     @RequestMapping("/")
     public String getHome(Model model){
 
 
         List<Product> productList = productService.find(null, null, null, Status.ENABLED, null);
         List<Category> mainCategories = categoryService.find(null, null, Status.ENABLED);
+        List<Category> categories = categoryService.findAllActiveInList();
         List<Vendor> vendors = vendorService.find(null, null, Status.ENABLED);
 
         productList.addAll(productList);
         model.addAttribute("products", productList);
-        model.addAttribute("mainCategories", mainCategories);
-        model.addAttribute("topProducts", productList);
         model.addAttribute("vendors", vendors);
+        model.addAttribute("categories", categories);
+
+        servletContext.setAttribute("mainCategories", mainCategories);
 
         return "index";
     }
@@ -54,8 +60,5 @@ public class HomeController {
     public String getContact(){
         return "contact";
     }
-
-
-
 
 }

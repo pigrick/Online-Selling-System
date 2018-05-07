@@ -16,6 +16,7 @@ public class Category implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Category parentCategory;
     private String name;
+    private String image;
     @Enumerated(EnumType.STRING)
     private Status status = Status.ENABLED;
 
@@ -47,6 +48,14 @@ public class Category implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public Status getStatus() {

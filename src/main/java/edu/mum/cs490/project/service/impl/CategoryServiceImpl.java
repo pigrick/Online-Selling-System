@@ -28,6 +28,12 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public List<Category> findAllActiveInList() {
+        return categoryRepostitory.findByStatusOrderByParentCategoryAsc(Status.ENABLED);
+    }
+
+
+    @Override
     public void save(Category category) {
         categoryRepostitory.save(category);
     }
@@ -42,7 +48,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void changeStatus(Integer id, Status status) {
         Category category = getCategoryById(id);
-        category.setStatus(Status.DELETED);
+        category.setStatus(status);
         categoryRepostitory.save(category);
     }
 

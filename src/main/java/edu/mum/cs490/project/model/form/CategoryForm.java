@@ -1,6 +1,7 @@
 package edu.mum.cs490.project.model.form;
 
 import edu.mum.cs490.project.domain.Category;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -13,6 +14,7 @@ public class CategoryForm implements Serializable {
     private Integer id;
     @NotBlank(message = "Can not be empty")
     private String name;
+    private MultipartFile file;
     private Integer parentId;
 
     public CategoryForm() {
@@ -38,6 +40,14 @@ public class CategoryForm implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
     }
 
     public Integer getParentId() {

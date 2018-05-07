@@ -22,13 +22,13 @@ INSERT INTO vendor VALUES ('ZARA', 'vendor\\5\\5.png', 5);
 INSERT INTO vendor VALUES ('GAMET', 'vendor\\6\\6.jpg', 6);
 INSERT INTO vendor VALUES ('PANASONIC', 'vendor\\7\\7.png', 7);
 
-INSERT INTO category VALUES (1, "Women",'ENABLED',null);
-INSERT INTO category VALUES (2, "Men",'ENABLED',null);
-INSERT INTO category VALUES (3, "Clothing",'ENABLED',1);
-INSERT INTO category VALUES (4, "Bag",'ENABLED',1);
-INSERT INTO category VALUES (5, "Watches",'ENABLED',2);
-INSERT INTO category VALUES (6, "Shoes",'ENABLED',2);
-INSERT INTO category VALUES (7, "Accessories",'ENABLED',5);
+INSERT INTO category VALUES (1, 'category\\1\\1.jpg', "Women",'ENABLED',null);
+INSERT INTO category VALUES (2, 'category\\2\\2.jpg', "Men",'ENABLED',null);
+INSERT INTO category VALUES (3, 'category\\3\\3.jpg', "Clothing",'ENABLED',1);
+INSERT INTO category VALUES (4, 'category\\4\\4.jpg', "Bag",'ENABLED',1);
+INSERT INTO category VALUES (5, 'category\\5\\5.jpg', "Watches",'ENABLED',2);
+INSERT INTO category VALUES (6, 'category\\6\\6.jpg', "Shoes",'ENABLED',2);
+INSERT INTO category VALUES (7, 'category\\7\\7.jpg', "Accessories",'ENABLED',5);
 
 
 INSERT INTO user VALUES (3, 'ylai@mum.edu','$2a$10$ibMbCkRcLFo4snX8071GSuJ9bV15Jvl9wFNafEkiSBTFuFt8m9BtO', 'ENABLED', 'yeerick');

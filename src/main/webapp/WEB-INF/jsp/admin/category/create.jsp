@@ -21,6 +21,9 @@
             module.list();
         },
         submit: function() {
+            if($('#file').val() == null || $('#file').val() == ''){
+                $('#file').remove();
+            }
             $('#categoryForm').submit();
         }
     };
@@ -40,12 +43,17 @@
     </h4>
 </div>
 <div class="modal-body">
-    <form:form modelAttribute="categoryForm" method="post">
+    <form:form modelAttribute="categoryForm" method="post" enctype="multipart/form-data">
         <form:hidden path="id"/>
         <div class="form-group">
-            <form:errors path="name" cssStyle="color: red" />
             <label for="name">Name</label>
+            <form:errors path="name" cssStyle="color: red" />
             <form:input path="name" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="file">Image</label>
+            <form:errors path="file" cssStyle="color: red" />
+            <form:input path="file" type="file" class="form-control" />
         </div>
         <form:select path="parentId" cssClass="form-control">
             <form:option value="">Select Category</form:option>

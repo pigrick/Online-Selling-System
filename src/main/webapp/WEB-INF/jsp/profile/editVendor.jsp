@@ -39,7 +39,7 @@
                 <div class="aa-myaccount-area">
                     <div class="col-md-6" style="float: none; margin-left: 35%; width: 30%">
                         <div class="aa-myaccount-login">
-                            <h4 class="modal-title">Edit "<i>${editForm.username}</i>" Profile</h4>
+                            <h4 class="modal-title">Edit Profile</h4>
                             <form:form modelAttribute="editForm" action="${pageContext.request.contextPath}/profile/vendor/edit" method="post">
                                 <form:hidden path="id"/>
                                 <div class="form-group">

@@ -39,7 +39,7 @@
     });
     module = {
         list : function(page){
-            f (page === undefined){
+            if (page === undefined){
                 page = 1;
             }
             $.get('/admin/user/customer/list?page=' + page, $("#filterForm").serialize(), function(data){

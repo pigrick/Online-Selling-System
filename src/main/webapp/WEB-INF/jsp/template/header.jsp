@@ -185,7 +185,7 @@
                                 <ul>
                                     <c:forEach var="orderDetail" items="${shoppingcart.orderDetails}">
                                         <li>
-                                            <a class="aa-cartbox-img"><img src="/static/images/${orderDetail.product.id}/0.png" alt="img"></a>
+                                            <a class="aa-cartbox-img"><img src="${resourcePath}${orderDetail.product.image}" alt="img"></a>
                                             <div class="aa-cartbox-info">
                                                 <h4><a href="#"></a></h4>
                                                 <fmt:formatNumber value="${orderDetail.price}" type="currency"

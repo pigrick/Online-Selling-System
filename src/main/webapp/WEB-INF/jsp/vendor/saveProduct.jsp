@@ -39,7 +39,7 @@
         <form:hidden path="id"/>
         <div class="form-group">
             <label for="categories">Category</label>
-            <form:select name="categoryId" path="categoryId">
+            <form:select name="categoryId" cssClass="form-control" path="categoryId">
                 <form:option value="">Select Category</form:option>
                 <c:forEach items="${categories}" var="row">
                     <form:option value="${row.id}">${row.name}</form:option>

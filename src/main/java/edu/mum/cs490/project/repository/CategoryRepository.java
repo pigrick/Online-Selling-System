@@ -19,7 +19,7 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
     @Query("SELECT a FROM Category a WHERE " +
             "(:name IS NULL OR a.name like %:name%) AND " +
             "((:parentId IS NULL AND a.parentCategory.id IS NULL) OR (a.parentCategory.id =:parentId)) AND " +
-            "(:status IS NULL OR a.status =:status)")
+            "((:status IS NULL AND a.status = 'ENABLED') OR (a.status =:status))")
     List<Category> find(@Param("name") String name, @Param("parentId") Integer parentId, @Param("status") Status status);
 
 }

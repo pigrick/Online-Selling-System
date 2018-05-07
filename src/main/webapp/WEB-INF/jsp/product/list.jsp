@@ -48,7 +48,7 @@
                                 <c:set var="counter" value="${counter + 1}" scope="page"/>
                                 <li id="product-li-number-${counter}">
                                     <figure>
-                                        <a class="aa-product-img" href="/admin//product=${product.id}">
+                                        <a class="aa-product-img" href="/product/${product.id}">
                                             <img style="width: 250px; height: 300px" src="${resourcePath}${product.image}"></a>
                                         <a class="aa-add-card-btn" style="cursor: hand" href="/order/addToCart/${product.id}"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                                             <%--<a class="aa-add-card-btn" style="cursor: hand" ng-click="addToCart('${product.id}','${_csrf.parameterName}=${_csrf.token}')">--%>
@@ -101,10 +101,56 @@
                             </c:if>
                         });
                     </script>
+                    <c:set value="${result.getNumber() + 1}" var="currentIndex"/>
+                    <c:choose>
+                        <c:when test="${1 < (currentIndex - 5)}">
+                            <c:set value="${currentIndex - 5}" var="beginIndex"/>
+                        </c:when>
+                        <c:otherwise>
+                            <c:set value="${1}" var="beginIndex"/>
+                        </c:otherwise>
+                    </c:choose>
+                    <c:choose>
+                        <c:when test="${(beginIndex + 10) < result.getTotalPages()}">
+                            <c:set value="${beginIndex + 10}" var="endIndex"/>
+                        </c:when>
+                        <c:otherwise>
+                            <c:set value="${result.getTotalPages()}" var="endIndex"/>
+                        </c:otherwise>
+                    </c:choose>
                     <div class="aa-product-catg-pagination">
                         <nav>
-                            <ul class="pagination" id="pagination-ul">
-
+                            <ul class="pagination">
+                                <c:choose>
+                                    <c:when test="${currentIndex == 1}">
+                                        <li class="disabled"><a href="javascript:void(0);">&lt;&lt;</a></li>
+                                        <li class="disabled"><a href="javascript:void(0);">&lt;</a></li>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <li><a href="/product/list?page;">&lt;&lt;</a></li>
+                                        <li><a href="/product/list?page=${currentIndex-1}">&lt;</a></li>
+                                    </c:otherwise>
+                                </c:choose>
+                                <c:forEach var="i" begin="${beginIndex}" end="${endIndex}">
+                                    <c:choose>
+                                        <c:when test="${i == currentIndex}">
+                                            <li class="disabled"><a href="/product/list?page=${i}"><c:out value="${i}"/></a></li>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <li><a href="/product/list?page=${i}"><c:out value="${i}"/></a></li>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:forEach>
+                                <c:choose>
+                                    <c:when test="${currentIndex ge result.totalPages}">
+                                        <li class="disabled"><a href="javascript:void(0);">&gt;</a></li>
+                                        <li class="disabled"><a href="javascript:void(0);">&gt;&gt;</a></li>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <li><a href="/product/list?page=${currentIndex + 1}" >&gt;</a></li>
+                                        <li><a href="/product/list?page=${result.totalPages}">&gt;&gt;</a></li>
+                                    </c:otherwise>
+                                </c:choose>
                             </ul>
                         </nav>
                     </div>
@@ -117,21 +163,29 @@
                         <h3>Category</h3>
                         <ul class="aa-catg-nav">
                             <c:forEach items="${categories}" var="row">
-                                <li><a href="${searchUrl}<my:replaceParam name="categoryId" value="${row.id}"/> ">${row.name}</a></li>
+                                <li><a <c:if test="${row.id eq param.categoryId}">class="selected" </c:if> href="${searchUrl}<my:replaceParam name="categoryId" value="${row.id}"/> ">${row.name}</a></li>
                                 <c:if test="${row.childCategories ne null}">
                                     <ul class="aa-catg-nav">
                                         <c:forEach items="${row.childCategories}" var="cRow">
-                                            <li><a href="${searchUrl}<my:replaceParam name="categoryId" value="${cRow.id}"/> ">--- ${cRow.name}</a></li>
+                                            <li><a <c:if test="${cRow.id eq param.categoryId}">class="selected" </c:if> href="${searchUrl}<my:replaceParam name="categoryId" value="${cRow.id}"/> ">--- ${cRow.name}</a></li>
                                             <c:if test="${cRow.childCategories ne null}">
                                                 <ul class="aa-catg-nav">
                                                     <c:forEach items="${cRow.childCategories}" var="sRow">
-                                                        <li><a href="${searchUrl}<my:replaceParam name="categoryId" value="${sRow.id}"/> ">------ ${sRow.name}</a></li>
+                                                        <li><a <c:if test="${sRow.id eq param.categoryId}">class="selected" </c:if> href="${searchUrl}<my:replaceParam name="categoryId" value="${sRow.id}"/> ">------ ${sRow.name}</a></li>
                                                     </c:forEach>
                                                 </ul>
                                             </c:if>
                                         </c:forEach>
                                     </ul>
                                 </c:if>
+                            </c:forEach>
+                        </ul>
+                    </div>
+                    <div class="aa-sidebar-widget">
+                        <h3>Vendor</h3>
+                        <ul class="aa-catg-nav">
+                            <c:forEach items="${vendors}" var="row">
+                                <li><a <c:if test="${row.id eq param.vendorId}">class="selected" </c:if> href="${searchUrl}<my:replaceParam name="vendorId" value="${row.id}"/> ">${row.companyName}</a></li>
                             </c:forEach>
                         </ul>
                     </div>

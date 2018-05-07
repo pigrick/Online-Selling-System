@@ -9,7 +9,7 @@
             <th scope="col"></th>
             <th scope="col">Product Name</th>
             <th scope="col">Price</th>
-            <th scope="col">Quantity</th>
+            <th scope="col">Original Quantity</th>
             <th scope="col">Update Quantity</th>
             <th scope="col">Total Price</th>
         </tr>
@@ -20,14 +20,16 @@
                 <input type="hidden" id="productid" name="productid" value="${orderDetail.product.id}"/>
                 <td>
                     <a href="/product/${orderDetail.product.id}"><img
-                        src="/static/images/${orderDetail.product.id}/0.png" alt="img" height="100" width="100"></a>
+                        src="${resourcePath}${orderDetail.product.image}" alt="img" height="100" width="100"></a>
                 </td>
                 <td><a href="/product/${orderDetail.product.id}"><c:out value="${orderDetail.product.name}"/></a></td>
                 <td id="price"><fmt:formatNumber value="${orderDetail.price}" type="currency" currencySymbol="$"/></td>
-                <td id="quantity"><c:out value="${orderDetail.quantity}"/></td>
+                <td id="quantity"><c:out value="${orderDetail.quantity}"/>
+                    <c:if test="${orderDetail.quantity le 0}"><span class="alert-danger">--Out of Stock--</span></c:if>
+                </td>
                 <td>
-                    <input type="number" id="cartquantity2" onblur="updateQuantity(${orderDetail.product.id})" min="0"
-                           value="${orderDetail.quantity}"/>
+                    <input type="number" id="cartquantity2" onchange="updateQuantity(${orderDetail.product.id})" min="0"
+                           style="width: 100px;cursor: default" max="${orderDetail.product.quantity}" value="${orderDetail.quantity}"/>
                 </td>
                 <td id="totalprice"><fmt:formatNumber value="${orderDetail.calculateTotalPrice()}"
                                                       type="currency" currencySymbol="$"/></td>

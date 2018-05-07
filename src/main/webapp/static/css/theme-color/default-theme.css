@@ -172,7 +172,9 @@ h2 {
   color: #ff6666;
   border-bottom: 1px solid #ff6666;
 }
-#aa-product-category .aa-sidebar .aa-sidebar-widget .aa-catg-nav li a:hover, #aa-product-category .aa-sidebar .aa-sidebar-widget .aa-catg-nav li a:focus {
+#aa-product-category .aa-sidebar .aa-sidebar-widget .aa-catg-nav li a.selected,
+#aa-product-category .aa-sidebar .aa-sidebar-widget .aa-catg-nav li a:hover,
+#aa-product-category .aa-sidebar .aa-sidebar-widget .aa-catg-nav li a:focus {
   color: #ff6666;
 }
 #aa-product-category .aa-sidebar .aa-sidebar-widget .tag-cloud a:hover, #aa-product-category .aa-sidebar .aa-sidebar-widget .tag-cloud a:focus {

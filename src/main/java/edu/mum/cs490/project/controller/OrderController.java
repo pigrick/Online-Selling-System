@@ -109,23 +109,27 @@ public class OrderController {
     }
 
     @GetMapping("addToCart/{productId}")
-    public String addToCart(HttpSession session, @PathVariable("productId") Integer productId) {
+    public String addToCart(HttpSession session, @PathVariable("productId") Integer productId,
+                            @RequestParam(value = "quantity", defaultValue = "1") Integer quantity) {
         ShoppingCart sc = (ShoppingCart) session.getAttribute("shoppingcart");
         Product product = this.productService.getOne(productId);
+        if(product.getQuantity() < quantity){
+            quantity = product.getQuantity();
+        }
         if (sc == null) {
             sc = new ShoppingCart();
-            sc.getOrderDetails().add(new OrderDetail(product, 1, product.getPrice()));
+            sc.getOrderDetails().add(new OrderDetail(product, quantity, product.getPrice()));
         } else {
             boolean found = false;
             for (OrderDetail od : sc.getOrderDetails()) {
                 if (od.getProduct().getId().equals(productId)) {
-                    od.setQuantity(od.getQuantity() + 1);
+                    od.setQuantity(od.getQuantity() + quantity);
                     found = true;
                     break;
                 }
             }
             if (!found) {
-                sc.getOrderDetails().add(new OrderDetail(product, 1, product.getPrice()));
+                sc.getOrderDetails().add(new OrderDetail(product, quantity, product.getPrice()));
             }
         }
         session.setAttribute("shoppingcart", sc);
@@ -144,9 +148,19 @@ public class OrderController {
 
     @PostMapping("shoppingcart/update")
     public @ResponseBody
-    String updateCart(HttpSession session, @RequestParam("productid") String productid, @RequestParam("updatedquantity") String quantity) {
+    String updateCart(HttpSession session, @RequestParam("productid") Integer productid, @RequestParam("updatedquantity") Integer quantity) {
         ShoppingCart sc = (ShoppingCart) session.getAttribute("shoppingcart");
-        sc.update(Integer.parseInt(productid), Integer.parseInt(quantity));
+        sc.update(productid, quantity);
+
+        session.setAttribute("shoppingcart", sc);
+        return "success";
+    }
+
+    @PostMapping("shoppingcart/remove")
+    public @ResponseBody
+    String removeCart(HttpSession session, @RequestParam("productid") Integer productid) {
+        ShoppingCart sc = (ShoppingCart) session.getAttribute("shoppingcart");
+        sc.remove(productid);
 
         session.setAttribute("shoppingcart", sc);
         return "success";
@@ -305,6 +319,8 @@ public class OrderController {
             model.addAttribute("badcard", "Creditcard Declined!");
             return "order/guestsubmitorder";
         }
+
+        orderService.deductProductQuantityAfterPurchase(order);
 
         order = orderService.saveOrUpdate(order);
 

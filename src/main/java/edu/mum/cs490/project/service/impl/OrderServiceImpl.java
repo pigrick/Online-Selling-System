@@ -174,7 +174,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void deductProductQuantityAfterPurchase(Order order) {
         for (OrderDetail od : order.getOrderDetails()) {
-            //this.productRepository.deductProductAfterPurchase(od.getQuantity(), od.getProduct().getId());
+            this.productRepository.deductProductAfterPurchase(od.getQuantity(), od.getProduct().getId());
         }
     }
 

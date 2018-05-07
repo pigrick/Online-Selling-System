@@ -19,7 +19,7 @@
                             <option value="${row}">${row}</option>
                         </c:forEach>
                     </select>
-                    <button class="btn btn-default" type="button" onclick="module.list()">Search</button>
+                    <button class="btn btn-default" type="button" onclick="module.list(1)">Search</button>
                 </form>
             </div>
         </div>

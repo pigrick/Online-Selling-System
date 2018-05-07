@@ -39,7 +39,7 @@
                     <c:forEach var="orderDetail" items="${order.orderDetails}">
                         <tr>
                             <td><a href="/product/${orderDetail.product.id}"><img
-                                    src="/static/images/${orderDetail.product.id}/0.png" alt="img" height="100"
+                                    src="${resourcePath}${orderDetail.product.image}" alt="img" height="100"
                                     width="100"></a></td>
                             <td><a href="/product/${orderDetail.product.id}"><c:out
                                     value="${orderDetail.product.name}"/></a></td>

@@ -33,9 +33,16 @@
                     <i class="glyphicon glyphicon-pencil"></i>
                 </a>
 
-                <a href="#delete" type="button" onclick="module.delete('${row.id}')">
-                    <i class="glyphicon glyphicon-remove"></i>
-                </a>
+                <c:if test="${row.status eq 'ENABLED'}">
+                    <a href="#delete" type="button" onclick="module.delete('${row.id}')">
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </a>
+                </c:if>
+                <c:if test="${row.status ne 'ENABLED'}">
+                    <a href="#changeStatus" type="button" onclick="module.changeStatus('${row.id}', 'ENABLED')">
+                        <i class="glyphicon glyphicon-ok"></i>
+                    </a>
+                </c:if>
 
             </td>
         </tr>

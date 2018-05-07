@@ -1,6 +1,6 @@
-<%@include file="/WEB-INF/include.jsp"%>
+<%@include file="/WEB-INF/include.jsp" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="/WEB-INF/jsp/template/header.jsp"%>
+<%@include file="/WEB-INF/jsp/template/header.jsp" %>
 
 <!--<h1>Product Inventory</h1> -->
 
@@ -8,7 +8,7 @@
 
     <h1 class="page-header">${title}</h1>
 
-       <div class="table-responsive">
+    <div class="table-responsive">
         <table class="table table-striped">
 
             <thead>
@@ -40,17 +40,24 @@
 
             </tbody>
         </table>
+
         <a href="/vendor/product/save"
-        onclick="$window.location.href='saveProduct'"><button class="btn btn-primary">Add Product</button></a>
+           onclick="$window.location.href='saveProduct'">
+            <button class="btn btn-primary">Add Product</button>
+        </a>
     </div>
 </div>
 </div>
 </div>
 
-<%@include file="/WEB-INF/jsp/template/footer.jsp"%>
+<%@include file="/WEB-INF/jsp/template/footer.jsp" %>
 
 <c:if test="${!empty message}">
     <script>
-        $.sticky('<spring:message code="${message.message}"/>', {autoclose : 5000, position: "top-right", type: "st-${fn:toLowerCase(message.type)}" });
+        $.sticky('<spring:message code="${message.message}"/>', {
+            autoclose: 5000,
+            position: "top-right",
+            type: "st-${fn:toLowerCase(message.type)}"
+        });
     </script>
 </c:if>

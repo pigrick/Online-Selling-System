@@ -20,6 +20,7 @@ public class Product {
     private Vendor vendor;
     private int quantity;
     private double price;
+    @Lob
     private String description;
     private String image;
     @Enumerated(EnumType.STRING)

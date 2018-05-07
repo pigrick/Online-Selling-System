@@ -36,6 +36,8 @@ public class VendorProductController {
     @Autowired
     private FileManagementService fileManagementService;
 
+    private final int PAGE_SIZE = 10;
+
     @GetMapping
     public String productManagement(@AuthenticationPrincipal Vendor vendor, Model model) {
         List<Product> productsList = productService.find(null, null, vendor.getId(), Status.ENABLED, null);
@@ -48,11 +50,12 @@ public class VendorProductController {
     @RequestMapping(value = "/list")
     public String getProduct(@AuthenticationPrincipal Vendor vendor,
                              @RequestParam(required = false) String name,
-                             //@RequestParam(defaultValue = "1") Integer page,
+                             @RequestParam(defaultValue = "1") Integer page,
                              @RequestParam(required = false) Integer categoryId, Model model) {
-
-        List<Product> productsList = productService.find(name.equals("") ? null : name, categoryId, vendor.getId(), Status.ENABLED, null);
-        model.addAttribute("productList", productsList);
+        Page<Product> productsList = productService.findPage(name.equals("") ? null : name, categoryId, vendor.getId(), Status.ENABLED, PageRequest.of(page-1, PAGE_SIZE));
+        //List<Product> productsList = productService.find(name.equals("") ? null : name, categoryId, vendor.getId(), Status.ENABLED, null);
+        model.addAttribute("result", productsList);
+        model.addAttribute("productList", productsList.getContent());
 
         return "/vendor/list";
     }
@@ -75,21 +78,20 @@ public class VendorProductController {
     @PostMapping("/save")
     public String saveOrUpdateProduct(@Valid @ModelAttribute("productForm") ProductForm form, BindingResult result,
                                       @AuthenticationPrincipal Vendor vendor,
-                                      @RequestParam("file") MultipartFile file,
+                                      //@RequestParam("file") MultipartFile file,
                                       Model model) {
 
         model.addAttribute("title", "Product");
         model.addAttribute("categories", categoryService.find(null, null, Status.ENABLED));
 
-        if (file.isEmpty() || result.hasErrors()) {
-            model.addAttribute("message", new Message(Message.Type.ERROR, "Please fill out the form!"));
+        if (result.hasErrors()) {
+            model.addAttribute("message",  Message.errorOccurred);
             return "vendor/saveProduct";
-        } else if (!file.isEmpty() && !fileManagementService.checkImageExtension(file.getOriginalFilename())) {
-            model.addAttribute("message", new Message(Message.Type.ERROR, "File extension must be .jpg or .png!"));
+        } else if (form.getFile() != null &&!form.getFile().isEmpty() && !fileManagementService.checkImageExtension(form.getFile().getOriginalFilename())) {
+            result.rejectValue("image", null, "File extension must be .jpg or .png!");
             return "vendor/saveProduct";
         }
 
-        String url = file.getOriginalFilename();
         Product product;
         if (form.getId() == null) {
             product = new Product();
@@ -105,15 +107,15 @@ public class VendorProductController {
         product.setVendor(vendor);
         productService.saveOrUpdate(product);
 
-        if (file != null) {
-            String fileFullName = fileManagementService.createFile(file, "product", product.getId());
+        if (form.getFile() != null) {
+            String fileFullName = fileManagementService.createFile(form.getFile(), "product", product.getId());
 
             if (fileFullName != null) {
                 product.setImage(fileFullName);
                 productService.saveOrUpdate(product);
-                model.addAttribute("message", new Message(Message.Type.SUCCESS, "successfully.uploaded"));
             }
         }
+        model.addAttribute("message", new Message(Message.Type.SUCCESS, "successfully.uploaded"));
         return "vendor/saveProduct";
     }
 

@@ -1,12 +1,10 @@
 package edu.mum.cs490.project.controller;
 
-import edu.mum.cs490.project.domain.Admin;
-import edu.mum.cs490.project.domain.Customer;
-import edu.mum.cs490.project.domain.User;
-import edu.mum.cs490.project.domain.Vendor;
+import edu.mum.cs490.project.domain.*;
 import edu.mum.cs490.project.model.Message;
 import edu.mum.cs490.project.model.form.user.*;
 import edu.mum.cs490.project.service.UserService;
+import edu.mum.cs490.project.utils.AESConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 /**
@@ -29,13 +28,14 @@ import javax.validation.Valid;
 public class UserProfileController {
 
     private final UserService userService;
-
+    private final AESConverter aesConverter;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserProfileController(UserService userService, PasswordEncoder passwordEncoder) {
+    public UserProfileController(UserService userService, PasswordEncoder passwordEncoder, AESConverter aesConverter) {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
+        this.aesConverter = aesConverter;
     }
 
     @RequestMapping
@@ -60,7 +60,7 @@ public class UserProfileController {
         if (userService.existByIdNotAndUsername(user.getId(), editForm.getUsername())) {
             model.put("message", new Message(Message.Type.ERROR, "username.duplicate"));
             result.rejectValue("username", "username.duplicate");
-            return "profile/editVendor";
+            return "profile/editCustomer";
         }
 
         user.setEmail(editForm.getEmail());
@@ -69,7 +69,7 @@ public class UserProfileController {
         user.setLastName(editForm.getLastName());
         userService.saveOrUpdate(user);
         model.put("message", Message.successfullySaved);
-        return "profile/editCustomer";
+        return "redirect:/";
     }
 
     @RequestMapping(value = "admin/edit", method = RequestMethod.GET)
@@ -131,6 +131,35 @@ public class UserProfileController {
         return "profile/editVendor";
     }
 
+    @RequestMapping(value = "card/edit", method = RequestMethod.GET)
+    public String cardEdit(@AuthenticationPrincipal User user, ModelMap model) {
+        CardDetailForm cardDetailForm = new CardDetailForm();
+        decToCardDetailForm(user.getCards().get(0), cardDetailForm);
+        model.put("editCard", cardDetailForm);
+        return "profile/editCard";
+    }
+
+    @RequestMapping(value = "card/edit", method = RequestMethod.POST)
+    public String cardEdit(@AuthenticationPrincipal User user, @Valid @ModelAttribute("editCard") CardDetailForm editCard, BindingResult result, ModelMap model, HttpServletRequest request) {
+        if (result.hasErrors()) {
+            model.put("message", Message.errorOccurred);
+            return "profile/editCard";
+        }
+
+        //check for paymentform validation error
+        if (request.getParameter("month") != null && request.getParameter("year") != null) {
+            editCard.setCardExpirationDate(request.getParameter("month") + "/" + request.getParameter("year"));
+        }
+
+        CardDetail cardDetail = user.getCards().get(0);
+        encToCardDetail(cardDetail, editCard);
+        user.getCards().clear();
+        user.getCards().add(cardDetail);
+        userService.saveOrUpdate(user);
+        model.put("message", Message.successfullySaved);
+        return "redirect:/";
+    }
+
     @RequestMapping(value = "edit/password", method = RequestMethod.GET)
     public String profileEditPassword(ModelMap model) {
         model.put("passwordForm", new PasswordForm());
@@ -159,5 +188,25 @@ public class UserProfileController {
         model.addFlashAttribute("message", new Message(Message.Type.SUCCESS, "successfully.deleted"));
 
         return "redirect://";
+    }
+
+    private void encToCardDetail(CardDetail cardDetail, CardDetailForm form) {
+        cardDetail.setCardType(form.getCardType());
+        cardDetail.setCardHolderName(aesConverter.encrypt(form.getCardHolderName().toUpperCase()));
+        cardDetail.setCardNumber(aesConverter.encrypt(form.getCardNumber().replaceAll("\\s", "")));
+        cardDetail.setCardExpirationDate(aesConverter.encrypt(form.getCardExpirationDate()));
+        cardDetail.setCvv(aesConverter.encrypt(form.getCvv()));
+        cardDetail.setZipcode(aesConverter.encrypt(form.getZipcode()));
+        cardDetail.setLast4Digit(form.getCardNumber().substring(form.getCardNumber().length() - 4));
+    }
+
+    private void decToCardDetailForm(CardDetail cardDetail, CardDetailForm form) {
+        form.setCardType(aesConverter.decrypt(cardDetail.getCardType()));
+        form.setCardHolderName(aesConverter.decrypt(cardDetail.getCardHolderName()).toUpperCase());
+        form.setCardNumber(aesConverter.decrypt(cardDetail.getCardNumber().replaceAll("\\s", "")));
+        form.setCardExpirationDate(aesConverter.decrypt(cardDetail.getCardExpirationDate()));
+        form.setCvv(aesConverter.decrypt(cardDetail.getCvv()));
+        form.setZipcode(aesConverter.decrypt(cardDetail.getZipcode()));
+        form.setLast4Digit(form.getCardNumber().substring(form.getCardNumber().length() - 4));
     }
 }

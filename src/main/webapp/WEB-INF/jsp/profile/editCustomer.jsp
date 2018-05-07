@@ -27,40 +27,50 @@
         }
     };
 </script>
+<section id="aa-myaccount">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="aa-myaccount-area">
+                    <div class="col-md-6" style="float: none; margin-left: 35%; width: 30%">
+                        <div class="aa-myaccount-login">
+                            <h4 class="modal-title text-center">Edit Profile</h4>
+                            <form:form modelAttribute="editForm"  action="${pageContext.request.contextPath}/profile/edit" method="post">
+                                <form:hidden path="id"/>
+                                <div class="form-group">
+                                    <form:errors path="firstName" cssStyle="color: red" />
+                                    <label for="firstName">First Name</label>
+                                    <form:input path="firstName" class="form-Control" />
+                                </div>
+                                <div class="form-group">
+                                    <form:errors path="lastName" cssStyle="color: red" />
+                                    <label for="lastName">Last Name</label>
+                                    <form:input path="lastName" class="form-Control" />
+                                </div>
+                                <div class="form-group">
+                                    <form:errors path="username" cssStyle="color: red" />
+                                    <label for="username">username</label>
+                                    <form:input path="username" class="form-Control" />
+                                </div>
+                                <div class="form-group">
+                                    <form:errors path="email" cssStyle="color: red" />
+                                    <label for="email">email</label>
+                                    <form:input path="email" type="email" class="form-Control" />
+                                </div>
+                            </form:form>
+                        </div>
 
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title">Edit <i>${customerForm.username}</i> Customer</h4>
-</div>
-<div class="modal-body">
-    <form:form modelAttribute="editForm"  action="${pageContext.request.contextPath}/profile/edit" method="post">
-        <form:hidden path="id"/>
-        <div class="form-group">
-            <form:errors path="firstName" cssStyle="color: red" />
-            <label for="firstName">First Name</label>
-            <form:input path="firstName" class="form-Control" />
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="create.submit()">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <form:errors path="lastName" cssStyle="color: red" />
-            <label for="lastName">Last Name</label>
-            <form:input path="lastName" class="form-Control" />
-        </div>
-        <div class="form-group">
-            <form:errors path="username" cssStyle="color: red" />
-            <label for="username">username</label>
-            <form:input path="username" class="form-Control" />
-        </div>
-        <div class="form-group">
-            <form:errors path="email" cssStyle="color: red" />
-            <label for="email">email</label>
-            <form:input path="email" type="email" class="form-Control" />
-        </div>
-    </form:form>
-</div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    <button type="button" class="btn btn-primary" onclick="create.submit()">Save changes</button>
-</div>
+
+    </div>
+</section>
 
 <script type="text/javascript">
     $(function () {

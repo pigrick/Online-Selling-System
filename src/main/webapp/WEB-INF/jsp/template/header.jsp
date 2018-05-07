@@ -128,6 +128,9 @@
                                                 <sec:authorize access="hasRole('ROLE_VENDOR')">
                                                     <li><a href="/profile/vendor/edit/">Edit Profile</a></li>
                                                 </sec:authorize>
+                                                <sec:authorize access="hasAnyRole('ROLE_VENDOR', 'ROLE_CUSTOMER')">
+                                                    <li><a href="/profile/card/edit/">Edit Card Info</a></li>
+                                                </sec:authorize>
                                                 <li><a href="/profile/edit/password">Edit Password</a></li>
                                                 <li><a href="/logout">LogOut</a></li>
                                             </ul>
@@ -160,7 +163,6 @@
     <!-- / header top  -->
 
 
-
     <!-- start header bottom  -->
     <div class="aa-header-bottom">
         <div class="container">
@@ -184,31 +186,46 @@
                             </a>
 
                             <div class="aa-cartbox-summary">
-                                <ul>
-                                    <c:forEach var="orderDetail" items="${shoppingcart.orderDetails}">
-                                        <li>
-                                            <a class="aa-cartbox-img"><img src="/static/images/${orderDetail.product.id}/0.png" alt="img"></a>
-                                            <div class="aa-cartbox-info">
-                                                <h4><a href="#"></a></h4>
-                                                <fmt:formatNumber value="${orderDetail.price}" type="currency"
-                                                                  currencySymbol="$"/> x ${orderDetail.quantity}
-                                            </div>
-                                            <a class="aa-remove-product" href="#"
-                                               ng-click="removeFromCart(item.cartItemId,'${_csrf.parameterName}=${_csrf.token}')">
-                                                <span class="fa fa-times"></span>
-                                            </a>
-                                        </li>
+                                <c:choose>
+                                    <c:when test="${shoppingcart == null || shoppingcart.orderDetails.isEmpty()}">
+                                        <p>No Items in Shopping Cart!</p>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <ul>
+                                            <c:forEach var="orderDetail" items="${shoppingcart.orderDetails}">
+                                                <li id="cart${orderDetail.product.id}">
+                                                    <a class="aa-cartbox-img" href="/product/${orderDetail.product.id}"><img
+                                                            src="${resourcePath}${orderDetail.product.image}"
+                                                            alt="img"></a>
+                                                    <div class="aa-cartbox-info">
+                                                        <h4><a href="#"></a></h4>
+                                                        <fmt:formatNumber value="${orderDetail.price}" type="currency"
+                                                                          currencySymbol="$"/> x <c:out
+                                                            value="${orderDetail.quantity}"/>
+                                                    </div>
+                                                    <span class="aa-remove-product"
+                                                       onclick="removeCart(${orderDetail.product.id})" />
+                                                    <span class="fa fa-times"></span>
+                                                    </a>
+                                                        <%--<a class="aa-remove-product" href=""--%>
+                                                        <%--ng-click="removeFromCart(item.cartItemId,'${_csrf.parameterName}=${_csrf.token}')">--%>
+                                                        <%--<span class="fa fa-times"></span>--%>
+                                                        <%--</a>--%>
+                                                </li>
 
-                                    </c:forEach>
-                                    <li>
-                                        <span class="aa-cartbox-total-title">Total</span>
-                                        <span class="aa-cartbox-total-price"><fmt:formatNumber value="${shoppingcart.calculateTotalPrice()}" type="currency"
-                                                                                               currencySymbol="$"/></span>
-                                    </li>
-                                </ul>
-                                <a class="aa-cartbox-checkout aa-primary-btn" href="/order/shoppingcart">Shopping Cart</a>
+                                            </c:forEach>
+                                            <li>
+                                                <span class="aa-cartbox-total-title">Total</span>
+                                                <span class="aa-cartbox-total-price"><fmt:formatNumber
+                                                        value="${shoppingcart.calculateTotalPrice()}" type="currency"
+                                                        currencySymbol="$"/></span>
+                                            </li>
+                                        </ul>
+                                        <a class="aa-cartbox-checkout aa-primary-btn" href="/order/shoppingcart">Shopping
+                                            Cart</a>
+                                    </c:otherwise>
+                                </c:choose>
                             </div>
-
                         </div>
                         <!-- / cart box -->
                         <!-- search box -->

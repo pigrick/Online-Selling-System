@@ -18,7 +18,7 @@
                             <option value="${row}">${row}</option>
                         </c:forEach>
                     </select>
-                    <button class="btn btn-default" type="button" onclick="module.list()">Search</button>
+                    <button class="btn btn-default" type="button" onclick="module.list(1)">Search</button>
                 </form>
             </div>
         </div>
@@ -39,7 +39,7 @@
     });
     module = {
         list : function(page){
-            f (page === undefined){
+            if (page === undefined){
                 page = 1;
             }
             $.get('/admin/user/customer/list?page=' + page, $("#filterForm").serialize(), function(data){

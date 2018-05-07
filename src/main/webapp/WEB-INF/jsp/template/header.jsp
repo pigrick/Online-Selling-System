@@ -128,6 +128,9 @@
                                                 <sec:authorize access="hasRole('ROLE_VENDOR')">
                                                     <li><a href="/profile/vendor/edit/">Edit Profile</a></li>
                                                 </sec:authorize>
+                                                <sec:authorize access="hasAnyRole('ROLE_VENDOR', 'ROLE_CUSTOMER')">
+                                                    <li><a href="/profile/card/edit/">Edit Card Info</a></li>
+                                                </sec:authorize>
                                                 <li><a href="/profile/edit/password">Edit Password</a></li>
                                                 <li><a href="/logout">LogOut</a></li>
                                             </ul>

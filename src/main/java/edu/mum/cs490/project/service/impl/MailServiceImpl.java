@@ -51,13 +51,13 @@ public class MailServiceImpl implements MailService {
     public boolean sendEmailToCustomer(String toEmail, String userName) {
         try{
             emailUtil.sendEmail(toEmail, "Verification", prepareTemplateForCustomer(userName));
+            return true;
         }
         catch(Exception ex){
             ex.printStackTrace();
             sendErrorEmailToAdmin(ex.getMessage());
             return false;
         }
-        return true;
     }
 
     @Override
@@ -85,26 +85,26 @@ public class MailServiceImpl implements MailService {
                 List<OrderDetail> currentVendorsOrder = order.getOrderDetails().stream().filter(u->u.getProduct().getVendor().getId() == vendor.getId()).collect(Collectors.toList());
                 emailUtil.sendEmail(vendor.getEmail(), "Shipping Notification", prepareTemplateForVendorWhenPurchase(address, new Date(), currentVendorsOrder));
             }
+            return true;
         }
         catch(Exception ex){
             ex.printStackTrace();
             sendErrorEmailToAdmin(ex.getMessage());
             return false;
         }
-        return true;
     }
 
     @Override
     public boolean sendReportToVendor(String toEmail, byte[] report, String nameOfAttachment) {
         try{
             emailUtil.sendEmailWithAttachment(toEmail, "Monthly report", prepareTemplateToSendReportToVendor(), report, nameOfAttachment);
+            return true;
         }
         catch(Exception ex){
             ex.printStackTrace();
             sendErrorEmailToAdmin(ex.getMessage());
             return false;
         }
-        return true;
     }
 
     @Override
@@ -115,13 +115,13 @@ public class MailServiceImpl implements MailService {
             for(Admin admin : lstAdmin) {
                 emailUtil.sendEmail(admin.getEmail(), "Notification", prepareErrorMessage(errorMessage));
             }
+            return false;
         }
         catch(Exception ex){
             ex.printStackTrace();
             sendErrorEmailToAdmin(ex.getMessage());
             return false;
         }
-        return true;
     }
 
     private String prepareTemplateToSendReportToVendor(){

@@ -60,16 +60,21 @@ public class AdminProductController {
 
 
     @GetMapping("/update")
-    public String saveOrUpdate(@RequestParam(required = false) Integer id, Model model) {
+    public String saveOrUpdate(@RequestParam(required = false) Integer id,
+                               @RequestParam(required = false) Status status,
+                               Model model) {
 
-        model.addAttribute("title", "Update Product");
+
 
         if (id != null && id != 0) {
             model.addAttribute("productForm", new ProductForm(productService.getOne(id)));
+            model.addAttribute("title", "Update Product");
         } else {
             model.addAttribute("productForm", new ProductForm());
+            model.addAttribute("title", "Create New Product");
         }
         model.addAttribute("categories", categoryService.find(null, null, Status.ENABLED));
+
         model.addAttribute("statuses", Status.values());
         return "admin/product/edit";
     }

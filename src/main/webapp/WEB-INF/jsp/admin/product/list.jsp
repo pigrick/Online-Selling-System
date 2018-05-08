@@ -8,7 +8,7 @@
         <th>Name</th>
         <th>Quantity</th>
         <th>Price</th>
-        <<th>Category</th>
+        <th>Category</th>
         <th>Description</th>
         <th>Vendor Name</th>
         <th>Status</th>

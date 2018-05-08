@@ -63,7 +63,9 @@ public class VendorProductController {
     }
 
     @GetMapping("/save")
-    public String saveOrUpdateProduct(@RequestParam(required = false) Integer id, Model model) {
+    public String saveOrUpdateProduct(@RequestParam(required = false) Integer id,
+                                      @RequestParam(required = false) Status status,
+                                      Model model) {
 
         model.addAttribute("title", "Product:");
 
@@ -73,6 +75,7 @@ public class VendorProductController {
             model.addAttribute("productForm", new ProductForm());
         }
         model.addAttribute("categories", categoryService.find(null, null, Status.ENABLED));
+        model.addAttribute("statuses", Status.values());
 
         return "vendor/saveProduct";
     }
@@ -80,7 +83,7 @@ public class VendorProductController {
     @PostMapping("/save")
     public String saveOrUpdateProduct(@Valid @ModelAttribute("productForm") ProductForm form, BindingResult result,
                                       @AuthenticationPrincipal Vendor vendor,
-                                      //@RequestParam("file") MultipartFile file,
+                                      @RequestParam(required = false) Status status,
                                       Model model) {
 
         model.addAttribute("title", "Product");
@@ -104,7 +107,7 @@ public class VendorProductController {
         } else {
             product = productService.getOne(form.getId());
         }
-        product.setStatus(Status.ENABLED);
+        product.setStatus(status);
         product.setCategory(categoryService.getCategoryById(form.getCategoryId()));
         product.setDescription(form.getDescription());
         product.setName(form.getName());

@@ -1,6 +1,7 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/include.jsp"%>
+
 <table class="table table-striped">
     <thead>
     <tr>
@@ -30,16 +31,16 @@
                     <i class="glyphicon glyphicon-pencil"></i>
                 </a>
 
-                        <c:if test="${row.status eq 'ENABLED'}">
-                            <a href="#delete" type="button" onclick="modules.delete('${row.id}')">
-                                <i class="glyphicon glyphicon-remove"></i>
-                            </a>
-                        </c:if>
-                        <c:if test="${row.status ne 'ENABLED'}">
-                            <a href="#changeStatus" type="button" onclick="modules.changeStatus('${row.id}', 'ENABLED')">
-                                <i class="glyphicon glyphicon-ok"></i>
-                            </a>
-                        </c:if>
+                <c:if test="${row.status eq 'ENABLED'}">
+                    <a href="#delete" type="button" onclick="modules.delete('${row.id}')">
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </a>
+                </c:if>
+                <c:if test="${row.status ne 'ENABLED'}">
+                    <a href="#changeStatus" type="button" onclick="modules.changeStatus('${row.id}', 'ENABLED')">
+                        <i class="glyphicon glyphicon-ok"></i>
+                    </a>
+                </c:if>
 
             </td>
         </tr>

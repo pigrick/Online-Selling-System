@@ -675,6 +675,7 @@ public class MailServiceImpl implements MailService {
                 "\n" +
                 "}</style></head>\n" +
                 "    <body>\n" +
+                "\t\t<!--*|IF:MC_PREVIEW_TEXT|*-->\n" +
                 "\t\t<!--[if !gte mso 9]><!----><span class=\"mcnPreviewText\" style=\"display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;\">*|MC_PREVIEW_TEXT|*</span><!--<![endif]-->\n" +
                 "\t\t<!--*|END:IF|*-->\n" +
                 "        <center>\n" +
@@ -3365,6 +3366,7 @@ public class MailServiceImpl implements MailService {
                 "\t\t}\n" +
                 "\n" +
                 "}\t@media only screen and (max-width: 480px){\n" +
+                "\t\t.mcpreview-image-uploader{\n" +
                 "\t\t\tdisplay:none !important;\n" +
                 "\t\t\twidth:100% !important;\n" +
                 "\t\t}\n" +
@@ -4272,6 +4274,7 @@ public class MailServiceImpl implements MailService {
                 "\n" +
                 "}</style></head>\n" +
                 "    <body>\n" +
+                "\t\t<!--*|IF:MC_PREVIEW_TEXT|*-->\n" +
                 "\t\t<!--[if !gte mso 9]><!----><span class=\"mcnPreviewText\" style=\"display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;\">*|MC_PREVIEW_TEXT|*</span><!--<![endif]-->\n" +
                 "\t\t<!--*|END:IF|*-->\n" +
                 "        <center>\n" +

@@ -26,9 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -80,8 +78,8 @@ public class ReportController {
             return "report/reportFilter";
         }
         try {
-            createJasperReport(reportFilterForm, user, response);
-//            report(reportFilterForm, user, response);
+//            createJasperReport(reportFilterForm, user, response);
+            report(reportFilterForm, user, response);
         } catch (NotFoundException nfe) {
             model.addAttribute("message", new Message(Message.Type.ERROR, nfe.getMessage()));
         } catch (Exception ex) {
@@ -91,58 +89,58 @@ public class ReportController {
         return "report/reportFilter";
     }
 
-//    public void report(ReportFilterForm reportFilterForm, @AuthenticationPrincipal User user, HttpServletResponse response) throws Exception {
-//
-//        if (reportFilterForm.getLstVendor_Id() == null)
-//            reportFilterForm.setLstVendor_Id(new ArrayList<>());
-//        if (reportFilterForm.getLstCategory_Id() == null)
-//            reportFilterForm.setLstCategory_Id(new ArrayList<>());
-//
-//        String reportName = "";
-//        if (user instanceof Vendor) {
-//            reportName = "reportForVendor";
-//            if (!reportFilterForm.getLstVendor_Id().isEmpty())
-//                reportFilterForm.setLstVendor_Id(new ArrayList<>());
-//
-//            reportFilterForm.getLstVendor_Id().add(user.getId());
-//        } else if (user instanceof Admin) {
-//            reportName = "report";
-//        }
-//        List<OrderDetail> list = collectData(reportFilterForm.getLstVendor_Id(), reportFilterForm.getLstCategory_Id(), reportFilterForm.getBegin_Date(), reportFilterForm.getEnd_Date());
-//
-//        if (list == null || list.isEmpty()) {
-//            throw new NotFoundException("no.data.available.on.this.period");
-//        }
-//
-//        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-//        // Initialize response
-//        response.reset(); // Some JSF component library or some Filter might have set some headers in the buffer beforehand.
-//        // set pdf content
-//        response.setContentType("application/pdf");
-//        // if you want to download instead of opening inlines
-//        // response.addHeader("Content-Disposition", "attachment; filename=" + fileName);
-//        try {
-//            byte[] bytes = generateJasperReportPDF(reportName, outputStream, list);
-//            // write the content to the output stream
-//            BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
-//            bos.write(bytes);
-//            bos.flush();
-//            bos.close();
-//            outputStream.close();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//            System.out.println("<<<<File Not Fount Exception>>>>");
-//            throw e;
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            System.out.println("<<<<Input Output Stream Exception>>>>");
-//            throw e;
-//        } catch (JRException e) {
-//            e.printStackTrace();
-//            System.out.println("<<<<JRException Stream Exception>>>>");
-//            throw e;
-//        }
-//    }
+    public void report(ReportFilterForm reportFilterForm, @AuthenticationPrincipal User user, HttpServletResponse response) throws Exception {
+
+        if (reportFilterForm.getLstVendor_Id() == null)
+            reportFilterForm.setLstVendor_Id(new ArrayList<>());
+        if (reportFilterForm.getLstCategory_Id() == null)
+            reportFilterForm.setLstCategory_Id(new ArrayList<>());
+
+        String reportName = "";
+        if (user instanceof Vendor) {
+            reportName = "reportForVendor";
+            if (!reportFilterForm.getLstVendor_Id().isEmpty())
+                reportFilterForm.setLstVendor_Id(new ArrayList<>());
+
+            reportFilterForm.getLstVendor_Id().add(user.getId());
+        } else if (user instanceof Admin) {
+            reportName = "report";
+        }
+        List<OrderDetail> list = collectData(reportFilterForm.getLstVendor_Id(), reportFilterForm.getLstCategory_Id(), reportFilterForm.getBegin_Date(), reportFilterForm.getEnd_Date());
+
+        if (list == null || list.isEmpty()) {
+            throw new NotFoundException("no.data.available.on.this.period");
+        }
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        // Initialize response
+        response.reset(); // Some JSF component library or some Filter might have set some headers in the buffer beforehand.
+        // set pdf content
+        response.setContentType("application/pdf");
+        // if you want to download instead of opening inlines
+        // response.addHeader("Content-Disposition", "attachment; filename=" + fileName);
+        try {
+            byte[] bytes = generateJasperReportPDF(reportName, outputStream, list);
+            // write the content to the output stream
+            BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
+            bos.write(bytes);
+            bos.flush();
+            bos.close();
+            outputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("<<<<File Not Fount Exception>>>>");
+            throw e;
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("<<<<Input Output Stream Exception>>>>");
+            throw e;
+        } catch (JRException e) {
+            e.printStackTrace();
+            System.out.println("<<<<JRException Stream Exception>>>>");
+            throw e;
+        }
+    }
 
 
     //Send report to vendors monthly/weekly

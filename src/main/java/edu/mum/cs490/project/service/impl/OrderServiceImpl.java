@@ -125,6 +125,9 @@ public class OrderServiceImpl implements OrderService {
     public Order saveOrUpdate(Order order) {
         order.setOrderDate(new Date());
         order.setShippingDate(new Date());
+        for(OrderDetail od : order.getOrderDetails()){
+            od.setOrder(order);
+        }
         this.cardDetailRepository.save(order.getCard());
         this.addressRepository.save(order.getAddress());
         return this.orderRespository.save(order);

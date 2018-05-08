@@ -67,13 +67,13 @@ public class MailServiceImpl implements MailService {
             if(order.getCustomer() == null){
                 toEmail = order.getGuest().getEmail();
                 customerName = order.getGuest().getFirstName() + " " + order.getGuest().getLastName();
-                address = order.getGuest().getAddress().toString();
+                address = order.getAddress().toString();
             }
             else
             {
                 toEmail = order.getCustomer().getEmail();
                 customerName = order.getCustomer().getFirstName() + " " + order.getCustomer().getLastName();
-                address = order.getCustomer().getAddresses().get(0).toString();
+                address = order.getAddress().toString();
             }
             emailUtil.sendEmail(toEmail, "Verification", prepareTemplateForCustomerWhenPurchase(customerName, address, order));
 

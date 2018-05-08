@@ -52,8 +52,7 @@ public class TransactionAOPService {
         } catch (Exception e) {
             decrytedData = e.getMessage();
         }
-        logger.info("decrypting data - " + (decrytedData != null ? decrytedData.substring(0, 10) : decrytedData));
-        logger.info(decrytedData);
+        logger.info("decrypting data - " + decrytedData);
         Object retVal = pjp.proceed(new Object[]{decrytedData});
         logger.info("# AOP AFTER (5) #  is called on " + pjp.getSignature().toShortString() + " returnValue - " + (retVal != null ? retVal.toString() : null));
         retVal = apiAES.encrypt(retVal != null ? retVal.toString() : "null");
@@ -138,6 +137,15 @@ public class TransactionAOPService {
 //        logger.info("2 encryptValueOfAccount()" + account.toString());
         return account;
     }
+
+
+//    @Around("execution(* edu.mum.cs490.project.mock.transaction.api.service.TransactionService.refreshAccount(..))&& args(account)")
+//    public Object aopRefreshAccount(ProceedingJoinPoint pjp, Account account) throws Throwable {
+//        System.out.println("refreshAccount" + account.toString());
+//        account = encryptValueOfAccount(account);
+//        System.out.println("refreshAccount" + account.toString());
+//        return pjp.proceed(new Object[]{account});
+//    }
 
     // TransactionDAO
     //edu.mum.cs490.project.mock.transaction.api.dao.TransactionDAO.getLastActiveTransaction(String srcCardNo)

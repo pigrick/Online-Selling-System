@@ -5,12 +5,17 @@
  */
 package edu.mum.cs490.project.mock.transaction.api.service;
 
+import edu.mum.cs490.project.mock.transaction.api.entity.Account;
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  *
  * @author tuvshuu
  */
+@Transactional
 public interface TransactionService {
 
     String doTransaction(String requestStr);
+    Account refreshAccount(Account account);
 
 }

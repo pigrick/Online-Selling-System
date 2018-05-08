@@ -62,7 +62,8 @@ INSERT INTO address VALUES (2, 'Fairfield', '2058871599', 'Iowa', 'ENABLED', '52
 INSERT INTO product VALUES(1, 'Jean', 'product\\1\\1.png', 'Livi',  200, 3, 'ENABLED', 3, 2);
 INSERT INTO product VALUES(2, 'Branded Mechanical Watch', 'product\\2\\2.png', 'ROLEX VISION',  150, 3, 'ENABLED', 5, 6 );
 INSERT INTO product VALUES(3, 'Shoes', 'product\\3\\3.png' , 'Rothy Grey ',  125, 10, 'ENABLED', 6, 4);
-INSERT INTO product VALUES(4, 'Women Leather Market Tote Bag by Everlane in Blush', 'product\\4\\4.png', 'Everlane ',  165, 10, 'ENABLED', 4, 5 );
+INSERT INTO product VALUES(4, 'Women Leather Market Tote Bag by Everlane in Blush', 'product\\4\\4.png', 'Everlane ',  165, 10, 'ENABLED', 4, 2 );
+INSERT INTO product VALUES(5, 'Black Rose', 'product\\5\\5.png', 'BR',  222, 10, 'ENABLED', 3, 2);
 
 INSERT INTO order_detail VALUES(1, 150, 3, 1, 1);
 INSERT INTO `order` VALUES (1, DATE '2018-4-4', DATE '2018-4-4', 'ENABLED', 1, 1, 10, NULL);
@@ -72,3 +73,7 @@ INSERT INTO order_detail VALUES(3, 170, 3, 3, 3);
 INSERT INTO `order` VALUES (3, DATE '2018-4-15', DATE '2018-4-15', 'ENABLED', 1, 3, 10, NULL);
 INSERT INTO order_detail VALUES(4, 180, 3, 4, 4);
 INSERT INTO `order` VALUES (4, DATE '2018-5-4', DATE '2018-5-4', 'ENABLED', 1, 4, 10, NULL);
+INSERT INTO order_detail VALUES(5, 190, 3, 5, 5);
+INSERT INTO `order` VALUES (5, DATE '2018-5-4', DATE '2018-5-4', 'ENABLED', 1, 4, 11, NULL);
+INSERT INTO order_detail VALUES(6, 201, 3, 6, 4);
+INSERT INTO `order` VALUES (6, DATE '2018-5-4', DATE '2018-5-4', 'ENABLED', 1, 4, 11, NULL);

@@ -1,4 +1,4 @@
-package edu.mum.cs490.project.utils.jpreport;
+package jpreport;
 
 import edu.mum.cs490.project.controller.ReportController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +19,9 @@ public class ReportCronJob {
     @Autowired
     ReportController reportController;
 
+//    @Autowired
+//    ReportService reportService;
+
     public Date beginDateOfMonth() {
         Date endDate = new Date();
         Date beginDate = new Date(endDate.getYear(), endDate.getMonth() == 0 ? 11 : endDate.getMonth() - 1, endDate.getDay());
@@ -36,6 +39,7 @@ public class ReportCronJob {
     public void monthlyReport() {
         reportController.sendReportToVendor(beginDateOfMonth());
 //        reportController.sendReportToVendor();
+
     }
 
     @Scheduled(cron = "0 0 0 * * SUN")

@@ -94,7 +94,7 @@ public class TransactionControllerTest {
     }
 
     @Test
-    public void testNotEnoughSrcAccount() throws Exception {
+    public void testNotEnoughAmountSrcAccount() throws Exception {
         System.out.println("Testing testNotEnoughSrcAccount()");
         this.mvc.perform(MockMvcRequestBuilders.post(URL)
                 .accept(MediaType.APPLICATION_JSON)

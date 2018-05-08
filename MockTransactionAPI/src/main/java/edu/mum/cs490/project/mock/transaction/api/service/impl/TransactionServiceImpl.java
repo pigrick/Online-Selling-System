@@ -117,7 +117,7 @@ public class TransactionServiceImpl implements TransactionService {
             accountDAO.save(dstAccount);
 
         } else {
-            account = refreshAccount(account);
+            srcAccount = refreshAccount(srcAccount);
         }
         Transaction newTransaction = new Transaction(
                 tr.getSrcCardNo(),
@@ -134,7 +134,6 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Account refreshAccount(Account account) {
-        System.out.println("" + account.toString());
         account.setCardNo(aes.encrypt(account.getCardNo()));
         if (account.getName() != null) {
             account.setName(aes.encrypt(account.getName()));
@@ -148,7 +147,6 @@ public class TransactionServiceImpl implements TransactionService {
         if (account.getExpirationDate() != null) {
             account.setExpirationDate(aes.encrypt(account.getExpirationDate()));
         }
-        System.out.println("" + account.toString());
         return account;
     }
 }

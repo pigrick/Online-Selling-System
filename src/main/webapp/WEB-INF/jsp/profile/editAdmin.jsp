@@ -17,7 +17,7 @@
                     <div class="col-md-6" style="float: none; margin-left: 35%; width: 30%">
                         <div class="aa-myaccount-login">
                             <h4 class="modal-title text-center">Edit Profile</h4>
-                            <form:form modelAttribute="editForm"  action="${pageContext.request.contextPath}/profile/edit" method="post">
+                            <form:form modelAttribute="editForm" action="/profile/admin/edit/"  method="post">
                                 <form:hidden path="id"/>
                                 <div class="form-group">
                                     <form:errors path="firstName" cssStyle="color: red" />
@@ -53,10 +53,12 @@
     </div>
 </section>
 
+
 <%@include file="/WEB-INF/jsp/template/footer.jsp"%>
 
+
 <c:if test="${!empty message}">
-    <script>
+    <script type="text/javascript">
         $.sticky('<spring:message code="${message.message}"/>', {autoclose : 5000, position: "top-right", type: "st-${fn:toLowerCase(message.type)}" });
 
         <c:if test="${message.type eq 'SUCCESS'}">
@@ -64,8 +66,6 @@
         </c:if>
     </script>
 </c:if>
-
-
 
 
 

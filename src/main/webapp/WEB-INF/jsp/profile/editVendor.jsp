@@ -10,28 +10,6 @@
 
 <%@include file="/WEB-INF/include.jsp"%>
 
-<script>
-    create = {
-         init: function() {
-             console.log('Hello');
-
-        //     $('#editForm').ajaxForm({
-        //         target:'#edit-target',
-        //         url:'/admin/user/vendor/edit'
-        //     });
-         },
-        success: function() {
-
-            $('#edit-modal').modal('hide');
-            module.list();
-        },
-        submit: function() {
-            console.log('Hello');
-            $('#editForm').submit();
-        }
-    };
-</script>
-
 <section id="aa-myaccount">
     <div class="container">
         <div class="row">
@@ -57,13 +35,11 @@
                                     <label for="email">Email</label>
                                     <form:input path="email" type="email" class="form-Control" />
                                 </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                    <a href="<c:url value="/" />" class="btn btn-default">Close</a>
+                                </div>
                             </form:form>
-
-                            <div class="modal-footer">
-
-                                <button type="button" class="btn btn-primary" onclick="create.submit()">Save changes</button>
-                                <a href="<c:url value="/" />" class="btn btn-default">Close</a>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -73,23 +49,14 @@
     </div>
 </section>
 
-<script type="text/javascript">
-    $(function () {
-        create.init();
-    });
-</script>
-
+<%@include file="/WEB-INF/jsp/template/footer.jsp"%>
 <c:if test="${!empty message}">
     <script>
         $.sticky('<spring:message code="${message.message}"/>', {autoclose : 5000, position: "top-right", type: "st-${fn:toLowerCase(message.type)}" });
 
         <c:if test="${message.type eq 'SUCCESS'}">
-        create.success();
+        window.location = "/";
         </c:if>
     </script>
 </c:if>
-
-
-
-<%@include file="/WEB-INF/jsp/template/footer.jsp"%>
 

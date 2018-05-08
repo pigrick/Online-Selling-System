@@ -25,7 +25,7 @@
                                     <c:forEach items="${categories}" var="category" begin="0" end="0">
                                         <img style="object-fit: cover;" src="${resourcePath}${category.image}" alt="img">
                                         <div class="aa-prom-content">
-                                            <h4><a href="product/search?categoryId=${category.id}">${category.name}</a></h4>
+                                            <h4><a href="/product/search?categoryId=${category.id}">${category.name}</a></h4>
                                         </div>
                                     </c:forEach>
                                 </div>
@@ -39,7 +39,7 @@
                                         <div class="aa-promo-banner">
                                             <img style="object-fit: cover;" src="${resourcePath}${category.image}" alt="img">
                                             <div class="aa-prom-content">
-                                                <h4 style="color: #cd5c5c"><a href="product/search?categoryId=${category.id}" >${category.name}</a></h4>
+                                                <h4 style="color: #cd5c5c"><a href="/product/search?categoryId=${category.id}" >${category.name}</a></h4>
                                             </div>
                                         </div>
                                     </div>

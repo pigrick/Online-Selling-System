@@ -84,7 +84,7 @@ public class SignController {
         userService.saveOrUpdate(customer);
         mailService.sendEmailToCustomer(userForm.getEmail(), customer.getFirstName() + " " + customer.getLastName());
         model.put("message", Message.successfullySaved);
-        return "redirect:/login";
+        return "signUp";
     }
 
     @RequestMapping(value = "vendor/signup", method = RequestMethod.GET)
@@ -154,7 +154,7 @@ public class SignController {
 
         vendorService.transferFee(cardDetail, vendor);
         model.put("message", Message.successfullySaved);
-        return "redirect:/login";
+        return "vendor/signUp";
     }
 
     private void setToUser(User user, UserSignUpForm form) {

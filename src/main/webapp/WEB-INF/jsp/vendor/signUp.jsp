@@ -203,5 +203,13 @@
     };
 </script>
 
+<c:if test="${!empty message}">
+    <script>
+        <c:if test="${message.type eq 'SUCCESS'}">
+        window.location = "/";
+        </c:if>
+    </script>
+</c:if>
+
 
 <%@include file="/WEB-INF/jsp/template/footer.jsp"%>

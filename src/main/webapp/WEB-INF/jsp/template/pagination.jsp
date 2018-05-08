@@ -27,7 +27,7 @@
     </c:otherwise>
 </c:choose>
 
-<div class="container">
+<%--<div class="container">--%>
     <ul class="pagination">
         <c:choose>
             <c:when test="${currentIndex == 1}">
@@ -60,4 +60,4 @@
             </c:otherwise>
         </c:choose>
     </ul>
-</div>
+<%--</div>--%>

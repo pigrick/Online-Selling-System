@@ -1,4 +1,3 @@
-<br>
 <%@include file="/WEB-INF/include.jsp"%>
 
 <!-- footer -->
@@ -94,41 +93,6 @@
 </footer>
 <!-- / footer -->
 
-<!-- Login Modal -->
-<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-body">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4>Login or Register</h4>
-
-                <form class="aa-login-form" action="#" method="post">
-
-
-                    <div class="form-group">
-                        <label for="email">Email<span>*</span></label>
-                        <input id="email" type="text" name="email" placeholder="Email address" class="form-control" />
-                    </div>
-
-                    <div class="form-group">
-                        <label for="password">Password<span>*</span></label>
-                        <input id="password" type="password" name="password" placeholder="Password" class="form-control">
-                    </div>
-
-                    <button type="submit" class="aa-browse-btn">Login</button>
-
-
-                    <label class="rememberme" for="rememberme"><input type="checkbox" id="rememberme"> Remember me </label>
-                    <p class="aa-lost-password"><a href="#">Lost your password?</a></p>
-                    <div class="aa-register-now">
-                        Don't have an account?<a href="#" />">Register now!</a>
-                    </div>
-                </form>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div>
-
 <div id="edit-modal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -137,8 +101,12 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-
+<!-- jQuery library -->
 <script src="/static/js/jquery.min.js"></script>
+<%--Form--%>
+<script src="/static/js/jquery.form.js"></script>
+<script src="/static/js/smoke/smoke.min.js"></script>
+<script src="/static/js/sticky/sticky.min.js"></script>
 <script src="/static/js/jquery.simpleLens.js"></script>
 <script src="/static/js/sequence.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
@@ -148,7 +116,6 @@
 <!-- SmartMenus jQuery Bootstrap Addon -->
 <script type="text/javascript" src="/static/js/jquery.smartmenus.bootstrap.js" ></script>
 <!-- To Slider JS -->
-<script src="/static/js/sequence.js" ></script>
 <script src="/static/js/jquery.simpleGallery.js" ></script>
 <script src="/static/js/sequence-theme.modern-slide-in.js"  ></script>
 <!-- prduct view slider -->
@@ -162,11 +129,8 @@
 <script  src="/static/js/controller.js" ></script>
 <!--payment js-->
 <script src="/static/paymentdetail/js/jquery.payform.min.js" charset="utf-8"></script>
-<%--Form--%>
-<script src="/static/js/jquery.form.js" charset="utf-8"></script>
-<script src="/static/js/smoke/smoke.min.js" charset="utf-8"></script>
-<script src="/static/js/sticky/sticky.min.js" charset="utf-8"></script>
 <!--cart for header js-->
 <script src="/static/js/order/cart.js"></script>
+
 </body>
 </html>

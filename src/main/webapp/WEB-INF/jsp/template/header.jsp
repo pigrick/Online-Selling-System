@@ -6,6 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Online Shop | Home</title>
+
+    <!-- jQuery library -->
+    <script src="/static/js/jquery.min.js"></script>
     <!-- Font awesome -->
     <link href="/static/css/font-awesome.css" rel="stylesheet">
     <!-- Bootstrap -->
@@ -29,8 +32,6 @@
     <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
 
     <link href="/static/css/custom.css" rel="stylesheet">
-    <!-- jQuery library -->
-    <script src="/static/js/jquery.min.js"></script>
 
     <link href="/static/js/smoke/themes/gebo.css" rel="stylesheet">
     <link href="/static/js/smoke/smoke.css" rel="stylesheet">
@@ -241,11 +242,11 @@
                     <ul class="nav navbar-nav">
                         <li><a href="/">Home</a></li>
                         <c:forEach items="${mainCategories}" var="category">
-                            <li><a href="product/search?categoryId=${category.id}">${category.name} <span class="caret"></span></a>
+                            <li><a href="/product/search?categoryId=${category.id}">${category.name} <span class="caret"></span></a>
                             <c:if test="${category.childCategories ne null && not empty category.childCategories}">
                                 <ul class="dropdown-menu">
                                 <c:forEach items="${category.childCategories}" var="subCategory">
-                                    <li><a href="product/search?categoryId=${subCategory.id}">${subCategory.name}
+                                    <li><a href="/product/search?categoryId=${subCategory.id}">${subCategory.name}
                                         <c:if test="${subCategory.childCategories ne null && not empty subCategory.childCategories}">
                                             <span class="caret">
                                         </c:if>
@@ -253,7 +254,7 @@
                                     <c:if test="${subCategory.childCategories ne null && not empty subCategory.childCategories}">
                                         <ul class="dropdown-menu">
                                         <c:forEach items="${subCategory.childCategories}" var="sub2Category">
-                                            <li><a href="product/search?categoryId=${sub2Category.id}">${sub2Category.name}</a></li>
+                                            <li><a href="/product/search?categoryId=${sub2Category.id}">${sub2Category.name}</a></li>
                                         </c:forEach>
                                         </ul>
                                     </c:if>

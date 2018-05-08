@@ -66,10 +66,10 @@
                                     <img src="/static/paymentdetail/images/visa.jpg" id="visa">
                                     <img src="/static/paymentdetail/images/mastercard.jpg" id="mastercard" >
                                 </div>
-
-                                <button type="submit" class="btn btn-primary" >Submit</button>
-                                <a href="<c:url value="/" />" class="btn btn-default">Cancel</a>
-
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary" >Submit</button>
+                                    <a href="<c:url value="/" />" class="btn btn-default">Cancel</a>
+                                </div>
                             </form:form>
                         </div>
                     </div>
@@ -78,6 +78,8 @@
         </div>
     </div>
 </section>
+
+<%@include file="/WEB-INF/jsp/template/footer.jsp"%>
 
 <script>
     $(function() {
@@ -112,4 +114,12 @@
     });
 </script>
 
-<%@include file="/WEB-INF/jsp/template/footer.jsp"%>
+<c:if test="${!empty message}">
+    <script>
+        $.sticky('<spring:message code="${message.message}"/>', {autoclose : 5000, position: "top-right", type: "st-${fn:toLowerCase(message.type)}" });
+
+        <c:if test="${message.type eq 'SUCCESS'}">
+        window.location = "/";
+        </c:if>
+    </script>
+</c:if>

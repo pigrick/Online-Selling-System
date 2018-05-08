@@ -67,19 +67,19 @@ public class MailServiceImpl implements MailService {
             if(order.getCustomer() == null){
                 toEmail = order.getGuest().getEmail();
                 customerName = order.getGuest().getFirstName() + " " + order.getGuest().getLastName();
-                address = order.getGuest().getAddress().toString();
+                address = order.getAddress().toString();
             }
             else
             {
                 toEmail = order.getCustomer().getEmail();
                 customerName = order.getCustomer().getFirstName() + " " + order.getCustomer().getLastName();
-                address = order.getCustomer().getAddresses().get(0).toString();
+                address = order.getAddress().toString();
             }
             emailUtil.sendEmail(toEmail, "Verification", prepareTemplateForCustomerWhenPurchase(customerName, address, order));
 
             final List<Vendor> lstVendor = new ArrayList<>();
             order.getOrderDetails().forEach(u->{
-                    if(!lstVendor.contains(u))
+                    if(!lstVendor.contains(u.getProduct().getVendor()))
                         lstVendor.add(u.getProduct().getVendor());});
             for(Vendor vendor : lstVendor){
                 List<OrderDetail> currentVendorsOrder = order.getOrderDetails().stream().filter(u->u.getProduct().getVendor().getId() == vendor.getId()).collect(Collectors.toList());

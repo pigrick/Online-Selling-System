@@ -44,7 +44,7 @@ public class InitBean implements ApplicationRunner {
         Account accountOSS = new Account();
         accountOSS.setCardNo("4000300020001000");
         accountOSS.setCVV("100");
-        accountOSS.setAmount(1.0);
+        accountOSS.setAmount(10000.0);
         accountOSS.setExpirationDate("05/2020");
         accountOSS.setName("OSS");
         accountOSS.setZipCode("52557");
@@ -90,6 +90,76 @@ public class InitBean implements ApplicationRunner {
         account.setZipCode("52557");
         account.setCreatedAt(new Date());
         accountDAO.save(account);
+
+        Account account1 = new Account();
+        account1.setCardNo("5380326353336488");
+        account1.setCVV("123");
+        account1.setAmount(50000.0);
+        account1.setExpirationDate("01/2020");
+        account1.setName("BAY");
+        account1.setZipCode("52557");
+        account1.setCreatedAt(new Date());
+        accountDAO.save(account1);
+
+        Account account2 = new Account();
+        account2.setCardNo("5241600877212477");
+        account2.setCVV("123");
+        account2.setAmount(10000.0);
+        account2.setExpirationDate("01/2020");
+        account2.setName("BATT");
+        account2.setZipCode("52557");
+        account2.setCreatedAt(new Date());
+        accountDAO.save(account2);
+
+        Account account3 = new Account();
+        account3.setCardNo("4716959161424639");
+        account3.setCVV("123");
+        account3.setAmount(10000.0);
+        account3.setExpirationDate("01/2020");
+        account3.setName("TAMIR");
+        account3.setZipCode("52557");
+        account3.setCreatedAt(new Date());
+        accountDAO.save(account3);
+
+        Account account4= new Account();
+        account4.setCardNo("4556894992584983");
+        account4.setCVV("111");
+        account4.setAmount(10000.0);
+        account4.setExpirationDate("01/2020");
+        account4.setName("PAGMA");
+        account4.setZipCode("52557");
+        account4.setCreatedAt(new Date());
+        accountDAO.save(account4);
+
+        Account account5= new Account();
+        account5.setCardNo("5571828785520125");
+        account5.setCVV("222");
+        account5.setAmount(10000.0);
+        account5.setExpirationDate("01/2020");
+        account5.setName("SETH");
+        account5.setZipCode("52557");
+        account5.setCreatedAt(new Date());
+        accountDAO.save(account5);
+
+        Account account6= new Account();
+        account6.setCardNo("5596101658869487");
+        account6.setCVV("333");
+        account6.setAmount(10000.0);
+        account6.setExpirationDate("01/2020");
+        account6.setName("HONG");
+        account6.setZipCode("52557");
+        account6.setCreatedAt(new Date());
+        accountDAO.save(account6);
+
+        Account account7= new Account();
+        account7.setCardNo("4916519227635608");
+        account7.setCVV("123");
+        account7.setAmount(50000.0);
+        account7.setExpirationDate("01/2020");
+        account7.setName("SOMESH");
+        account7.setZipCode("52557");
+        account7.setCreatedAt(new Date());
+        accountDAO.save(account7);
     }
 
     @Value("${api.secret.key.word}")

@@ -8,102 +8,91 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/include.jsp"%>
 
-<%@include file="/WEB-INF/jsp/template/header.jsp"%>
+<script>
+    create = {
+        init: function() {
+            $('#productForm').ajaxForm({
+                target:'#edit-target',
+                url:'/vendor/product/save'
+            });
+        },
+        success: function() {
+            $('#edit-modal').modal('hide');
+            modules.list();
+        },
+        submit: function() {
+            if($('#file').val() == null || $('#file').val() == ''){
+                $('#file').remove();
+            }
+            $('#productForm').submit();
 
-<body>
+        }
+    };
+</script>
 
-<div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 main">
-
-<div class="container">
-    <div class="page-header">
-        <h1>${title}</h1>
-    </div>
-
-    <c:if test="${!empty message}">
-        <c:choose>
-            <c:when test="${message.type eq 'SUCCESS'}">
-                <div class="alert alert-success alert-dismissible">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    <strong>${message.message}</strong>
-                </div>
-            </c:when>
-            <c:when test="${message.type eq 'ERROR'}">
-                <div class="alert alert-danger alert-dismissible">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    <strong>${message.message}</strong>
-                </div>
-            </c:when>
-        </c:choose>
-    </c:if>
-
-<form:form modelAttribute="productForm" action="${pageContext.request.contextPath}/vendor/product/save" method="post" enctype="multipart/form-data">
-    <form:hidden path="id"/>
-    <table class="table table-hover">
-        <tbody>
-        <tr>
-            <td scope="col"><label>Category:</label></td>
-            <td scope="col">
-    <form:hidden path="id"/>
-    <form:select path="categoryId">
-        <form:option value="">Select Category</form:option>
-        <c:forEach items="${categories}" var="row">
-            <form:option value="${row.id}">${row.name}</form:option>
-        </c:forEach>
-    </form:select>
-                <select name="categoryId">
-                    <option value="">Select Category</option>
-                    <c:forEach items="${categories}" var="row">
-                        <option value="${row.id}">${row.name}</option>
-                        <c:if test="${row.childCategories ne null}">
-                            <c:forEach items="${row.childCategories}" var="cRow">
-                                <option value="${cRow.id}">---${cRow.name}</option>
-                                <c:if test="${cRow.childCategories ne null}">
-                                    <c:forEach items="${cRow.childCategories}" var="sRow">
-                                        <option value="${sRow.id}">------${sRow.name}</option>
-                                    </c:forEach>
-                                </c:if>
-                            </c:forEach>
-                        </c:if>
-                    </c:forEach>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td><label>Name:</label></td>
-            <td><form:input path="name" /></td>
-        </tr>
-
-        <tr>
-            <td><label>Quantity:</label></td>
-            <td><form:input path="quantity" type="number"/></td>
-        </tr>
-
-        <tr>
-            <td><label>Price:</label></td>
-            <td><form:input path="price" /></td>
-        </tr>
-
-        <tr>
-            <td><label>Description:</label></td>
-            <td><form:textarea path="description"/></td>
-        </tr>
-
-        <tr>
-            <td><label>Image:</label></td>
-            <td><input type="file" name="file" /><br/></td>
-        </tr>
-
-        <tr>
-            <td><label></label></td>
-            <td><a href="/vendor/product/all"
-                    onclick="$window.location.href='vendor/productManagement'"><button class="btn btn-primary">Save</button></a></td>
-        </tr>
-
-        </tbody>
-    </table>
-
-</form:form>
-
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title">Product:</h4>
+</div>
+<div class="modal-body">
+    <form:form modelAttribute="productForm" method="post" enctype="multipart/form-data">
+        <form:hidden path="id"/>
+        <div class="form-group">
+            <label for="categories">Category</label>
+            <form:select name="categoryId" cssClass="form-control" path="categoryId">
+                <form:option value="">Select Category</form:option>
+                <c:forEach items="${categories}" var="row">
+                    <form:option value="${row.id}">${row.name}</form:option>
+                    <c:if test="${row.childCategories ne null}">
+                        <c:forEach items="${row.childCategories}" var="cRow">
+                            <form:option value="${cRow.id}">---${cRow.name}</form:option>
+                            <c:if test="${cRow.childCategories ne null}">
+                                <c:forEach items="${cRow.childCategories}" var="sRow">
+                                    <form:option value="${sRow.id}">------${sRow.name}</form:option>
+                                </c:forEach>
+                            </c:if>
+                        </c:forEach>
+                    </c:if>
+                </c:forEach>
+            </form:select>
+            <form:errors path="categoryId" cssStyle="color: red" />
+        </div>
+        <div class="form-group">
+            <label for="name">Name</label>
+            <form:errors path="name" cssStyle="color: red" />
+            <form:input path="name" class="form-Control" />
+        </div>
+        <div class="form-group">
+            <label for="quantity">Quantity</label>
+            <form:errors path="quantity" cssStyle="color: red" />
+            <form:input path="quantity" class="form-Control" />
+        </div>
+        <div class="form-group">
+            <label for="price">Price</label>
+            <form:errors path="price" cssStyle="color: red" />
+            <form:input path="price" type="number" class="form-Control" />
+        </div>
+        <div class="form-group">
+            <label for="description"> Description</label>
+            <form:errors path="description" cssStyle="color: red" />
+            <form:textarea path="description"  class="form-Control" />
+        </div>
+        <div class="form-group">
+            <form:errors path="categoryId" cssStyle="color: red" />
+            <label for="status">Status</label>
+            <select name="status" class="form-control">
+                <c:forEach items="${statuses}" var="row">
+                    <option value="${row}">${row}</option>
+                </c:forEach>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="image">Image</label>
+            <form:errors path="file" cssStyle="color: red" />
+            <form:input path="file" type="file" class="form-Control" />
+            <form:input path="image" type="hidden"/>
+        </div>
+    </form:form>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -116,9 +105,6 @@
     });
 </script>
 
-
-
-<%@include file="/WEB-INF/jsp/template/footer.jsp"%>
 <c:if test="${!empty message}">
     <script>
         $.sticky('<spring:message code="${message.message}"/>', {autoclose : 5000, position: "top-right", type: "st-${fn:toLowerCase(message.type)}" });

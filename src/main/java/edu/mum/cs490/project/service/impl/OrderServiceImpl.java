@@ -125,6 +125,9 @@ public class OrderServiceImpl implements OrderService {
     public Order saveOrUpdate(Order order) {
         order.setOrderDate(new Date());
         order.setShippingDate(new Date());
+        for(OrderDetail od : order.getOrderDetails()){
+            od.setOrder(order);
+        }
         this.cardDetailRepository.save(order.getCard());
         this.addressRepository.save(order.getAddress());
         return this.orderRespository.save(order);
@@ -174,15 +177,15 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void deductProductQuantityAfterPurchase(Order order) {
         for (OrderDetail od : order.getOrderDetails()) {
-            //this.productRepository.deductProductAfterPurchase(od.getQuantity(), od.getProduct().getId());
+            this.productRepository.deductProductAfterPurchase(od.getQuantity(), od.getProduct().getId());
         }
     }
 
 
     private TransactionTemplate getPurchaseTemplate(Order order, CardDetail OSSCardDetail, CardDetail taxCardDetail) {
         NotifierSubject notifierSubject = new NotifierSubject();
-        notifierSubject.addObserver(new MessageObserver());
-        notifierSubject.addObserver(new MailObserver(order, mailService));
+//        notifierSubject.addObserver(new MessageObserver());
+//        notifierSubject.addObserver(new MailObserver(order, mailService));
 
         TransferSubject transferSubject = new TransferSubject();
         transferSubject.addObserver(new TransferToVendorObserver(order, OSSCardDetail, paymentService, cardDetailRepository));

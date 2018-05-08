@@ -53,6 +53,14 @@ public class ShoppingCart {
         }
     }
 
+    public void remove(Integer productid){
+        for(int i = 0; i < orderDetails.size(); i++){
+            if(orderDetails.get(i).getProduct().getId().equals(productid)){
+                orderDetails.remove(i);
+            }
+        }
+    }
+
     public void convergeProductAvailability(Map<Product,Integer> productUnavailability){
         for(int i = 0 ; i<this.getOrderDetails().size() ; i++){
             Product product = this.getOrderDetails().get(i).getProduct();

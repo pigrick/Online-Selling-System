@@ -15,8 +15,17 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Date;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -69,9 +78,10 @@ public class TestUserSignController {
         vendorSignUpForm.setUsername("erdenebayar");
         vendorSignUpForm.setEmail("ebatsukh@mum.edu");
 
-        // Check User Signup
+        // Check User Signup to controller
         mockMvc.perform(post("/signup").flashAttr("moduleForm", signUpForm))
                 .andExpect(model().attributeHasFieldErrors("moduleForm", "username"));
+        //moduleForm is from SignController
 
         // Check Vendor Signup
         mockMvc.perform(post("/vendor/signup").flashAttr("moduleForm", vendorSignUpForm))
@@ -96,6 +106,25 @@ public class TestUserSignController {
         vendorSignUpForm.setRePassword("hello");
         vendorSignUpForm.setUsername("uniqueUser2");
         vendorSignUpForm.setEmail("ebatsukh@mum.edu");
+
+        Path path = Paths.get("D:\\resources\\product\\4\\4.png");
+        String name = "4.png";
+        String originalFileName = "4.png";
+        String contentType = "jpg;png";
+        byte[] content = null;
+        try {
+            content = Files.readAllBytes(path);
+        } catch (final IOException e) {
+        }
+        MultipartFile result = new MockMultipartFile(name,
+                originalFileName, contentType, content);
+        vendorSignUpForm.setFile(result);
+        vendorSignUpForm.setCardNumber("4000300020003002");
+        vendorSignUpForm.setCardNumber("MASTER");
+        vendorSignUpForm.setCvv("302");
+        vendorSignUpForm.setCardExpirationDate("05/2020");
+        vendorSignUpForm.setCardHolderName("V2");
+        vendorSignUpForm.setCardZipcode("52557");
 
         mockMvc.perform(post("/signup").flashAttr("moduleForm", signUpForm))
                 .andExpect(model().attribute("message", Message.successfullySaved));

@@ -4,7 +4,7 @@
 <link rel="stylesheet" type="text/css" href="/static/css/order/order.css">
 <link rel="stylesheet" type="text/css" href="/static/paymentdetail/css/styles.css">
 <div>
-    <div class="container tpy">
+    <div class="container">
         <div class="container">
             <h1 align="center">Review Order</h1>
             <c:if test="${errorMessages != null}">

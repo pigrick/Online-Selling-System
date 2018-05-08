@@ -2,7 +2,7 @@
 <link rel='stylesheet' type='text/css' href='/static/paymentdetail/css/receipt.css'/>
 
 
-<div class="container tpy">
+<div class="container">
     <h1>Order successfully processed! <br/> A confirmation email is sent to your inbox.</h1>
 </div>
 <div class="container border mbot">

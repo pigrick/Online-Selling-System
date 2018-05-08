@@ -42,7 +42,7 @@ public class AdminProductController {
         model.addAttribute("categories", categoryService.find(null, null, null));
         model.addAttribute("statuses", Status.values());
 
-        return "admin/index";
+        return "admin/product/index";
     }
 
     @RequestMapping(value = "/list")
@@ -55,28 +55,33 @@ public class AdminProductController {
         model.addAttribute("productList", productsList);
         model.addAttribute("statuses", Status.values());
 
-        return "/admin/list";
+        return "/admin/product/list";
     }
 
 
     @GetMapping("/update")
-    public String updateProduct(@RequestParam(required = false) Integer id, Model model) {
+    public String saveOrUpdate(@RequestParam(required = false) Integer id,
+                               @RequestParam(required = false) Status status,
+                               Model model) {
 
-        model.addAttribute("title", "Update Product");
+
 
         if (id != null && id != 0) {
             model.addAttribute("productForm", new ProductForm(productService.getOne(id)));
+            model.addAttribute("title", "Update Product");
         } else {
             model.addAttribute("productForm", new ProductForm());
+            model.addAttribute("title", "Create New Product");
         }
         model.addAttribute("categories", categoryService.find(null, null, Status.ENABLED));
+
         model.addAttribute("statuses", Status.values());
-        return "admin/edit";
+        return "admin/product/edit";
     }
 
     @PostMapping("/update")
-    public String updateProduct(@Valid @ModelAttribute("productForm") ProductForm form, BindingResult result,
-                                      @AuthenticationPrincipal Vendor vendor, Model model) {
+    public String saveOrUpdate(@Valid @ModelAttribute("productForm") ProductForm form, BindingResult result,
+                               @RequestParam("status") Status status, Model model) {
 
         model.addAttribute("categories", categoryService.find(null, null, Status.ENABLED));
 
@@ -87,24 +92,30 @@ public class AdminProductController {
 
         Product product = productService.getOne(form.getId());
 
-        product.setStatus(Status.ENABLED);
+        product.setStatus(status);
         product.setCategory(categoryService.getCategoryById(form.getCategoryId()));
         product.setDescription(form.getDescription());
         product.setName(form.getName());
         product.setPrice(form.getPrice());
         product.setQuantity(form.getQuantity());
-        product.setVendor(vendor);
         productService.saveOrUpdate(product);
         model.addAttribute("message", new Message(Message.Type.SUCCESS, "successfully.saved"));
 
-        return "redirect:admin/product/all";
+        return "admin/product/edit";
     }
 
     @GetMapping("/delete")
-    public String deleteProduct(@RequestParam(required = true) Integer id) {
-
+    @ResponseBody
+    public Message deleteProduct(@RequestParam(required = true) Integer id) {
         productService.delete(id);
+        return new Message(Message.Type.SUCCESS, "successfully.deleted");
+    }
 
-        return "admin/productManagement";
+    @RequestMapping(value = {"changeStatus"})
+    @ResponseBody
+    public Message changeStatus(@RequestParam Integer id, @RequestParam Status status,
+                                Model model) {
+        productService.changeStatus(id, status);
+        return new Message(Message.Type.SUCCESS, "successfully.changed.status");
     }
 }

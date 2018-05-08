@@ -21,10 +21,10 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Query(value = "SELECT a FROM Product a WHERE " +
             "(:name IS NULL OR a.name like %:name% OR a.vendor.companyName like %:name%) AND " +
-//            "(:categoryId IS NULL OR a.category.id = :categoryId) AND " +
             "(:categoryId IS NULL OR a.category.id IN :categoryIds) AND " +
             "(:vendorId IS NULL OR a.vendor.id =:vendorId) AND " +
-            "(:status IS NULL OR a.status =:status)")
+            "((:status IS NULL AND a.status = 'ENABLED') OR (a.status =:status)) AND " +
+            "(a.vendor.status = 'ENABLED') order by a.id desc")
 //    List<Product> find(@Param("name") String name, @Param("categoryId") Integer categoryId, @Param("categoryIds") Integer[] categoryIds, @Param("vendorId") Integer vendorId, @Param("status") Status status, Sort sort);
     List<Product> find(@Param("name") String name, @Param("categoryId") Integer categoryId, @Param("categoryIds") List<Integer> categoryIds, @Param("vendorId") Integer vendorId, @Param("status") Status status, Sort sort);
 
@@ -32,11 +32,11 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Query("update Product p set p.quantity = p.quantity - :pquantity where p.id = :productId")
     void deductProductAfterPurchase(@Param("pquantity") int pquantity, @Param("productId") Integer productId);
 
-    @Query("SELECT a FROM Product a WHERE " +
-            "((:name IS NULL OR a.name like %:name%) OR (:name IS NULL OR a.vendor.companyName like %:name%)) AND " +
-            "(:categoryId IS NULL OR a.category.id = :categoryId) AND " +
-//            "(:categoryId IS NULL OR :categoryId member a.parentIds) AND " +
+    @Query(value = "SELECT a FROM Product a WHERE " +
+            "(:name IS NULL OR a.name like %:name% OR a.vendor.companyName like %:name%) AND " +
+            "(:categoryId IS NULL OR a.category.id IN :categoryIds) AND " +
             "(:vendorId IS NULL OR a.vendor.id =:vendorId) AND " +
-            "(:status IS NULL OR a.status =:status)")
-    Page<Product> findPage(@Param("name") String name, @Param("categoryId") Integer categoryId, @Param("vendorId") Integer vendorId, @Param("status") Status status, Pageable pageable);
+            "((:status IS NULL AND a.status = 'ENABLED') OR (a.status =:status)) AND " +
+            "(a.vendor.status = 'ENABLED')")
+    Page<Product> findPage(@Param("name") String name, @Param("categoryId") Integer categoryId, @Param("categoryIds") List<Integer> categoryIds, @Param("vendorId") Integer vendorId, @Param("status") Status status, Pageable pageable);
 }

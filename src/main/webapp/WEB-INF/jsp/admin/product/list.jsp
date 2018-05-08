@@ -8,7 +8,7 @@
         <th>Name</th>
         <th>Quantity</th>
         <th>Price</th>
-        <<th>Category</th>
+        <th>Category</th>
         <th>Description</th>
         <th>Vendor Name</th>
         <th>Status</th>
@@ -17,8 +17,7 @@
     </thead>
     <tbody>
     <c:forEach items="${productList}" var="row">
-        <tr>
-
+        <tr <c:if test="${row.status ne 'ENABLED'}">class="danger" </c:if>>
             <td><i>${row.name}</i></td>
             <td><i>${row.quantity}</i></td>
             <td>${row.price}</td>
@@ -34,9 +33,16 @@
                     <i class="glyphicon glyphicon-pencil"></i>
                 </a>
 
-                <a href="#delete" type="button" onclick="module.delete('${row.id}')">
-                    <i class="glyphicon glyphicon-remove"></i>
-                </a>
+                <c:if test="${row.status eq 'ENABLED'}">
+                    <a href="#delete" type="button" onclick="module.delete('${row.id}')">
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </a>
+                </c:if>
+                <c:if test="${row.status ne 'ENABLED'}">
+                    <a href="#changeStatus" type="button" onclick="module.changeStatus('${row.id}', 'ENABLED')">
+                        <i class="glyphicon glyphicon-ok"></i>
+                    </a>
+                </c:if>
 
             </td>
         </tr>

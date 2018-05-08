@@ -14,4 +14,6 @@ public interface AES {
     public String encrypt(String strToEncrypt);
 
     public String decrypt(String strToDecrypt);
+
+    public String getSecretKeyWord();
 }

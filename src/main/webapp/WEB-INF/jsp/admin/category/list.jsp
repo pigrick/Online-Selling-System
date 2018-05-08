@@ -19,7 +19,7 @@
     </thead>
     <tbody>
     <c:forEach items="${list}" var="row">
-        <tr>
+        <tr <c:if test="${row.status ne 'ENABLED'}">class="danger" </c:if>>
             <td>
                 <a class="btn btn-primary btn-xs" href="#parentId" onclick="module.childList('${row.id}')">
                     <i>${row.name}</i>

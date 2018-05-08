@@ -1,6 +1,7 @@
 package edu.mum.cs490.project.model.form;
 
 import edu.mum.cs490.project.domain.Product;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -19,6 +20,7 @@ public class ProductForm implements Serializable {
     private double price;
     private String description;
     private String image;
+    private MultipartFile file;
 
     public ProductForm() {
     }
@@ -30,6 +32,7 @@ public class ProductForm implements Serializable {
         this.price = product.getPrice();
         this.description = product.getDescription();
         this.categoryId = product.getCategory().getId();
+        this.image = product.getImage();
     }
 
     public Integer getId() {
@@ -86,5 +89,13 @@ public class ProductForm implements Serializable {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
     }
 }

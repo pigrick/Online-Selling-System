@@ -5,6 +5,7 @@ import edu.mum.cs490.project.domain.Status;
 import edu.mum.cs490.project.model.Message;
 import edu.mum.cs490.project.model.form.CategoryForm;
 import edu.mum.cs490.project.service.CategoryService;
+import edu.mum.cs490.project.service.impl.FileManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +25,9 @@ public class AdminCategoryController {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private FileManagementService fileManagementService;
 
     @GetMapping
     public String index(Model model) {
@@ -66,6 +70,10 @@ public class AdminCategoryController {
             model.addAttribute("message", Message.errorOccurred);
             return "admin/category/create";
         }
+        if (categoryForm.getFile() != null && !categoryForm.getFile().isEmpty() && !fileManagementService.checkImageExtension(categoryForm.getFile().getOriginalFilename())) {
+            model.addAttribute("message", new Message(Message.Type.ERROR, "File extension must be .jpg or .png!"));
+            return "admin/category/create";
+        }
         Category category;
         if (categoryForm.getId() != null)
             category = categoryService.getCategoryById(categoryForm.getId());
@@ -75,6 +83,14 @@ public class AdminCategoryController {
         category.setParentCategory(categoryForm.getParentId() != null ? categoryService.getCategoryById(categoryForm.getParentId()) : null);
         categoryService.save(category);
 
+        if (categoryForm.getFile() != null) {
+            String fileFullName = fileManagementService.createFile(categoryForm.getFile(), "category", category.getId());
+            if (fileFullName != null) {
+                category.setImage(fileFullName);
+                categoryService.save(category);
+                model.addAttribute("message", new Message(Message.Type.SUCCESS, "successfully.uploaded"));
+            }
+        }
         model.addAttribute("message", Message.successfullySaved);
         return "admin/category/create";
     }

@@ -36,11 +36,14 @@ public class VendorProductController {
     @Autowired
     private FileManagementService fileManagementService;
 
+    private final int PAGE_SIZE = 10;
+
     @GetMapping
     public String productManagement(@AuthenticationPrincipal Vendor vendor, Model model) {
         List<Product> productsList = productService.find(null, null, vendor.getId(), Status.ENABLED, null);
         model.addAttribute("productList", productsList);
-        model.addAttribute("categories", categoryService.find(null, null, Status.ENABLED));
+        model.addAttribute("categories", categoryService.find(null, null, null));
+        model.addAttribute("statuses", Status.values());
 
         return "/vendor/index";
     }
@@ -48,17 +51,21 @@ public class VendorProductController {
     @RequestMapping(value = "/list")
     public String getProduct(@AuthenticationPrincipal Vendor vendor,
                              @RequestParam(required = false) String name,
-                             //@RequestParam(defaultValue = "1") Integer page,
-                             @RequestParam(required = false) Integer categoryId, Model model) {
+                             @RequestParam(required = false) Integer categoryId,
+                             @RequestParam(required = false) Status status,
+                             Model model) {
 
-        List<Product> productsList = productService.find(name.equals("") ? null : name, categoryId, vendor.getId(), Status.ENABLED, null);
+        List<Product> productsList = productService.find(name.equals("") ? null : name, categoryId, vendor.getId(), status, null);
         model.addAttribute("productList", productsList);
+        model.addAttribute("statuses", Status.values());
 
         return "/vendor/list";
     }
 
     @GetMapping("/save")
-    public String saveOrUpdateProduct(@RequestParam(required = false) Integer id, Model model) {
+    public String saveOrUpdateProduct(@RequestParam(required = false) Integer id,
+                                      @RequestParam(required = false) Status status,
+                                      Model model) {
 
         model.addAttribute("title", "Product:");
 
@@ -68,6 +75,7 @@ public class VendorProductController {
             model.addAttribute("productForm", new ProductForm());
         }
         model.addAttribute("categories", categoryService.find(null, null, Status.ENABLED));
+        model.addAttribute("statuses", Status.values());
 
         return "vendor/saveProduct";
     }
@@ -75,28 +83,31 @@ public class VendorProductController {
     @PostMapping("/save")
     public String saveOrUpdateProduct(@Valid @ModelAttribute("productForm") ProductForm form, BindingResult result,
                                       @AuthenticationPrincipal Vendor vendor,
-                                      @RequestParam("file") MultipartFile file,
+                                      @RequestParam(required = false) Status status,
                                       Model model) {
 
         model.addAttribute("title", "Product");
         model.addAttribute("categories", categoryService.find(null, null, Status.ENABLED));
 
-        if (file.isEmpty() || result.hasErrors()) {
-            model.addAttribute("message", new Message(Message.Type.ERROR, "Please fill out the form!"));
+        if (result.hasErrors()) {
+            model.addAttribute("message",  Message.errorOccurred);
             return "vendor/saveProduct";
-        } else if (!file.isEmpty() && !fileManagementService.checkImageExtension(file.getOriginalFilename())) {
-            model.addAttribute("message", new Message(Message.Type.ERROR, "File extension must be .jpg or .png!"));
+        } else if (form.getFile() != null &&!form.getFile().isEmpty() && !fileManagementService.checkImageExtension(form.getFile().getOriginalFilename())) {
+            result.rejectValue("file", null, "File extension must be .jpg or .png!");
+            return "vendor/saveProduct";
+        }
+        if (form.getId() == null && form.getFile() == null) {
+            result.rejectValue("file", null, "Product must have a picture!");
             return "vendor/saveProduct";
         }
 
-        String url = file.getOriginalFilename();
         Product product;
         if (form.getId() == null) {
             product = new Product();
         } else {
             product = productService.getOne(form.getId());
         }
-        product.setStatus(Status.ENABLED);
+        product.setStatus(status);
         product.setCategory(categoryService.getCategoryById(form.getCategoryId()));
         product.setDescription(form.getDescription());
         product.setName(form.getName());
@@ -105,23 +116,32 @@ public class VendorProductController {
         product.setVendor(vendor);
         productService.saveOrUpdate(product);
 
-        if (file != null) {
-            String fileFullName = fileManagementService.createFile(file, "product", product.getId());
+        if (form.getFile() != null) {
+            String fileFullName = fileManagementService.createFile(form.getFile(), "product", product.getId());
 
             if (fileFullName != null) {
                 product.setImage(fileFullName);
                 productService.saveOrUpdate(product);
-                model.addAttribute("message", new Message(Message.Type.SUCCESS, "successfully.uploaded"));
             }
         }
+        model.addAttribute("message", new Message(Message.Type.SUCCESS, "successfully.uploaded"));
         return "vendor/saveProduct";
     }
 
     @GetMapping("/delete")
+    @ResponseBody
     public Message deleteProduct(@RequestParam(required = true) Integer id, Model model) {
 
         productService.delete(id);
 
         return new Message(Message.Type.SUCCESS, "successfully.deleted");
+    }
+
+    @RequestMapping(value = {"changeStatus"})
+    @ResponseBody
+    public Message changeStatus(@RequestParam Integer id, @RequestParam Status status,
+                                Model model) {
+        productService.changeStatus(id, status);
+        return new Message(Message.Type.SUCCESS, "successfully.changed.status");
     }
 }

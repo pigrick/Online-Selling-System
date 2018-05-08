@@ -5,6 +5,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.persistence.criteria.Fetch;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -22,7 +23,7 @@ public class User implements UserDetails {
     private Status status = Status.ENABLED;
     @OneToMany(mappedBy = "user")
     private List<Address> addresses;
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<CardDetail> cards;
 
     public User() {

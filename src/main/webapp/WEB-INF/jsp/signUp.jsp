@@ -11,9 +11,7 @@
                 <div class="aa-myaccount-area">
                     <div class="col-md-6" style="float: none; margin-left: 35%; width: 30%">
                         <div class="aa-myaccount-login">
-
                             <h4>Register</h4>
-
                             <c:if test="${!empty message}">
                                 <c:choose>
                                     <c:when test="${message.type eq 'SUCCESS'}">
@@ -24,9 +22,7 @@
                                     </c:when>
                                 </c:choose>
                             </c:if>
-                            <%--<c:url value="/signup" var="signupProcessingUrl"/>--%>
-                            <%--<form:form action="${signupProcessingUrl}" method="post">--%>
-                                <form:form modelAttribute="moduleForm" action="${pageContext.request.contextPath}/signup" method="post">
+                            <form:form modelAttribute="moduleForm" action="${pageContext.request.contextPath}/signup" method="post">
 
                                 <div class="form-group">
                                     <label for="firstName">First Name<span style="color: red">*</span></label>
@@ -45,7 +41,6 @@
                                     <form:errors path="username" cssStyle="color: red" />
                                     <form:input path="username" id="username" class="form-Control" />
                                 </div>
-
 
                                 <div class="form-group">
                                     <label for="email">Email<span style="color: red">*</span></label>
@@ -84,10 +79,9 @@
 
                                 <%--<input type="submit" value="submit" id="register-submit" class="btn btn-default" disabled>--%>
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                <button type="submit" class="btn btn-primary">submit</button>
+                                <a href="<c:url value="/"/>" class="btn btn-default">Cancel</a>
                             </form:form>
-
-                            <button type="button" class="btn btn-primary" onclick="create.submit()">submit</button>
-                            <a href="<c:url value="/" />" class="btn btn-default">Cancel</a>
                         </div>
                     </div>
                 </div>
@@ -100,7 +94,7 @@
 <c:if test="${!empty message}">
     <script>
         <c:if test="${message.type eq 'SUCCESS'}">
-            window.location = "/login";
+        window.location = "/login";
         </c:if>
     </script>
 </c:if>

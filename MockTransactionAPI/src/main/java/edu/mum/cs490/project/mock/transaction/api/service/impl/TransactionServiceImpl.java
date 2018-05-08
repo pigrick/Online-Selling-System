@@ -7,17 +7,24 @@ package edu.mum.cs490.project.mock.transaction.api.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.mum.cs490.project.mock.transaction.api.dao.AccountDAO;
+import edu.mum.cs490.project.mock.transaction.api.dao.AccountDAORepository;
 import edu.mum.cs490.project.mock.transaction.api.dao.TransactionDAO;
 import edu.mum.cs490.project.mock.transaction.api.entity.Account;
 import edu.mum.cs490.project.mock.transaction.api.entity.Transaction;
 import edu.mum.cs490.project.mock.transaction.api.model.TransactionRequest;
 import edu.mum.cs490.project.mock.transaction.api.service.TransactionService;
 import java.io.IOException;
+import java.security.InvalidParameterException;
+import java.util.Date;
+
+import edu.mum.cs490.project.mock.transaction.api.util.AES;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
+
 
 /**
  *
@@ -35,6 +42,12 @@ public class TransactionServiceImpl implements TransactionService {
     private AccountDAO accountDAO;
     @Autowired
     private TransactionDAO transactionDAO;
+    @Autowired
+    private AccountDAORepository accountDAORepository;
+
+    @Autowired
+    @Qualifier("AES")
+    private AES aes;
 
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -45,7 +58,8 @@ public class TransactionServiceImpl implements TransactionService {
         TransactionRequest tr;
         try {
             tr = mapper.readValue(requestStr, TransactionRequest.class);
-        } catch (IOException | NullPointerException ex) {
+            tr.validate();
+        } catch (IOException | NullPointerException | InvalidParameterException ex) {
             logger.error("", ex);
             logger.error("Invalid request");
             return "400";
@@ -102,6 +116,8 @@ public class TransactionServiceImpl implements TransactionService {
             logger.info("The destination account has been updated.");
             accountDAO.save(dstAccount);
 
+        } else {
+            account = refreshAccount(account);
         }
         Transaction newTransaction = new Transaction(
                 tr.getSrcCardNo(),
@@ -114,5 +130,25 @@ public class TransactionServiceImpl implements TransactionService {
         transactionDAO.save(newTransaction);
         logger.info("New transaction has been inserted. Result of transaction request - " + (resultCode == 1) + "(" + resultCode + ")");
         return resultCode.toString();
+    }
+
+    @Override
+    public Account refreshAccount(Account account) {
+        System.out.println("" + account.toString());
+        account.setCardNo(aes.encrypt(account.getCardNo()));
+        if (account.getName() != null) {
+            account.setName(aes.encrypt(account.getName()));
+        }
+        if (account.getZipCode() != null) {
+            account.setZipCode(aes.encrypt(account.getZipCode()));
+        }
+        if (account.getCVV() != null) {
+            account.setCVV(aes.encrypt(account.getCVV()));
+        }
+        if (account.getExpirationDate() != null) {
+            account.setExpirationDate(aes.encrypt(account.getExpirationDate()));
+        }
+        System.out.println("" + account.toString());
+        return account;
     }
 }

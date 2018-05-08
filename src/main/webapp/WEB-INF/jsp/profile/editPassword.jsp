@@ -58,7 +58,7 @@
                                 </form:form>
 
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    <a href="<c:url value="/" />" class="btn btn-default">Close</a>
                                     <button type="button" class="btn btn-primary" onclick="create.submit()">Save changes</button>
                                 </div>
                             </div>

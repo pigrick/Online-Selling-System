@@ -15,7 +15,7 @@ public class Product {
     private String name;
     @ManyToOne
     private Category category;
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.EAGER)
     @JsonIgnore
     private Vendor vendor;
     private int quantity;

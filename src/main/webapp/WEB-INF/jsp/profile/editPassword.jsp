@@ -14,11 +14,11 @@
 <script>
     create = {
         init: function() {
-            console.log('init method')
-            // $('#editForm').ajaxForm({
-            //     target:'#edit-target',
-            //     url:'/profile/edit'
-            // });
+            //console.log('init method')
+            /*$('#passwordForm').ajaxForm({
+                 target:'#edit-target',
+                 url:'/profile/edit/password'
+            });*/
         },
         success: function() {
             $('#edit-modal').modal('hide');
@@ -30,31 +30,45 @@
     };
 </script>
 
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title">Edit <i>${passwordForm.username}</i> Customer</h4>
-</div>
-<div class="modal-body">
-    <form:form modelAttribute="passwordForm"  action="${pageContext.request.contextPath}/profile/edit" method="post">
+<section id="aa-myaccount">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="aa-myaccount-area">
+                    <div class="col-md-6" style="float: none; margin-left: 35%; width: 30%">
+                        <div class="aa-myaccount-login">
+                            <div class="modal-body">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title">Edit Password</h4>
+                                </div>
+                                <div class="alert-danger"><c:out value="${badcard}"/></div>
+                                <form:form modelAttribute="passwordForm"  action="${pageContext.request.contextPath}/profile/edit/password" method="post">
+                                    <div class="form-group">
+                                        <form:errors path="password" cssStyle="color: red" />
+                                        <label for="password">Password</label>
+                                        <form:input path="password" type="email" class="form-Control" />
+                                    </div>
 
+                                    <div class="form-group">
+                                        <form:errors path="rePassword" cssStyle="color: red" />
+                                        <label for="rePassword">re-Password</label>
+                                        <form:input path="rePassword" type="email" class="form-Control" />
+                                    </div>
+                                </form:form>
 
-        <div class="form-group">
-            <form:errors path="password" cssStyle="color: red" />
-            <label for="password">Password</label>
-            <form:input path="password" type="email" class="form-Control" />
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary" onclick="create.submit()">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="form-group">
-            <form:errors path="rePassword" cssStyle="color: red" />
-            <label for="rePassword">re-Password</label>
-            <form:input path="rePassword" type="email" class="form-Control" />
-        </div>
-    </form:form>
-</div>
-<div class="modal-footer">
-    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    <button type="button" class="btn btn-primary" onclick="create.submit()">Save changes</button>
-</div>
+    </div>
+</section>
 
 <script type="text/javascript">
     $(function () {
@@ -72,7 +86,4 @@
     </script>
 </c:if>
 
-
-
 <%@include file="/WEB-INF/jsp/template/footer.jsp"%>
-

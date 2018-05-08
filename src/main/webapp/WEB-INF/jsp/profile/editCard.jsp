@@ -11,7 +11,7 @@
                         <div class="aa-myaccount-login">
 
                             <h4>Edit card</h4>
-
+                            <div class="alert-danger"><c:out value="${badcard}"/></div>
                             <form:form modelAttribute="editCard" action="/profile/card/edit" method="post" >
 
                                 <%--CARD INFO--%>
@@ -29,7 +29,7 @@
                                 <div class="form-group" id="card-number-field">
                                     <label for="cardNumber">Card Number<span style="color: red">*</span></label>
                                     <form:errors path="cardNumber" cssStyle="color: red" />
-                                    <form:input path="cardNumber" class="form-control" id="cardNumber"/>
+                                    <form:input path="cardNumber" class="form-control" id="cardNumber" maxlength="16" />
                                 </div>
                                 <div class="form-group" id="expiration-date">
                                     <label>Expiration Date<span style="color: red">*</span></label>

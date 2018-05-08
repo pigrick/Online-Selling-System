@@ -163,7 +163,7 @@
                                 <span class="aa-cart-title">CART</span>
                             </a>
 
-                            <div class="aa-cartbox-summary">
+                            <div class="aa-cartbox-summary " id="cartTotalBox">
                                 <c:choose>
                                     <c:when test="${shoppingcart == null || shoppingcart.orderDetails.isEmpty()}">
                                         <p>No Items in Shopping Cart!</p>
@@ -177,9 +177,9 @@
                                                             alt="img"></a>
                                                     <div class="aa-cartbox-info">
                                                         <h4><a href="#"></a></h4>
-                                                        <fmt:formatNumber value="${orderDetail.price}" type="currency"
-                                                                          currencySymbol="$"/> x <c:out
-                                                            value="${orderDetail.quantity}"/>
+                                                        <span class="cartTotal"><span class="cartItemPrice"><fmt:formatNumber value="${orderDetail.price}" type="currency"
+                                                                          currencySymbol="$"/></span> x <c:out
+                                                            value="${orderDetail.quantity}"/></span>
                                                     </div>
                                                     <span class="aa-remove-product"
                                                        onclick="removeCart(${orderDetail.product.id})" />
@@ -194,7 +194,7 @@
                                             </c:forEach>
                                             <li>
                                                 <span class="aa-cartbox-total-title">Total</span>
-                                                <span class="aa-cartbox-total-price"><fmt:formatNumber
+                                                <span class="aa-cartbox-total-price" id="cartTotalPrices"><fmt:formatNumber
                                                         value="${shoppingcart.calculateTotalPrice()}" type="currency"
                                                         currencySymbol="$"/></span>
                                             </li>

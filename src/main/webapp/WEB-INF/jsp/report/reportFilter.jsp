@@ -51,7 +51,7 @@
                                     <form:select tabindex="4" id="vendor" class="col-md-7" path="lstVendor_Id"
                                                  multiple="multiple" disabled="true">
                                         <c:forEach var="v" items="${vendors}">
-                                            <form:option id="otherVendors" value="${v.id}">
+                                            <form:option selected="selected" id="otherVendors" value="${v.id}">
                                                 ${v.companyName}
                                             </form:option>
                                         </c:forEach>
@@ -63,20 +63,20 @@
                             <div class="form-group">
                                 <label class="col-md-3">Category:</label>
                                 <label class="col-md-7"><input type="checkbox" value="0" tabindex="5"
-                                                               id="allCategory" checked
-                                />
+                                                               id="allCategory" checked/>
                                     All</label><br/>
                                 <label class="col-md-3"></label>
                                 <form:select tabindex="6" id="category" class="col-md-7" path="lstCategory_Id"
                                              multiple="multiple" size="5" disabled="true">
                                     <c:forEach var="c" items="${categories}">
-                                        <form:option value="${c.id}">${c.name}</form:option>
+                                        <form:option selected="selected" value="${c.id}">${c.name}</form:option>
                                     </c:forEach>
                                 </form:select>
                             </div>
                             <br/><br/> <br/><br/><br/>
                             <div class="col-md-10" align="center">
-                                <input id="btnExport" style="color: orangered" type="submit" value="Export" tabindex="7"/>
+                                <input id="btnExport" style="color: orangered" type="submit" value="Export"
+                                       tabindex="7"/>
                             </div>
                         </form:form>
                     </div>
@@ -91,7 +91,11 @@
 
 <c:if test="${!empty message}">
     <script type="text/javascript">
-        $.sticky('<spring:message code="${message.message}"/>', {autoclose : 5000, position: "top-right", type: "st-${fn:toLowerCase(message.type)}" });
+        $.sticky('<spring:message code="${message.message}"/>', {
+            autoclose: 5000,
+            position: "top-right",
+            type: "st-${fn:toLowerCase(message.type)}"
+        });
 
         <%--<c:if test="${message.type eq 'SUCCESS'}">--%>
         <%----%>

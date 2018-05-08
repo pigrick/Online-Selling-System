@@ -15,11 +15,11 @@ INSERT INTO admin VALUES ('Erdenebayar', 'Batsukh', 1);
 
 INSERT INTO user VALUES (2 , 'ebatsukh@mum.edu', '$2a$10$snL9/9oR.u6CtqN/g5hJm.GtmHr4wx1ptuOD8.GL8wR4yvHg8Y/7O', 'ENABLED',
                          'vendor');
-INSERT INTO vendor VALUES ('MUM', 2);
-INSERT INTO vendor VALUES ('AKRON', 4);
-INSERT INTO vendor VALUES ('BARTIET', 5);
-INSERT INTO vendor VALUES ('GAMET', 6);
-INSERT INTO vendor VALUES ('PANASONIC', 7);
+INSERT INTO vendor VALUES ('MUM', 'vendor\\2\\2.jpg', 2);
+INSERT INTO vendor VALUES ('NIKE', 'vendor\\4\\4.png', 4);
+INSERT INTO vendor VALUES ('ZARA', 'vendor\\5\\5.png', 5);
+INSERT INTO vendor VALUES ('GAMET', 'vendor\\6\\6.jpg', 6);
+INSERT INTO vendor VALUES ('PANASONIC', 'vendor\\7\\7.png', 7);
 
 INSERT INTO category VALUES (1, "Women",'ENABLED',null);
 INSERT INTO category VALUES (2, "Men",'ENABLED',null);

@@ -3,10 +3,8 @@ package edu.mum.cs490.project.controller;
 import edu.mum.cs490.project.domain.*;
 import edu.mum.cs490.project.model.Message;
 import edu.mum.cs490.project.model.form.ReportFilterForm;
-import edu.mum.cs490.project.service.CategoryService;
-import edu.mum.cs490.project.service.MailService;
-import edu.mum.cs490.project.service.OrderDetailService;
-import edu.mum.cs490.project.service.VendorService;
+import edu.mum.cs490.project.service.*;
+import edu.mum.cs490.project.utils.jpreport.DataSourceReport;
 import javassist.NotFoundException;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -28,7 +26,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,6 +41,12 @@ public class ReportController {
     private final VendorService vendorService;
     private final CategoryService categoryService;
     private final MailService mailService;
+
+    @Autowired
+    ReportService reportService;
+
+    @Autowired
+    DataSourceReport dataSourceReport;
 
     @Autowired
     public ReportController(OrderDetailService orderDetailService, VendorService vendorService, CategoryService categoryService, MailService mailService) {
@@ -74,67 +80,69 @@ public class ReportController {
             return "report/reportFilter";
         }
         try {
-            report(reportFilterForm, user, response);
+            createJasperReport(reportFilterForm, user, response);
+//            report(reportFilterForm, user, response);
         } catch (NotFoundException nfe) {
             model.addAttribute("message", new Message(Message.Type.ERROR, nfe.getMessage()));
         } catch (Exception ex) {
+            ex.printStackTrace();
             model.addAttribute("message", Message.errorOccurred);
         }
         return "report/reportFilter";
     }
 
-    public void report(ReportFilterForm reportFilterForm, @AuthenticationPrincipal User user, HttpServletResponse response) throws Exception  {
-
-        if (reportFilterForm.getLstVendor_Id() == null)
-            reportFilterForm.setLstVendor_Id(new ArrayList<>());
-        if (reportFilterForm.getLstCategory_Id() == null)
-            reportFilterForm.setLstCategory_Id(new ArrayList<>());
-
-        String reportName = "";
-        if (user instanceof Vendor) {
-            reportName = "reportForVendor";
-            if (!reportFilterForm.getLstVendor_Id().isEmpty())
-                reportFilterForm.setLstVendor_Id(new ArrayList<>());
-
-            reportFilterForm.getLstVendor_Id().add(user.getId());
-        } else if (user instanceof Admin) {
-            reportName = "report";
-        }
-        List<OrderDetail> list = collectData(reportFilterForm.getLstVendor_Id(), reportFilterForm.getLstCategory_Id(), reportFilterForm.getBegin_Date(), reportFilterForm.getEnd_Date());
-
-        if (list == null || list.isEmpty()) {
-            throw new NotFoundException("no.data.available.on.this.period");
-        }
-
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        // Initialize response
-        response.reset(); // Some JSF component library or some Filter might have set some headers in the buffer beforehand.
-        // set pdf content
-        response.setContentType("application/pdf");
-        // if you want to download instead of opening inlines
-        // response.addHeader("Content-Disposition", "attachment; filename=" + fileName);
-        try {
-            byte[] bytes = generateJasperReportPDF(reportName, outputStream, list);
-            // write the content to the output stream
-            BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
-            bos.write(bytes);
-            bos.flush();
-            bos.close();
-            outputStream.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("<<<<File Not Fount Exception>>>>");
-            throw e;
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("<<<<Input Output Stream Exception>>>>");
-            throw e;
-        } catch (JRException e) {
-            e.printStackTrace();
-            System.out.println("<<<<JRException Stream Exception>>>>");
-            throw e;
-        }
-    }
+//    public void report(ReportFilterForm reportFilterForm, @AuthenticationPrincipal User user, HttpServletResponse response) throws Exception {
+//
+//        if (reportFilterForm.getLstVendor_Id() == null)
+//            reportFilterForm.setLstVendor_Id(new ArrayList<>());
+//        if (reportFilterForm.getLstCategory_Id() == null)
+//            reportFilterForm.setLstCategory_Id(new ArrayList<>());
+//
+//        String reportName = "";
+//        if (user instanceof Vendor) {
+//            reportName = "reportForVendor";
+//            if (!reportFilterForm.getLstVendor_Id().isEmpty())
+//                reportFilterForm.setLstVendor_Id(new ArrayList<>());
+//
+//            reportFilterForm.getLstVendor_Id().add(user.getId());
+//        } else if (user instanceof Admin) {
+//            reportName = "report";
+//        }
+//        List<OrderDetail> list = collectData(reportFilterForm.getLstVendor_Id(), reportFilterForm.getLstCategory_Id(), reportFilterForm.getBegin_Date(), reportFilterForm.getEnd_Date());
+//
+//        if (list == null || list.isEmpty()) {
+//            throw new NotFoundException("no.data.available.on.this.period");
+//        }
+//
+//        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//        // Initialize response
+//        response.reset(); // Some JSF component library or some Filter might have set some headers in the buffer beforehand.
+//        // set pdf content
+//        response.setContentType("application/pdf");
+//        // if you want to download instead of opening inlines
+//        // response.addHeader("Content-Disposition", "attachment; filename=" + fileName);
+//        try {
+//            byte[] bytes = generateJasperReportPDF(reportName, outputStream, list);
+//            // write the content to the output stream
+//            BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
+//            bos.write(bytes);
+//            bos.flush();
+//            bos.close();
+//            outputStream.close();
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//            System.out.println("<<<<File Not Fount Exception>>>>");
+//            throw e;
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            System.out.println("<<<<Input Output Stream Exception>>>>");
+//            throw e;
+//        } catch (JRException e) {
+//            e.printStackTrace();
+//            System.out.println("<<<<JRException Stream Exception>>>>");
+//            throw e;
+//        }
+//    }
 
 
     //Send report to vendors monthly/weekly
@@ -192,7 +200,7 @@ public class ReportController {
         }
     }
 
-    private List<OrderDetail> collectData(List<Integer> lstVendorId, List<Integer> lstCategoryId, Date beging_Date, Date end_Date) {
+    public List<OrderDetail> collectData(List<Integer> lstVendorId, List<Integer> lstCategoryId, Date beging_Date, Date end_Date) {
         List<OrderDetail> lstOrderDetail = new ArrayList<>();
 
         if (lstVendorId.isEmpty() && lstCategoryId.isEmpty())
@@ -256,4 +264,35 @@ public class ReportController {
         }
         return outputStream.toByteArray();
     }
+
+
+    public void createJasperReport(ReportFilterForm reportFilterForm, @AuthenticationPrincipal User user, HttpServletResponse response) throws NotFoundException {
+
+        if (reportFilterForm.getLstVendor_Id() == null)
+            reportFilterForm.setLstVendor_Id(new ArrayList<>());
+        if (reportFilterForm.getLstCategory_Id() == null)
+            reportFilterForm.setLstCategory_Id(new ArrayList<>());
+
+        String reportName = "";
+        if (user instanceof Vendor) {
+            reportName = "reportForVendor";
+            if (!reportFilterForm.getLstVendor_Id().isEmpty())
+                reportFilterForm.setLstVendor_Id(new ArrayList<>());
+
+            reportFilterForm.getLstVendor_Id().add(user.getId());
+        } else if (user instanceof Admin) {
+            reportName = "report";
+        }
+
+        response.reset();
+        response.setContentType("application/x-pdf");
+        List<OrderDetail> orderDetailsList = reportService.getReportResultList(reportFilterForm.getLstVendor_Id(), reportFilterForm.getLstCategory_Id(), reportFilterForm.getBegin_Date(), reportFilterForm.getEnd_Date());
+        dataSourceReport.init(orderDetailsList);
+        if (dataSourceReport == null || orderDetailsList.isEmpty()) {
+            throw new NotFoundException("no.data.available.on.this.period");
+
+        }
+        reportService.jasperReportFill("jpreport/" + reportName + ".jrxml", dataSourceReport);
+    }
+
 }

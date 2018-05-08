@@ -58,8 +58,8 @@
                                 </form:form>
 
                                 <div class="modal-footer">
-                                    <a href="<c:url value="/" />" class="btn btn-default">Close</a>
                                     <button type="button" class="btn btn-primary" onclick="create.submit()">Save changes</button>
+                                    <a href="<c:url value="/" />" class="btn btn-default">Close</a>
                                 </div>
                             </div>
                         </div>

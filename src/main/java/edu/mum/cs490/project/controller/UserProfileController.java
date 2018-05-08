@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Date;
 
 /**
  * Created by Erdenebayar on 4/24/2018
@@ -134,27 +135,32 @@ public class UserProfileController {
     @RequestMapping(value = "card/edit", method = RequestMethod.GET)
     public String cardEdit(@AuthenticationPrincipal User user, ModelMap model) {
         CardDetailForm cardDetailForm = new CardDetailForm();
-        decToCardDetailForm(user.getCards().get(0), cardDetailForm);
         model.put("editCard", cardDetailForm);
         return "profile/editCard";
     }
 
     @RequestMapping(value = "card/edit", method = RequestMethod.POST)
     public String cardEdit(@AuthenticationPrincipal User user, @Valid @ModelAttribute("editCard") CardDetailForm editCard, BindingResult result, ModelMap model, HttpServletRequest request) {
-        if (result.hasErrors()) {
-            model.put("message", Message.errorOccurred);
+        if (result.hasErrors() || editCard.getCardNumber().length() != 16) {
+            model.addAttribute("badcard", "Invalid Card details");
             return "profile/editCard";
         }
 
         //check for paymentform validation error
         if (request.getParameter("month") != null && request.getParameter("year") != null) {
+            if(new Date().getYear() > Integer.parseInt(request.getParameter("year"))
+                    || new Date().getMonth() > Integer.parseInt(request.getParameter("month"))) {
+                model.addAttribute("badcard", "Creditcard Declined!");
+                return "profile/editCard";
+            }
             editCard.setCardExpirationDate(request.getParameter("month") + "/" + request.getParameter("year"));
         }
-
-        CardDetail cardDetail = user.getCards().get(0);
-        encToCardDetail(cardDetail, editCard);
-        user.getCards().clear();
-        user.getCards().add(cardDetail);
+        for(CardDetail detail : user.getCards()) {
+            if(detail.getCardNumber().equals(editCard.getCardNumber())) {
+                encToCardDetail(detail, editCard);
+                break;
+            }
+        }
         userService.saveOrUpdate(user);
         model.put("message", Message.successfullySaved);
         return "redirect:/";
@@ -177,7 +183,7 @@ public class UserProfileController {
 
         model.put("message", Message.successfullySaved);
 
-        return "profile/editPassword";
+        return "redirect:/";
     }
 
     @RequestMapping(value = "delete", method = RequestMethod.GET)

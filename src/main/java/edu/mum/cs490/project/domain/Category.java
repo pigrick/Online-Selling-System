@@ -19,7 +19,6 @@ public class Category implements Serializable {
     private String image;
     @Enumerated(EnumType.STRING)
     private Status status = Status.ENABLED;
-
     @OneToMany(mappedBy = "parentCategory")
     private List<Category> childCategories;
 

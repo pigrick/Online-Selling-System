@@ -77,6 +77,7 @@
                             <br/><br/> <br/><br/><br/>
                             <div class="col-md-10" align="center">
                                 <input id="btnExport" style="color: orangered" type="submit" value="Export" tabindex="7"/>
+                                <a href="<c:url value="/" />" class="btn btn-default" style="color: orangered">Close</a>
                             </div>
                         </form:form>
                     </div>

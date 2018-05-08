@@ -97,9 +97,10 @@ public class AESImpl implements AES {
 
     public static void main(String[] args) {
         AESImpl aes = new AESImpl();
-        aes.secretKeyWord = "b23das12s";
+        aes.secretKeyWord = "OSSTeamMongolia";
         try {
-            String json = "{\"txnId\":\"00011\",\"srcCardNo\":\"0123456789012345\",\"expirationDate\":\"04/2018\",\"nameOnCard\":\"TEST\",\"zipCode\":\"52557\",\"amount\":1.1,\"cvv\":\"CVV\"}";
+            String json = "{\"txnId\":\"00011\",\"srcCardNo\":\"4000300020002000\",\"expirationDate\":\"05/2020\",\"nameOnCard\":\"TAX\",\"zipCode\":\"10000\",\"amount\":10000,\"cvv\":\"200\",\"dstCardNo\":\"4000300020001001\"}";
+//            json = "{\"txnId\":\"000\",\"srcCardNo\":\"4929127657563690\",\"expirationDate\":\"05/2020\",\"nameOnCard\":\"TEST\",\"zipCode\":\"52557\",\"amount\":100,\"dstCardNo\":\"4000300020001000\",\"cvv\":\"123\"}";
             System.out.println(json + "\n");
             String encJson = aes.encrypt(json);
             System.out.println(encJson);
@@ -113,5 +114,9 @@ public class AESImpl implements AES {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public String getSecretKeyWord() {
+        return secretKeyWord;
     }
 }

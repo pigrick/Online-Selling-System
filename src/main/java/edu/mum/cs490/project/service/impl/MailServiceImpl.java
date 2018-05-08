@@ -67,19 +67,19 @@ public class MailServiceImpl implements MailService {
             if(order.getCustomer() == null){
                 toEmail = order.getGuest().getEmail();
                 customerName = order.getGuest().getFirstName() + " " + order.getGuest().getLastName();
-                address = order.getGuest().getAddress().toString();
+                address = order.getAddress().toString();
             }
             else
             {
                 toEmail = order.getCustomer().getEmail();
                 customerName = order.getCustomer().getFirstName() + " " + order.getCustomer().getLastName();
-                address = order.getCustomer().getAddresses().get(0).toString();
+                address = order.getAddress().toString();
             }
             emailUtil.sendEmail(toEmail, "Verification", prepareTemplateForCustomerWhenPurchase(customerName, address, order));
 
             final List<Vendor> lstVendor = new ArrayList<>();
             order.getOrderDetails().forEach(u->{
-                    if(!lstVendor.contains(u))
+                    if(!lstVendor.contains(u.getProduct().getVendor()))
                         lstVendor.add(u.getProduct().getVendor());});
             for(Vendor vendor : lstVendor){
                 List<OrderDetail> currentVendorsOrder = order.getOrderDetails().stream().filter(u->u.getProduct().getVendor().getId() == vendor.getId()).collect(Collectors.toList());
@@ -675,7 +675,6 @@ public class MailServiceImpl implements MailService {
                 "\n" +
                 "}</style></head>\n" +
                 "    <body>\n" +
-                "\t\t<!--*|IF:MC_PREVIEW_TEXT|*-->\n" +
                 "\t\t<!--[if !gte mso 9]><!----><span class=\"mcnPreviewText\" style=\"display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;\">*|MC_PREVIEW_TEXT|*</span><!--<![endif]-->\n" +
                 "\t\t<!--*|END:IF|*-->\n" +
                 "        <center>\n" +
@@ -3366,7 +3365,6 @@ public class MailServiceImpl implements MailService {
                 "\t\t}\n" +
                 "\n" +
                 "}\t@media only screen and (max-width: 480px){\n" +
-                "\t\t.mcpreview-image-uploader{\n" +
                 "\t\t\tdisplay:none !important;\n" +
                 "\t\t\twidth:100% !important;\n" +
                 "\t\t}\n" +
@@ -4274,7 +4272,6 @@ public class MailServiceImpl implements MailService {
                 "\n" +
                 "}</style></head>\n" +
                 "    <body>\n" +
-                "\t\t<!--*|IF:MC_PREVIEW_TEXT|*-->\n" +
                 "\t\t<!--[if !gte mso 9]><!----><span class=\"mcnPreviewText\" style=\"display:none; font-size:0px; line-height:0px; max-height:0px; max-width:0px; opacity:0; overflow:hidden; visibility:hidden; mso-hide:all;\">*|MC_PREVIEW_TEXT|*</span><!--<![endif]-->\n" +
                 "\t\t<!--*|END:IF|*-->\n" +
                 "        <center>\n" +

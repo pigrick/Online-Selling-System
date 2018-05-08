@@ -44,7 +44,7 @@ public class InitBean implements ApplicationRunner {
         Account accountOSS = new Account();
         accountOSS.setCardNo("4000300020001000");
         accountOSS.setCVV("100");
-        accountOSS.setAmount(1.0);
+        accountOSS.setAmount(10000.0);
         accountOSS.setExpirationDate("05/2020");
         accountOSS.setName("OSS");
         accountOSS.setZipCode("52557");

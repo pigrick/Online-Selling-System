@@ -23,10 +23,10 @@ INSERT INTO user VALUES (10, 'tbatmunkh@mum.edu','$2a$10$ibMbCkRcLFo4snX8071GSuJ
 INSERT INTO customer VALUES ('Tamir', 'Batmunkh', 10);
 INSERT INTO user VALUES (11, 'pagmaa.erdenebat@gmail.com','$2a$10$ibMbCkRcLFo4snX8071GSuJ9bV15Jvl9wFNafEkiSBTFuFt8m9BtO', 'ENABLED', 'pagma');
 INSERT INTO customer VALUES ('Pagmaa', 'Erdenebat', 11);
-INSERT INTO user VALUES (12, 'thha@mum.edu)','$2a$10$ibMbCkRcLFo4snX8071GSuJ9bV15Jvl9wFNafEkiSBTFuFt8m9BtO', 'ENABLED', 'hong');
-INSERT INTO customer VALUES ('Pagmaa', 'Erdenebat', 12);
+INSERT INTO user VALUES (12, 'thha@mum.edu','$2a$10$ibMbCkRcLFo4snX8071GSuJ9bV15Jvl9wFNafEkiSBTFuFt8m9BtO', 'ENABLED', 'hong');
+INSERT INTO customer VALUES ('Thuy Hong', 'Ha', 12);
 INSERT INTO user VALUES (13, 'chpiseth9@gmail.com','$2a$10$ibMbCkRcLFo4snX8071GSuJ9bV15Jvl9wFNafEkiSBTFuFt8m9BtO', 'ENABLED', 'seth');
-INSERT INTO customer VALUES ('Thuy Hong', 'Ha', 13);
+INSERT INTO customer VALUES ('Chanpiseth', 'Chea', 13);
 
 
 INSERT INTO user VALUES (2 , 'ebatsukh@mum.edu', '$2a$10$snL9/9oR.u6CtqN/g5hJm.GtmHr4wx1ptuOD8.GL8wR4yvHg8Y/7O', 'ENABLED',

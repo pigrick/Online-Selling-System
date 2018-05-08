@@ -86,7 +86,7 @@
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                             </form:form>
 
-                            <button type="button" class="btn btn-primary" onclick="create.submit()">submit</button>
+                            <button type="button" class="btn btn-primary" onclick="create.submit()">Submit</button>
                             <a href="<c:url value="/" />" class="btn btn-default">Cancel</a>
                         </div>
                     </div>

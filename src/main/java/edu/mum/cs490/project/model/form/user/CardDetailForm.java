@@ -14,9 +14,9 @@ public class CardDetailForm {
     @NotBlank
     private String cardHolderName;
     @NotBlank
-    @Pattern(regexp="^(\\d{16})$", message="Card number must be 16 digit!")
     private String cardNumber;
     private String last4Digit;
+    @Pattern(regexp = "^((0[1-9])|(1[0-2]))\\/(\\d{2})$")
     private String cardExpirationDate;
     @NotBlank
     private String cvv;

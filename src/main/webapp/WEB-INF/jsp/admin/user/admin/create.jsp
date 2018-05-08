@@ -68,6 +68,7 @@
     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
     <button type="button" class="btn btn-primary" onclick="create.submit()">Save changes</button>
 </div>
+<br>
 
 <script type="text/javascript">
     $(function () {

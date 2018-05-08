@@ -72,9 +72,8 @@ public class TestProductController {
         mockMvc.perform(post("/admin/saveProduct").flashAttr("productForm", productForm))
                 .andExpect(model().attribute("message", Message.successfullySaved));
 
-//        Customer products = (Customer) productService.getOne("ProductName");
-
-//        Assert.assertNotNull(products);
+        //Customer products = (Customer) productService.getOne(4);
+        //Assert.assertNotNull(products);
 
     }
 

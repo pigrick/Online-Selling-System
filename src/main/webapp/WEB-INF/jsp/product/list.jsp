@@ -56,7 +56,7 @@
                                             <%--</a>--%>
                                         <figcaption>
                                             <h4 class="aa-product-title"><a href="/product=${product.id}">${product.name}</a></h4>
-                                            <span class="aa-product-price">$${product.price}</span><span class="aa-product-price"><del>$999</del></span>
+                                            <span class="aa-product-price">$${product.price}</span>
                                             <span class="aa-product-descrip">${product.description}</span>
                                         </figcaption>
                                     </figure>

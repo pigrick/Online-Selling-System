@@ -22,28 +22,27 @@
                         <div class="col-md-5 no-padding">
                             <div class="aa-promo-left">
                                 <div class="aa-promo-banner">
-                                    <img style="object-fit: cover;" src="/static/img/for-women-450x450.jpg" alt="img">
-                                    <img style="object-fit: cover;" src="${resourcePath}${products.get(0).image}" alt="img">
-                                    <div class="aa-prom-content">
-                                        <span>${products.get(0).name}</span>
-                                        <h4><a href="#">${products.get(0).category.name}</a></h4>
-                                    </div>
+                                    <c:forEach items="${categories}" var="category" begin="0" end="0">
+                                        <img style="object-fit: cover;" src="${resourcePath}${category.image}" alt="img">
+                                        <div class="aa-prom-content">
+                                            <h4><a href="product/search?categoryId=${category.id}">${category.name}</a></h4>
+                                        </div>
+                                    </c:forEach>
                                 </div>
                             </div>
                         </div>
                         <!-- promo right -->
                         <div class="col-md-7 no-padding">
                             <div class="aa-promo-right">
-                                <c:forEach items="${topProducts}" var="product" begin="4">
-                                <div class="aa-single-promo-right">
-                                    <div class="aa-promo-banner">
-                                        <img style="object-fit: cover;" src="${resourcePath}${product.image}" alt="img">
-                                        <div class="aa-prom-content">
-                                            <span>${product.name}</span>
-                                            <h4><a href="#">${product.category.name}</a></h4>
+                                <c:forEach items="${categories}" var="category" begin="1" end="4">
+                                    <div class="aa-single-promo-right">
+                                        <div class="aa-promo-banner">
+                                            <img style="object-fit: cover;" src="${resourcePath}${category.image}" alt="img">
+                                            <div class="aa-prom-content">
+                                                <h4 style="color: #cd5c5c"><a href="product/search?categoryId=${category.id}" >${category.name}</a></h4>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
                                 </c:forEach>
                             </div>
                         </div>
@@ -65,25 +64,11 @@
                 <div class="row">
                     <div class="aa-product-area">
                         <div class="aa-product-inner">
-                            <!-- start prduct navigation -->
-                            <ul class="nav nav-tabs aa-products-tab">
-                                <c:set var="counter" value="0" scope="page"/>
-                                <c:forEach items="${mainCategories}" var="category">
-                                    <c:set var="counter" value="${counter + 1}" scope="page"/>
-                                    <c:if test="${counter eq 1}">
-                                        <li><a href="#${category}" data-toggle="tab">${category.name}</a></li>
-                                    </c:if>
-                                    <c:if test="${counter ne 1}">
-                                        <li><a href="#${category}" data-toggle="tab">${category.name}</a></li>
-                                    </c:if>
-                                </c:forEach>
-                            </ul>
-
                             <!-- start single Product Item-->
                             <div class="tab-pane fade in active">
                                 <ul class="aa-product-catg aa-popular-slider">
                                     <!-- start single product item -->
-                                    <c:forEach items="${products}" var="product" begin="4">
+                                    <c:forEach items="${products}" var="product" begin="0" end="3">
                                         <%--<c:if test="${category eq product.category.name}">--%>
                                         <li>
                                             <figure>
@@ -99,8 +84,7 @@
                                                     <h4 class="aa-product-title"><a
                                                             href="<c:url value="/product/${product.id}" />">${product.name}</a>
                                                     </h4>
-                                                    <span class="aa-product-price">$${product.price}</span><span
-                                                        class="aa-product-price"><del>$333</del></span>
+                                                    <span class="aa-product-price">$${product.price}</span>
                                                 </figcaption>
                                             </figure>
 
@@ -146,5 +130,3 @@
 <%--<form action="/logout" method="post">
     <button type="submit">Logout</button>
 </form>--%>
-</body>
-</html>

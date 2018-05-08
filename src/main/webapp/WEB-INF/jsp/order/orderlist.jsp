@@ -1,7 +1,7 @@
 <%@include file="/WEB-INF/jsp/template/header.jsp" %>
 
 <link rel="stylesheet" type="text/css" href="/static/css/order/order.css">
-<div class="container tpy">
+<div class="container">
     <div class="container">
         <h1>Orders</h1>
     </div>

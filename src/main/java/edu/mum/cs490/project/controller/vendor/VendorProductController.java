@@ -90,7 +90,11 @@ public class VendorProductController {
             model.addAttribute("message",  Message.errorOccurred);
             return "vendor/saveProduct";
         } else if (form.getFile() != null &&!form.getFile().isEmpty() && !fileManagementService.checkImageExtension(form.getFile().getOriginalFilename())) {
-            result.rejectValue("image", null, "File extension must be .jpg or .png!");
+            result.rejectValue("file", null, "File extension must be .jpg or .png!");
+            return "vendor/saveProduct";
+        }
+        if (form.getId() == null && form.getFile() == null) {
+            result.rejectValue("file", null, "Product must have a picture!");
             return "vendor/saveProduct";
         }
 

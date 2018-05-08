@@ -28,19 +28,14 @@
                             </c:if>
                         </c:forEach>
                     </select>
-                    <select name="status" class="form-control">
-                        <c:forEach items="${statuses}" var="row">
-                            <option value="${row}">${row}</option>
-                        </c:forEach>
-                    </select>
-                    <button class="btn btn-default" type="button" onclick="modules.list()">Search</button>
+                    <button class="btn btn-default" type="button" onclick="module.list(1)">Search</button>
                 </form>
             </div>
         </div>
         <div class="table-responsive">
             <div id="list-target"></div>
             <br/>
-            <button class="btn btn-default" type="button" onclick="modules.create()">Add product</button>
+            <button class="btn btn-primary" type="button" onclick="modules.create()">Add product</button>
         </div>
     </div>
 </div>
@@ -51,11 +46,11 @@
 
 <script type="text/javascript">
     $(function () {
-        modules.list(1);
+        module.list(1);
     });
-    modules = {
+    module = {
         list : function(page){
-            $.get('/vendor/product/list?page=' +page, $("#filterForm").serialize(), function(data){
+            $.get('/vendor/product/list?page=' + page, $("#filterForm").serialize(), function(data){
                 $('#list-target').html(data);
             });
         },
@@ -77,6 +72,19 @@
                 $('#edit-target').html(data);
             });
         },
+        submit: function() {
+            $('#productForm').submit();
+        },
+        init: function() {
+            $('#productForm').ajaxForm({
+                target:'#edit-target',
+                url:'/vendor/product/save'
+            });
+        },
+        success: function() {
+            $('#edit-modal').modal('hide');
+            module.list();
+        },
 
         delete: function(id){
             smoke.confirm('Are sure to delete this!',function(e){
@@ -85,22 +93,10 @@
                         var message = msg.message || msg;
                         var type = 'st-'+(msg.type || 'success').toLowerCase();
                         $.sticky(message, {autoclose: 10000, position:'top-right', type: type});
-                        modules.list();
+                        module.list();
                     });
                 }
             }, {cancel:"Cancel", ok:"Delete"});
-        },
-        changeStatus: function(id,status){
-            smoke.confirm('Are sure to change status of this!',function(e){
-                if (e){
-                    $.get('/vendor/product/changeStatus', 'id='+id+'&status='+status, function(msg){
-                        var message = msg.message || msg;
-                        var type = 'st-'+(msg.type || 'success').toLowerCase();
-                        $.sticky(message, {autoclose: 10000, position:'top-right', type: type});
-                        modules.list();
-                    });
-                }
-            }, {cancel:"Cancel", ok:"Change"});
         }
     };
 </script>

@@ -22,4 +22,5 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
             "((:status IS NULL AND a.status = 'ENABLED') OR (a.status =:status))")
     List<Category> find(@Param("name") String name, @Param("parentId") Integer parentId, @Param("status") Status status);
 
+    List<Category> findByStatusOrderByParentCategoryAsc(Status status);
 }
